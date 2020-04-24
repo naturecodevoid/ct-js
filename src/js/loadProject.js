@@ -5,12 +5,13 @@
         if (!process) {
             throw new Error(`Cannot find migration code for version ${version}`);
         }
-        process.process(global.currentProject)
-        .then(() => window.alertify.success(`Applied migration code for version ${version}`, 'success', 3000));
+        process
+            .process(global.currentProject)
+            .then(() => window.alertify.success(`Applied migration code for version ${version}`, 'success', 3000));
     };
 
     const fs = require('fs-extra'),
-          path = require('path');
+        path = require('path');
     // @see https://semver.org/
     const semverRegex = /(\d+)\.(\d+)\.(\d+)(-[A-Za-z.-]*(\d+)?[A-Za-z.-]*)?/;
     const semverToArray = string => {
@@ -21,7 +22,7 @@
             raw[3],
             // -next- versions and other postfixes will count as a fourth component.
             // They all will apply before regular versions
-            raw[4]? raw[5] || 1 : null
+            raw[4] ? raw[5] || 1 : null
         ];
     };
 
@@ -29,49 +30,49 @@
         var version = semverToArray(project.ctjsVersion || '0.2.0');
 
         const migrationToExecute = window.migrationProcess
-        // Sort all the patches chronologically
-        .sort((m1, m2) => {
-            const m1Version = semverToArray(m1.version);
-            const m2Version = semverToArray(m2.version);
+            // Sort all the patches chronologically
+            .sort((m1, m2) => {
+                const m1Version = semverToArray(m1.version);
+                const m2Version = semverToArray(m2.version);
 
-            for (let i = 0; i < 4; i++) {
-                if (m1Version[i] < m2Version[i] || m1Version[i] === null) {
-                    return -1;
-                } else if (m1Version[i] > m2Version[i]) {
-                    return 1;
+                for (let i = 0; i < 4; i++) {
+                    if (m1Version[i] < m2Version[i] || m1Version[i] === null) {
+                        return -1;
+                    } else if (m1Version[i] > m2Version[i]) {
+                        return 1;
+                    }
                 }
-            }
-            // eslint-disable-next-line no-console
-            console.warn(`Two equivalent versions found for migration, ${m1.version} and ${m2.version}.`);
-            return 0;
-        })
-        // Throw out patches for current and previous versions
-        .filter((migration) => {
-            const migrationVersion = semverToArray(migration.version);
-            for (let i = 0; i < 3; i++) {
-                // if any of the first three version numbers is lower than project's,
-                // skip the patch
-                if (migrationVersion[i] < version[i]) {
+                // eslint-disable-next-line no-console
+                console.warn(`Two equivalent versions found for migration, ${m1.version} and ${m2.version}.`);
+                return 0;
+            })
+            // Throw out patches for current and previous versions
+            .filter(migration => {
+                const migrationVersion = semverToArray(migration.version);
+                for (let i = 0; i < 3; i++) {
+                    // if any of the first three version numbers is lower than project's,
+                    // skip the patch
+                    if (migrationVersion[i] < version[i]) {
+                        return false;
+                    }
+                    if (migrationVersion[i] > version[i]) {
+                        return true;
+                    }
+                }
+                // a lazy check for equal base versions
+                if (migrationVersion.slice(0, 3).join('.') === version.slice(0, 3).join('.')) {
+                    // handle the case with two postfixed versions
+                    if (migrationVersion[3] !== null && version[3] !== null) {
+                        return migrationVersion[3] > version[3];
+                    }
+                    // postfixed source, unpostfixed patch
+                    if (migrationVersion[3] === null && version[3] !== null) {
+                        return true;
+                    }
                     return false;
                 }
-                if (migrationVersion[i] > version[i]) {
-                    return true;
-                }
-            }
-            // a lazy check for equal base versions
-            if (migrationVersion.slice(0, 3).join('.') === version.slice(0, 3).join('.')) {
-                // handle the case with two postfixed versions
-                if (migrationVersion[3] !== null && version[3] !== null) {
-                    return migrationVersion[3] > version[3];
-                }
-                // postfixed source, unpostfixed patch
-                if (migrationVersion[3] === null && version[3] !== null) {
-                    return true;
-                }
-                return false;
-            }
-            return true;
-        });
+                return true;
+            });
 
         if (migrationToExecute.length) {
             // eslint-disable-next-line no-console
@@ -110,7 +111,7 @@
             fs.ensureDir(global.projdir + '/img');
             fs.ensureDir(global.projdir + '/snd');
 
-            const lastProjects = localStorage.lastProjects? localStorage.lastProjects.split(';') : [];
+            const lastProjects = localStorage.lastProjects ? localStorage.lastProjects.split(';') : [];
             if (lastProjects.indexOf(path.normalize(global.projdir + '.ict')) !== -1) {
                 lastProjects.splice(lastProjects.indexOf(path.normalize(global.projdir + '.ict')), 1);
             }
@@ -145,7 +146,8 @@
         let projectData;
         // Before v1.3, projects were stored in JSON format
         try {
-            if (data.indexOf('{') === 0) { // First, make a silly check for JSON files
+            if (data.indexOf('{') === 0) {
+                // First, make a silly check for JSON files
                 projectData = JSON.parse(data);
             } else {
                 try {
@@ -154,7 +156,9 @@
                 } catch (e) {
                     // whoopsie, wrong window
                     // eslint-disable-next-line no-console
-                    console.warn(`Tried to load a file ${proj} as a YAML, but got an error (see below). Falling back to JSON.`);
+                    console.warn(
+                        `Tried to load a file ${proj} as a YAML, but got an error (see below). Falling back to JSON.`
+                    );
                     console.error(e);
                     projectData = JSON.parse(data);
                 }
@@ -184,29 +188,30 @@
                 var targetStat = fs.statSync(proj),
                     voc = window.languageJSON.intro.recovery;
                 window.alertify
-                .okBtn(voc.loadRecovery)
-                .cancelBtn(voc.loadTarget)
-                /* {0} — target file date
+                    .okBtn(voc.loadRecovery)
+                    .cancelBtn(voc.loadTarget)
+                    /* {0} — target file date
                    {1} — target file state (newer/older)
                    {2} — recovery file date
                    {3} — recovery file state (newer/older)
                 */
-                .confirm(voc.message
-                    .replace('{0}', targetStat.mtime.toLocaleString())
-                    .replace('{1}', targetStat.mtime < stat.mtime? voc.older : voc.newer)
-                    .replace('{2}', stat.mtime.toLocaleString())
-                    .replace('{3}', stat.mtime < targetStat.mtime? voc.older : voc.newer)
-                )
-                .then(e => {
-                    if (e.buttonClicked === 'ok') {
-                        loadProjectFile(proj + '.recovery');
-                    } else {
-                        loadProjectFile(proj);
-                    }
-                    window.alertify
-                    .okBtn(window.languageJSON.common.ok)
-                    .cancelBtn(window.languageJSON.common.cancel);
-                });
+                    .confirm(
+                        voc.message
+                            .replace('{0}', targetStat.mtime.toLocaleString())
+                            .replace('{1}', targetStat.mtime < stat.mtime ? voc.older : voc.newer)
+                            .replace('{2}', stat.mtime.toLocaleString())
+                            .replace('{3}', stat.mtime < targetStat.mtime ? voc.older : voc.newer)
+                    )
+                    .then(e => {
+                        if (e.buttonClicked === 'ok') {
+                            loadProjectFile(proj + '.recovery');
+                        } else {
+                            loadProjectFile(proj);
+                        }
+                        window.alertify
+                            .okBtn(window.languageJSON.common.ok)
+                            .cancelBtn(window.languageJSON.common.cancel);
+                    });
             } else {
                 loadProjectFile(proj);
             }

@@ -2,7 +2,8 @@
     const glob = require('./data/node_requires/glob');
     var wire = (that, field, update) => e => {
         var way = field.split(/(?<!\\)\./gi),
-            root, val;
+            root,
+            val;
         for (let i = 0, l = way.length; i < l; i++) {
             way[i] = way[i].replace(/\\./g, '.');
         }
@@ -30,7 +31,7 @@
         }
         root[way[0]] = val;
         glob.modified = true;
-        if (update && ('update' in that)) {
+        if (update && 'update' in that) {
             that.update();
         }
         return val;
@@ -68,12 +69,13 @@
         }
     };
 
-    var niceTime = function(date) {
+    var niceTime = function (date) {
         if (!(date instanceof Date)) {
             date = new Date(date);
         }
         const today = new Date();
-        if (date.getDate() !== today.getDate() ||
+        if (
+            date.getDate() !== today.getDate() ||
             date.getFullYear() !== today.getFullYear() ||
             date.getMonth() !== today.getMonth()
         ) {

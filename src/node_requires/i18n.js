@@ -22,7 +22,6 @@ i18n = {
     loadLanguage
 };
 
-
 loadLanguage(localStorage.appLanguage || 'English');
 
 module.exports = i18n;

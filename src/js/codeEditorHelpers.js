@@ -1,6 +1,6 @@
 /* eslint-disable no-bitwise */
 /* eslint-disable no-underscore-dangle */
-(function() {
+(function () {
     const {extend} = require('./data/node_requires/objectUtils');
     const fs = require('fs-extra');
     const path = require('path');
@@ -28,8 +28,7 @@
         for (const file of lib) {
             fs.readFile(path.join(__dirname, file), {
                 encoding: 'utf-8'
-            })
-            .then(data => {
+            }).then(data => {
                 monaco.languages.typescript.javascriptDefaults.addExtraLib(data);
                 monaco.languages.typescript.typescriptDefaults.addExtraLib(data);
             });
@@ -41,8 +40,8 @@
      * @param {any} editor The editor to which to add hotkeys
      * @returns {void}
      */
-    var extendHotkeys = (editor) => {
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_EQUAL, function() {
+    var extendHotkeys = editor => {
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_EQUAL, function () {
             var num = Number(localStorage.fontSize);
             if (num < 48) {
                 num++;
@@ -51,7 +50,7 @@
             }
             return false;
         });
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_MINUS, function() {
+        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.US_MINUS, function () {
             var num = Number(localStorage.fontSize);
             if (num > 6) {
                 num--;
@@ -62,7 +61,7 @@
         });
     };
 
-    const isRangeSelection = function(s) {
+    const isRangeSelection = function (s) {
         if (s.selectionStartLineNumber !== s.positionLineNumber) {
             return true;
         }
@@ -75,7 +74,7 @@
     // Tons of hacks go below, beware!
     // But maybe it will heal through time
     // @see https://github.com/microsoft/monaco-editor/issues/1661 and everything linked
-    const setUpWrappers = function(editor) {
+    const setUpWrappers = function (editor) {
         editor.setPosition({
             column: 0,
             lineNumber: 2
@@ -83,9 +82,9 @@
         /* These signal to custom commands
            that the current cursor's position is in the end/start of the editable range */
         const contextSOR = editor.createContextKey('startOfEditable', false),
-              contextEOR = editor.createContextKey('endOfEditable', false);
+            contextEOR = editor.createContextKey('endOfEditable', false);
 
-        const restrictSelections = function(selections) {
+        const restrictSelections = function (selections) {
             selections = selections || editor.getSelections();
             let resetSelections = false;
             const model = editor.getModel();
@@ -122,14 +121,10 @@
                     not that is behind/in front of them.
                 */
                 if (!isRangeSelection(selection)) {
-                    if (selection.selectionStartLineNumber === 2 &&
-                        selection.selectionStartColumn === 1
-                    ) {
+                    if (selection.selectionStartLineNumber === 2 && selection.selectionStartColumn === 1) {
                         contextSOR.set(true);
                     }
-                    if (selection.positionLineNumber === maxLine &&
-                        selection.positionColumn === lastLineCol
-                    ) {
+                    if (selection.positionLineNumber === maxLine && selection.positionColumn === lastLineCol) {
                         contextEOR.set(true);
                     }
                 }
@@ -142,17 +137,33 @@
         // Turns out the Delete and Backspace keys do not produce a keyboard event but commands
         // These commands overlay the default ones, thus cancelling the default behaviour
         // @see https://github.com/microsoft/monaco-editor/issues/940
-        const voidFunction = function() {
+        const voidFunction = function () {
             void 0; // magic!
         };
         editor.addCommand(monaco.KeyCode.Backspace, voidFunction, 'startOfEditable');
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Backspace, voidFunction, 'startOfEditable');
         editor.addCommand(monaco.KeyMod.Shift | monaco.KeyCode.Backspace, voidFunction, 'startOfEditable');
         editor.addCommand(monaco.KeyMod.Alt | monaco.KeyCode.Backspace, voidFunction, 'startOfEditable');
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Backspace, voidFunction, 'startOfEditable');
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.Backspace, voidFunction, 'startOfEditable');
-        editor.addCommand(monaco.KeyMod.Shift | monaco.KeyMod.Alt | monaco.KeyCode.Backspace, voidFunction, 'startOfEditable');
-        editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyMod.Alt | monaco.KeyCode.Backspace, voidFunction, 'startOfEditable');
+        editor.addCommand(
+            monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyCode.Backspace,
+            voidFunction,
+            'startOfEditable'
+        );
+        editor.addCommand(
+            monaco.KeyMod.CtrlCmd | monaco.KeyMod.Alt | monaco.KeyCode.Backspace,
+            voidFunction,
+            'startOfEditable'
+        );
+        editor.addCommand(
+            monaco.KeyMod.Shift | monaco.KeyMod.Alt | monaco.KeyCode.Backspace,
+            voidFunction,
+            'startOfEditable'
+        );
+        editor.addCommand(
+            monaco.KeyMod.CtrlCmd | monaco.KeyMod.Shift | monaco.KeyMod.Alt | monaco.KeyCode.Backspace,
+            voidFunction,
+            'startOfEditable'
+        );
         editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Delete, voidFunction, 'endOfEditable');
         editor.addCommand(monaco.KeyCode.Delete, voidFunction, 'endOfEditable');
 
@@ -162,7 +173,7 @@
         const find = editor.getContribution('editor.contrib.findController');
         const oldReplaceAll = find.replaceAll.bind(find);
         find.replaceAll = function () {
-            const oldSelections = editor.getSelections()? [...editor.getSelections()] : [];
+            const oldSelections = editor.getSelections() ? [...editor.getSelections()] : [];
             const oldSearchScope = find._state.searchScope;
             const oldGetFindScope = find._model._decorations.getFindScope;
             if (!oldSearchScope) {
@@ -180,13 +191,16 @@
                     startColumn: 1,
                     startLineNumber: 2
                 };
-                find._state.change({
-                    searchScope: {...scope}
-                }, true);
+                find._state.change(
+                    {
+                        searchScope: {...scope}
+                    },
+                    true
+                );
                 editor.setSelection(scope);
-                find._model._decorations.getFindScope = (function() {
+                find._model._decorations.getFindScope = function () {
                     return scope;
-                });
+                };
             }
 
             oldReplaceAll();
@@ -194,28 +208,34 @@
             // Bring the previous editor state back
             find._model._decorations.getFindScope = oldGetFindScope;
             editor.setSelections(oldSelections);
-            find._state.change({
-                searchScope: oldSearchScope
-            }, true);
+            find._state.change(
+                {
+                    searchScope: oldSearchScope
+                },
+                true
+            );
             find._widget._updateSearchScope();
             restrictSelections();
         };
 
         // Clamp selections so they can't select wrapping lines
-        editor.onDidChangeCursorSelection(function(evt) {
+        editor.onDidChangeCursorSelection(function (evt) {
             const selections = [evt.selection, ...evt.secondarySelections];
             restrictSelections(selections);
         });
 
         const model = editor.getModel();
         const lastLine = model.getLineCount();
-        editor.setHiddenAreas([{
-            startLineNumber: 1,
-            endLineNumber: 1
-        }, {
-            startLineNumber: lastLine,
-            endLineNumber: lastLine
-        }]);
+        editor.setHiddenAreas([
+            {
+                startLineNumber: 1,
+                endLineNumber: 1
+            },
+            {
+                startLineNumber: lastLine,
+                endLineNumber: lastLine
+            }
+        ]);
     };
 
     const themeMappings = {
@@ -227,14 +247,14 @@
     const glob = require('./data/node_requires/glob');
     glob.codeEditorThemeMappings = themeMappings;
     window.signals.on('UIThemeChanged', theme => {
-        monaco.editor.setTheme(themeMappings[theme]? themeMappings[theme] : themeMappings.default);
+        monaco.editor.setTheme(themeMappings[theme] ? themeMappings[theme] : themeMappings.default);
     });
     window.signals.on('codeFontUpdated', () => {
         const editorWrappers = document.querySelectorAll('.aCodeEditor');
         for (const editorWrap of editorWrappers) {
             editorWrap.codeEditor.updateOptions({
                 fontLigatures: localStorage.codeLigatures !== 'off',
-                lineHeight: (localStorage.codeDense === 'off'? 1.75 : 1.5) * Number(localStorage.fontSize),
+                lineHeight: (localStorage.codeDense === 'off' ? 1.75 : 1.5) * Number(localStorage.fontSize),
                 fontSize: Number(localStorage.fontSize)
             });
         }
@@ -255,13 +275,13 @@
             return localStorage.fontFamily || 'Iosevka, monospace';
         },
         get theme() {
-            return themeMappings[localStorage.UItheme]? themeMappings[localStorage.UItheme] : themeMappings.default;
+            return themeMappings[localStorage.UItheme] ? themeMappings[localStorage.UItheme] : themeMappings.default;
         },
         get fontLigatures() {
             return localStorage.codeLigatures !== 'off';
         },
         get lineHeight() {
-            return (localStorage.codeDense === 'off'? 1.75 : 1.5) * Number(localStorage.fontSize);
+            return (localStorage.codeDense === 'off' ? 1.75 : 1.5) * Number(localStorage.fontSize);
         },
         get fontSize() {
             return Number(localStorage.fontSize);
@@ -288,19 +308,19 @@
         const codeEditor = monaco.editor.create(tag, opts);
         tag.codeEditor = codeEditor;
         codeEditor.tag = tag;
-        tag.classList.add(themeMappings[localStorage.UItheme]? themeMappings[localStorage.UItheme] : themeMappings.default);
+        tag.classList.add(
+            themeMappings[localStorage.UItheme] ? themeMappings[localStorage.UItheme] : themeMappings.default
+        );
 
         codeEditor.getModel()._options.defaultEOL = monaco.editor.DefaultEndOfLine.LF;
 
-        codeEditor.getPureValue = function() {
+        codeEditor.getPureValue = function () {
             const val = this.getValue();
             const start = opts.wrapper[0] + '\n',
-                  end = '\n' + opts.wrapper[1];
+                end = '\n' + opts.wrapper[1];
             if (options.wrapper) {
-                if (val.indexOf(start) === 0 &&
-                    val.lastIndexOf(end) === (val.length - end.length)
-                ) {
-                    return val.slice((start).length, -end.length);
+                if (val.indexOf(start) === 0 && val.lastIndexOf(end) === val.length - end.length) {
+                    return val.slice(start.length, -end.length);
                 }
             }
             return val;

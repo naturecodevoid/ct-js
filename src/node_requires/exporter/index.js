@@ -1,5 +1,5 @@
 const fs = require('fs-extra'),
-      path = require('path');
+    path = require('path');
 const basePath = './data/';
 
 let currentProject, writeDir;
@@ -14,7 +14,7 @@ const {stringifyTypes} = require('./types');
 const {bundleFonts} = require('./fonts');
 const {bakeFavicons} = require('./icons');
 
-const parseKeys = function(data, str, lib) {
+const parseKeys = function (data, str, lib) {
     var str2 = str;
     if (data.fields) {
         for (const field in data.fields) {
@@ -29,41 +29,57 @@ const parseKeys = function(data, str, lib) {
     return str2;
 };
 
-const addModules = async () => { // async
-    const pieces = await Promise.all(Object.keys(currentProject.libs).map(async lib => {
-        const data = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
-            'encoding': 'utf8'
-        });
-        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
-            return parseKeys(data, await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
-                'encoding': 'utf8'
-            }), lib);
-        }
-        return '';
-    }));
+const addModules = async () => {
+    // async
+    const pieces = await Promise.all(
+        Object.keys(currentProject.libs).map(async lib => {
+            const data = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+                encoding: 'utf8'
+            });
+            if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'index.js'))) {
+                return parseKeys(
+                    data,
+                    await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'index.js'), {
+                        encoding: 'utf8'
+                    }),
+                    lib
+                );
+            }
+            return '';
+        })
+    );
     return pieces.join('\n');
 };
 
-const injectModules = injects => // async
-    Promise.all(Object.keys(currentProject.libs).map(async lib => {
-        const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
-            'encoding': 'utf8'
-        });
-        if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injects'))) {
-            const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injects')),
-                  injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
-            await Promise.all(injectKeys.map(async (key, ind) => {
-                if (key in injects) {
-                    const injection = await fs.readFile(path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[ind]), {
-                        encoding: 'utf8'
-                    });
-                    // false positive??
-                    // eslint-disable-next-line require-atomic-updates
-                    injects[key] += parseKeys(libData, injection, lib);
-                }
-            }));
-        }
-    }));
+const injectModules = (
+    injects // async
+) =>
+    Promise.all(
+        Object.keys(currentProject.libs).map(async lib => {
+            const libData = await fs.readJSON(path.join(basePath + 'ct.libs/', lib, 'module.json'), {
+                encoding: 'utf8'
+            });
+            if (await fs.pathExists(path.join(basePath + 'ct.libs/', lib, 'injects'))) {
+                const injectFiles = await fs.readdir(path.join(basePath + 'ct.libs/', lib, 'injects')),
+                    injectKeys = injectFiles.map(fname => path.basename(fname, path.extname(fname)));
+                await Promise.all(
+                    injectKeys.map(async (key, ind) => {
+                        if (key in injects) {
+                            const injection = await fs.readFile(
+                                path.join(basePath + 'ct.libs/', lib, 'injects', injectFiles[ind]),
+                                {
+                                    encoding: 'utf8'
+                                }
+                            );
+                            // false positive??
+                            // eslint-disable-next-line require-atomic-updates
+                            injects[key] += parseKeys(libData, injection, lib);
+                        }
+                    })
+                );
+            }
+        })
+    );
 
 const makeWritableDir = async () => {
     const {getWritableDir} = require('./../platformUtils');
@@ -79,15 +95,12 @@ const exportCtProject = async (project, projdir) => {
     }
 
     await fs.remove(writeDir);
-    await Promise.all([
-        fs.ensureDir(path.join(writeDir, '/img/')),
-        fs.ensureDir(path.join(writeDir, '/snd/'))
-    ]);
+    await Promise.all([fs.ensureDir(path.join(writeDir, '/img/')), fs.ensureDir(path.join(writeDir, '/snd/'))]);
 
     const injects = {
         load: '',
         start: '',
-        'switch': '',
+        switch: '',
 
         oncreate: '',
         ondestroy: '',
@@ -146,7 +159,7 @@ const exportCtProject = async (project, projdir) => {
     ];
     for (const file of sourcesList) {
         sources[file] = fs.readFile(path.join(basePath, 'ct.release', file), {
-            'encoding': 'utf8'
+            encoding: 'utf8'
         });
     }
 
@@ -157,12 +170,15 @@ const exportCtProject = async (project, projdir) => {
         .replace(/\/\*@highDensity@\*\//g, Boolean(currentProject.settings.highDensity))
         .replace(/\/\*@maxfps@\*\//g, Number(currentProject.settings.maxFPS))
         .replace(/\/\*@ctversion@\*\//g, require('package.json').version)
-        .replace(/\/\*@projectmeta@\*\//g, JSON.stringify({
-            name: currentProject.settings.title,
-            author: currentProject.settings.author,
-            site: currentProject.settings.site,
-            version: currentProject.settings.version.join('.') + currentProject.settings.versionPostfix
-        }));
+        .replace(
+            /\/\*@projectmeta@\*\//g,
+            JSON.stringify({
+                name: currentProject.settings.title,
+                author: currentProject.settings.author,
+                site: currentProject.settings.site,
+                version: currentProject.settings.version.join('.') + currentProject.settings.versionPostfix
+            })
+        );
 
     buffer += '\n';
 
@@ -194,15 +210,12 @@ const exportCtProject = async (project, projdir) => {
     buffer += '\n';
 
     const styles = stringifyStyles(currentProject);
-    buffer += (await sources['styles.js'])
-        .replace('/*@styles@*/', styles)
-        .replace('/*%styles%*/', injects.styles);
+    buffer += (await sources['styles.js']).replace('/*@styles@*/', styles).replace('/*%styles%*/', injects.styles);
     buffer += '\n';
 
     if (currentProject.emitterTandems && currentProject.emitterTandems.length) {
         const templates = stringifyTandems(currentProject);
-        buffer += (await sources['emitters.js'])
-            .replace('/*@tandemTemplates@*/', templates);
+        buffer += (await sources['emitters.js']).replace('/*@tandemTemplates@*/', templates);
     }
 
     /* assets — run in parallel */
@@ -230,13 +243,12 @@ const exportCtProject = async (project, projdir) => {
         .replace('/*%types%*/', injects.types)
         .replace('/*@types@*/', types);
 
-    buffer += (await sources['camera.js']);
+    buffer += await sources['camera.js'];
     buffer += '\n';
 
     buffer += '\n';
     var sounds = stringifySounds(currentProject);
-    buffer += (await sources['sound.js'])
-        .replace('/*@sound@*/', sounds);
+    buffer += (await sources['sound.js']).replace('/*@sound@*/', sounds);
 
     const fonts = await bundleFonts(currentProject, projdir, writeDir);
     buffer += fonts.js;
@@ -246,11 +258,13 @@ const exportCtProject = async (project, projdir) => {
     if (await fs.exists(projdir + '/include/')) {
         await fs.copy(projdir + '/include/', writeDir);
     }
-    await Promise.all(Object.keys(currentProject.libs).map(async lib => {
-        if (await fs.exists(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
-            await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
-        }
-    }));
+    await Promise.all(
+        Object.keys(currentProject.libs).map(async lib => {
+            if (await fs.exists(path.join(basePath, `./ct.libs/${lib}/includes/`))) {
+                await fs.copy(path.join(basePath, `./ct.libs/${lib}/includes/`), writeDir);
+            }
+        })
+    );
 
     /* Global injects, provided by modules */
     for (const i in injects) {
@@ -273,19 +287,24 @@ const exportCtProject = async (project, projdir) => {
             /* eslint-enable camelcase */
         });
         const out = await new Promise((resolve, reject) => {
-            compiler.run([{
-                path: path.join(writeDir, '/ct.js'),
-                src: buffer
-            }], (exitCode, stdout, stderr) => {
-                if (stderr && !stdout) {
-                    reject(stderr);
-                    return;
+            compiler.run(
+                [
+                    {
+                        path: path.join(writeDir, '/ct.js'),
+                        src: buffer
+                    }
+                ],
+                (exitCode, stdout, stderr) => {
+                    if (stderr && !stdout) {
+                        reject(stderr);
+                        return;
+                    }
+                    resolve(stdout[0]);
+                    if (stderr) {
+                        console.error(stderr);
+                    }
                 }
-                resolve(stdout[0]);
-                if (stderr) {
-                    console.error(stderr);
-                }
-            });
+            );
         });
         await fs.writeFile(path.join(writeDir, '/ct.js'), preamble + out.src);
         await fs.writeFile(path.join(writeDir, '/ct.js.map'), out.sourceMap);
@@ -311,10 +330,10 @@ const exportCtProject = async (project, projdir) => {
         const csswring = require('csswring');
         const htmlMinify = require('html-minifier').minify;
         const htmlUnminified = fs.readFile(path.join(writeDir, '/index.html'), {
-            'encoding': 'utf8'
+            encoding: 'utf8'
         });
         const cssUnminified = fs.readFile(path.join(writeDir, '/ct.css'), {
-            'encoding': 'utf8'
+            encoding: 'utf8'
         });
         await Promise.all([
             fs.writeFile(
@@ -327,12 +346,14 @@ const exportCtProject = async (project, projdir) => {
             fs.writeFile(path.join(writeDir, '/ct.css'), csswring.wring(await cssUnminified).css)
         ]);
     }
-    await Promise.all(currentProject.sounds.map(async sound => {
-        const ext = sound.origname.slice(-4);
-        await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
-    }));
+    await Promise.all(
+        currentProject.sounds.map(async sound => {
+            const ext = sound.origname.slice(-4);
+            await fs.copy(path.join(projdir, '/snd/', sound.origname), path.join(writeDir, '/snd/', sound.uid + ext));
+        })
+    );
 
-    return path.join(writeDir, `/index.${currentProject.settings.minifyhtml? 'min.': ''}html`);
+    return path.join(writeDir, `/index.${currentProject.settings.minifyhtml ? 'min.' : ''}html`);
 };
 
 module.exports = exportCtProject;

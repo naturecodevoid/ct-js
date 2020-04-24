@@ -13,7 +13,7 @@
             lastState = 'maximized';
         }
         localStorage.windowSettings = JSON.stringify({
-            mode: win.isFullscreen? 'fullscreen' : lastState
+            mode: win.isFullscreen ? 'fullscreen' : lastState
         });
     };
     win.on('restore', () => {
@@ -35,9 +35,11 @@
         saveState();
     });
 
-    const settings = localStorage.windowSettings? JSON.parse(localStorage.windowSettings) : {
-        mode: 'center'
-    };
+    const settings = localStorage.windowSettings
+        ? JSON.parse(localStorage.windowSettings)
+        : {
+              mode: 'center'
+          };
     if (settings.mode === 'fullscreen') {
         win.enterFullscreen();
     } else if (settings.mode === 'maximized') {

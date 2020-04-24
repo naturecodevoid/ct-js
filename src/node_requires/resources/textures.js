@@ -26,9 +26,9 @@ const getTexturePreview = function (texture, x2, fs) {
         texture = getTextureFromId(texture);
     }
     if (fs) {
-        return `${global.projdir}/img/${texture.origname}_prev${x2? '@2' : ''}.png`;
+        return `${global.projdir}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png`;
     }
-    return `file://${global.projdir}/img/${texture.origname}_prev${x2? '@2' : ''}.png?cache=${texture.lastmod}`;
+    return `file://${global.projdir}/img/${texture.origname}_prev${x2 ? '@2' : ''}.png?cache=${texture.lastmod}`;
 };
 
 /**
@@ -37,7 +37,7 @@ const getTexturePreview = function (texture, x2, fs) {
  * @param {boolean} [fs] If set to true, returns a file system path, not a URI.
  * @returns {string} The full path to the source image.
  */
-const getTextureOrig = function(texture, fs) {
+const getTextureOrig = function (texture, fs) {
     if (texture === -1) {
         return 'data/img/notexture.png';
     }
@@ -50,18 +50,19 @@ const getTextureOrig = function(texture, fs) {
     return `file://${global.projdir}/img/${texture.origname}?cache=${texture.lastmod}`;
 };
 
-const loadBaseTextureForCtTexture = texture => new Promise((resolve, reject) => {
-    const textureLoader = new PIXI.Loader();
-    const {resources} = textureLoader;
+const loadBaseTextureForCtTexture = texture =>
+    new Promise((resolve, reject) => {
+        const textureLoader = new PIXI.Loader();
+        const {resources} = textureLoader;
 
-    const path = 'file://' + global.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
+        const path = 'file://' + global.projdir + '/img/' + texture.origname + '?' + texture.lastmod;
 
-    textureLoader.add(texture.uid, path);
-    textureLoader.onError.add(reject);
-    textureLoader.load(() => {
-        resolve(resources[texture.uid].texture.baseTexture);
+        textureLoader.add(texture.uid, path);
+        textureLoader.onError.add(reject);
+        textureLoader.load(() => {
+            resolve(resources[texture.uid].texture.baseTexture);
+        });
     });
-});
 
 const pixiTextureCache = {};
 const clearPixiTextureCache = function () {
@@ -99,7 +100,7 @@ const textureArrayFromCtTexture = async function (tex) {
 
 let defaultTexture;
 
-const getDOMImage = function(texture, deflt) {
+const getDOMImage = function (texture, deflt) {
     let path;
     const img = document.createElement('img');
     if (texture === -1 || !texture) {
@@ -113,7 +114,7 @@ const getDOMImage = function(texture, deflt) {
     img.src = path;
     return new Promise((resolve, reject) => {
         img.addEventListener('load', () => resolve(img));
-        img.addEventListener('error', (err) => reject(err));
+        img.addEventListener('error', err => reject(err));
     });
 };
 
@@ -137,9 +138,7 @@ const getPixiTexture = async function (texture, frame, allowMinusOne) {
         texture = getTextureFromId(texture);
     }
     const {uid} = texture;
-    if (!pixiTextureCache[uid] ||
-        pixiTextureCache[uid].lastmod !== texture.lastmod
-    ) {
+    if (!pixiTextureCache[uid] || pixiTextureCache[uid].lastmod !== texture.lastmod) {
         const tex = await textureArrayFromCtTexture(texture);
         // Everything is constant, and the key gets overridden. Where's the race condition? False positive??
         // eslint-disable-next-line require-atomic-updates
@@ -159,7 +158,7 @@ const getPixiTexture = async function (texture, frame, allowMinusOne) {
  * @param {string} name The name of the texture.
  * @return {boolean} True if the texture exists.
  */
-const getTextureFromName = function(name) {
+const getTextureFromName = function (name) {
     const texture = global.currentProject.textures.find(tex => tex.name === name);
     if (!texture) {
         throw new Error(`Attempt to get a non-existent texture with name ${name}`);
@@ -180,7 +179,9 @@ const imgGenPreview = (source, destFile, size) => {
     return new Promise((accept, reject) => {
         thumbnail.onload = () => {
             var c = document.createElement('canvas'),
-            w, h, k;
+                w,
+                h,
+                k;
             c.x = c.getContext('2d');
             c.width = c.height = size;
             c.x.clearRect(0, 0, size, size);
@@ -196,10 +197,10 @@ const imgGenPreview = (source, destFile, size) => {
             }
             c.x.drawImage(
                 thumbnail,
-                (size - thumbnail.width*k)/2,
-                (size - thumbnail.height*k)/2,
-                thumbnail.width*k,
-                thumbnail.height*k
+                (size - thumbnail.width * k) / 2,
+                (size - thumbnail.height * k) / 2,
+                thumbnail.width * k,
+                thumbnail.height * k
             );
             // strip off the data:image url prefix to get just the base64-encoded bytes
             var dataURL = c.toDataURL();
@@ -207,7 +208,8 @@ const imgGenPreview = (source, destFile, size) => {
             var buf = new Buffer(data, 'base64');
             var stream = fs.createWriteStream(destFile);
             stream.on('finish', () => {
-                setTimeout(() => { // WHY THE HECK I EVER NEED THIS?!
+                setTimeout(() => {
+                    // WHY THE HECK I EVER NEED THIS?!
                     accept(destFile);
                 }, 100);
             });
@@ -229,8 +231,8 @@ const isBgPostfixTester = /@bg$/;
  */
 const importImageToTexture = async src => {
     const fs = require('fs-extra'),
-          path = require('path'),
-          generateGUID = require('./../generateGUID');
+        path = require('path'),
+        generateGUID = require('./../generateGUID');
     const id = generateGUID();
     const dest = path.join(global.projdir, 'img', `i${id}${path.extname(src)}`);
     await fs.copy(src, dest);
@@ -246,14 +248,12 @@ const importImageToTexture = async src => {
         };
         image.src = 'file://' + dest + '?' + Math.random();
     });
-    await Promise.all([
-        imgGenPreview(dest, dest + '_prev.png', 64),
-        imgGenPreview(dest, dest + '_prev@2.png', 128)
-    ]);
+    await Promise.all([imgGenPreview(dest, dest + '_prev.png', 64), imgGenPreview(dest, dest + '_prev@2.png', 128)]);
     const obj = {
-        name: path.basename(src)
-                  .replace(/\.(jpg|gif|png|jpeg)/gi, '')
-                  .replace(/\s/g, '_'),
+        name: path
+            .basename(src)
+            .replace(/\.(jpg|gif|png|jpeg)/gi, '')
+            .replace(/\s/g, '_'),
         untill: 0,
         grid: [1, 1],
         axis: [0, 0],

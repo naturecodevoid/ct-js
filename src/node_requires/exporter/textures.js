@@ -48,16 +48,17 @@ const packImages = async (proj, writeDir) => {
                         data: {
                             name: tex.name,
                             tex,
-                            frame: {// A crop from the source texture
+                            frame: {
+                                // A crop from the source texture
                                 x: tex.offx + xx * (tex.width + tex.marginx),
                                 y: tex.offy + yy * (tex.height + tex.marginy),
                                 width: tex.width,
                                 height: tex.height
                             },
-                            key,
+                            key
                         },
                         width: tex.width + tex.padding * 2,
-                        height: tex.height + tex.padding * 2,
+                        height: tex.height + tex.padding * 2
                     });
                     keys[tex.origname].push(key);
                     // skip unnecessary frames when tex.untill is set
@@ -117,37 +118,52 @@ const packImages = async (proj, writeDir) => {
                 img = glob.texturemap[tex.uid];
             const p = tex.padding;
             // draw the main crop rectangle
-            atlas.x.drawImage(img,
-                frame.x, frame.y, frame.width, frame.height,
-                block.x+p, block.y+p, frame.width, frame.height
+            atlas.x.drawImage(
+                img,
+                frame.x,
+                frame.y,
+                frame.width,
+                frame.height,
+                block.x + p,
+                block.y + p,
+                frame.width,
+                frame.height
             );
             // repeat the left side of the image
-            atlas.x.drawImage(img,
-                frame.x, frame.y, 1, frame.height,
-                block.x, block.y+p, p, frame.height
-            );
+            atlas.x.drawImage(img, frame.x, frame.y, 1, frame.height, block.x, block.y + p, p, frame.height);
             // repeat the right side of the image
-            atlas.x.drawImage(img,
-                frame.x+frame.width-1, frame.y, 1, frame.height,
-                block.x+frame.width+p, block.y+p, p, frame.height
+            atlas.x.drawImage(
+                img,
+                frame.x + frame.width - 1,
+                frame.y,
+                1,
+                frame.height,
+                block.x + frame.width + p,
+                block.y + p,
+                p,
+                frame.height
             );
             // repeat the top side of the image
-            atlas.x.drawImage(img,
-                frame.x, frame.y, frame.width, 1,
-                block.x+p, block.y, frame.width, p
-            );
+            atlas.x.drawImage(img, frame.x, frame.y, frame.width, 1, block.x + p, block.y, frame.width, p);
             // repeat the bottom side of the image
-            atlas.x.drawImage(img,
-                frame.x, frame.y+frame.height-1, frame.width, 1,
-                block.x+p, block.y+frame.height+p, frame.width, p
+            atlas.x.drawImage(
+                img,
+                frame.x,
+                frame.y + frame.height - 1,
+                frame.width,
+                1,
+                block.x + p,
+                block.y + frame.height + p,
+                frame.width,
+                p
             );
             // A multi-frame sprite
             const keys = [];
             keys.push(key);
             atlasJSON.frames[key] = {
                 frame: {
-                    x: block.x+p,
-                    y: block.y+p,
+                    x: block.x + p,
+                    y: block.y + p,
                     w: frame.width,
                     h: frame.height
                 },
@@ -178,7 +194,7 @@ const packImages = async (proj, writeDir) => {
     });
     for (const tex of proj.textures) {
         registry[tex.name] = {
-            frames: tex.untill > 0? Math.min(tex.untill, tex.grid[0]*tex.grid[1]) : tex.grid[0]*tex.grid[1],
+            frames: tex.untill > 0 ? Math.min(tex.untill, tex.grid[0] * tex.grid[1]) : tex.grid[0] * tex.grid[1],
             shape: getTextureShape(tex),
             anchor: {
                 x: tex.axis[0] / tex.width,
@@ -188,8 +204,8 @@ const packImages = async (proj, writeDir) => {
     }
     for (let i = 0, l = tiledImages.length; i < l; i++) {
         const atlas = document.createElement('canvas'),
-                {tex} = tiledImages[i],
-                img = glob.texturemap[tex.uid];
+            {tex} = tiledImages[i],
+            img = glob.texturemap[tex.uid];
         atlas.x = atlas.getContext('2d');
         atlas.width = tex.width;
         atlas.height = tex.height;

@@ -8,6 +8,17 @@
                 nw.Window.get().reload();
             }
         };
-        gulp.watch(['./data/theme*.css', './index.html', './data/bundle.js', './data/js/**.js', './data/node_requires/**/*.js'], reload);
-    } catch (e) { void 0; }
+        gulp.watch(
+            [
+                './data/theme*.css',
+                './index.html',
+                './data/bundle.js',
+                './data/js/**.js',
+                './data/node_requires/**/*.js'
+            ],
+            reload
+        );
+    } catch (e) {
+        void 0;
+    }
 })();

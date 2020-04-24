@@ -6,8 +6,8 @@ const jelloEnded = Symbol('jelloEnded');
  *
  * @param {HTMLElement} element The element that should be animated
  * @returns {void}
-*/
-module.exports = function(element) {
+ */
+module.exports = function (element) {
     if (jelloEnded in element) {
         return;
     }

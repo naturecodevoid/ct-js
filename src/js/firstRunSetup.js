@@ -1,4 +1,5 @@
-(function () {// first-launch setup
+(function () {
+    // first-launch setup
     const defaults = {
         fontSize: 18,
         lastProjects: '',

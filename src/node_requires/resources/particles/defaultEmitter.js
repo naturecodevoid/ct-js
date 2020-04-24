@@ -3,50 +3,64 @@ const emitter = {
     openedTabs: ['texture'],
     settings: {
         alpha: {
-            list: [{
-                value: 0,
-                time: 0
-            }, {
-                value: 1,
-                time: 0.5
-            }, {
-                value: 0,
-                time: 1
-            }],
+            list: [
+                {
+                    value: 0,
+                    time: 0
+                },
+                {
+                    value: 1,
+                    time: 0.5
+                },
+                {
+                    value: 0,
+                    time: 1
+                }
+            ],
             isStepped: false
         },
         scale: {
-            list: [{
-                value: 1,
-                time: 0
-            }, {
-                value: 0.3,
-                time: 1
-            }],
+            list: [
+                {
+                    value: 1,
+                    time: 0
+                },
+                {
+                    value: 0.3,
+                    time: 1
+                }
+            ],
             isStepped: false
         },
         color: {
-            list: [{
-                value: 'ffffff',
-                time: 0
-            }, {
-                value: 'ffffff',
-                time: 0.5
-            }, {
-                value: 'ffffff',
-                time: 1
-            }],
+            list: [
+                {
+                    value: 'ffffff',
+                    time: 0
+                },
+                {
+                    value: 'ffffff',
+                    time: 0.5
+                },
+                {
+                    value: 'ffffff',
+                    time: 1
+                }
+            ],
             isStepped: false
         },
         blendMode: 'normal',
         speed: {
-            list: [{
-                value: 500,
-                time: 0
-            }, {
-                value: 100,
-                time: 1
-            }],
+            list: [
+                {
+                    value: 500,
+                    time: 0
+                },
+                {
+                    value: 100,
+                    time: 1
+                }
+            ],
             isStepped: false
         },
         startRotation: {

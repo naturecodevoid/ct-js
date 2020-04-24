@@ -4,7 +4,11 @@ const stringifyTandems = project => {
     for (const tandem of project.emitterTandems) {
         tandems[tandem.name] = tandem.emitters.map(emitter => {
             if (emitter.texture === -1) {
-                throw new Error(`The emitter tandem ${tandem.name} has an emitter without a texture, see Emitter ${emitter.uid.split('-').pop()}.`);
+                throw new Error(
+                    `The emitter tandem ${
+                        tandem.name
+                    } has an emitter without a texture, see Emitter ${emitter.uid.split('-').pop()}.`
+                );
             }
             return {
                 texture: textures.getTextureFromId(emitter.texture).name,

@@ -1,7 +1,7 @@
 const fs = require('fs-extra');
 const os = require('os');
 
-const isWin = (/win[0-9]+/).test(os.platform());
+const isWin = /win[0-9]+/.test(os.platform());
 const isLinux = os.platform() === 'linux';
 const isMac = !(isWin || isLinux);
 
@@ -37,9 +37,9 @@ const mod = {
     async getWritableDir() {
         const path = require('path');
 
-        const exec = path.dirname(process.cwd()).replace(/\\/g,'/');
+        const exec = path.dirname(process.cwd()).replace(/\\/g, '/');
         // The `HOME` variable is not always available in ct.js on Windows
-        const home = process.env.HOME || ((process.env.HOMEDRIVE || '') + process.env.HOMEPATH);
+        const home = process.env.HOME || (process.env.HOMEDRIVE || '') + process.env.HOMEPATH;
 
         const execWritable = mod.checkWritable(exec);
         const homeWritable = mod.checkWritable(home);
@@ -48,15 +48,15 @@ const mod = {
         return new Promise((resolve, reject) => {
             // writing to an exec path on Mac is not a good idea,
             // as it will be hidden inside an app's directory, which is shown as one file.
-            if (isMac || !(execWritable)) {
+            if (isMac || !execWritable) {
                 if (!homeWritable) {
                     reject(new Error(`Could not write to folders ${home} and ${exec}.`));
                 } else {
                     fs.ensureDir(path.join(home, 'ct.js'))
-                    .then(() => {
-                        resolve(path.join(home, 'ct.js'));
-                    })
-                    .catch(reject);
+                        .then(() => {
+                            resolve(path.join(home, 'ct.js'));
+                        })
+                        .catch(reject);
                 }
             } else {
                 resolve(exec);

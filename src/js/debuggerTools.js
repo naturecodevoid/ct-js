@@ -1,7 +1,7 @@
 (function () {
     var toolbarWindow;
 
-    window.openDebugger = function(link) {
+    window.openDebugger = function (link) {
         if (toolbarWindow && !toolbarWindow.isClosing) {
             toolbarWindow.isClosing = true;
             toolbarWindow.close();
@@ -15,31 +15,38 @@
         const targetScreen = builtIn || screens[1] || screens[0];
         // Align the toolbar to top-center position
         const x = Math.round(targetScreen.work_area.x + (targetScreen.work_area.width - 480) / 2),
-              {y} = Math.round(targetScreen.work_area);
+            {y} = Math.round(targetScreen.work_area);
 
         // Create a toolbar that provides additional game-related tools
-        nw.Window.open('debuggerToolbar.html', {
-            width: 480, // these are the starting values; the window adjusts itself in src/riotTags/debugger/debugger-toolbar.tag
-            height: 40,
-            x,
-            y,
-            frame: false,
-            transparent: true,
-            resizable: false,
-            title: 'ct.js toolbar',
-            icon: 'ct_ide.png',
-            // eslint-disable-next-line camelcase
-            always_on_top: true,
-            // eslint-disable-next-line camelcase
-            show_in_taskbar: false,
-            id: 'ctjsToolbar'
-        }, newWindow => {
-            newWindow.eval(null, `
+        nw.Window.open(
+            'debuggerToolbar.html',
+            {
+                width: 480, // these are the starting values; the window adjusts itself in src/riotTags/debugger/debugger-toolbar.tag
+                height: 40,
+                x,
+                y,
+                frame: false,
+                transparent: true,
+                resizable: false,
+                title: 'ct.js toolbar',
+                icon: 'ct_ide.png',
+                // eslint-disable-next-line camelcase
+                always_on_top: true,
+                // eslint-disable-next-line camelcase
+                show_in_taskbar: false,
+                id: 'ctjsToolbar'
+            },
+            newWindow => {
+                newWindow.eval(
+                    null,
+                    `
                 window.gameLink = "${link}";
                 window.gameRooms = (${JSON.stringify(global.currentProject.rooms.map(room => room.name))});
                 window.gameName = (${JSON.stringify(global.currentProject.settings.title || 'ct.js game')});
-            `);
-        });
+            `
+                );
+            }
+        );
 
         /* This is the approach that was initially planned, but got cancelled due to a bug in nw.js
            See https://github.com/nwjs/nw.js/issues/7119 */

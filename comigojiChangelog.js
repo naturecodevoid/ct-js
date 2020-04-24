@@ -2,7 +2,24 @@ const gitCommand = 'git log --max-count=1 --tags --simplify-by-decoration --pret
 const {exec} = require('child_process');
 
 const miscEmojis = [
-    '😱', '🙀', '👻', '🤖', '👾', '👽', '😜', '👀', '✌️', '🦄', '🐉', '🌝', '🌚', '🌻', '☄️', '🎲', '🎁', '😺'
+    '😱',
+    '🙀',
+    '👻',
+    '🤖',
+    '👾',
+    '👽',
+    '😜',
+    '👀',
+    '✌️',
+    '🦄',
+    '🐉',
+    '🌝',
+    '🌚',
+    '🌻',
+    '☄️',
+    '🎲',
+    '🎁',
+    '😺'
 ];
 
 module.exports = new Promise((resolve, reject) => {
@@ -17,22 +34,26 @@ module.exports = new Promise((resolve, reject) => {
         }
         const since = new Date(stdout.trim());
         resolve({
-            repos: [{
-                since,
-                repo: './',
-                branch: 'develop'
-            }, {
-                since,
-                repo: './../docs.ctjs.rocks',
-                branch: 'master',
-                forceCategory: 'docs',
-                forceCategoryStrip: /^:(books|pencil|pencil2|memo):/
-            }, {
-                since,
-                repo: './../ctjs-site',
-                branch: 'master',
-                forceCategory: 'website'
-            }],
+            repos: [
+                {
+                    since,
+                    repo: './',
+                    branch: 'develop'
+                },
+                {
+                    since,
+                    repo: './../docs.ctjs.rocks',
+                    branch: 'master',
+                    forceCategory: 'docs',
+                    forceCategoryStrip: /^:(books|pencil|pencil2|memo):/
+                },
+                {
+                    since,
+                    repo: './../ctjs-site',
+                    branch: 'master',
+                    forceCategory: 'website'
+                }
+            ],
             categories: {
                 rollback: {
                     pattern: /^:(roller_coaster|rewind):/,

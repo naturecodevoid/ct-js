@@ -1,27 +1,26 @@
 /* From @github/hotkey
     see https://github.com/github/hotkey/ */
-const isFormField = function(element) {
+const isFormField = function (element) {
     if (!(element instanceof HTMLElement)) {
         return false;
     }
     var name = element.nodeName.toLowerCase();
     var type = (element.getAttribute('type') || '').toLowerCase();
     /* eslint no-mixed-operators: off*/
-    return name === 'select' ||
-            name === 'textarea' ||
-            name === 'input' &&
-            type !== 'submit' &&
-            type !== 'reset' &&
-            type !== 'checkbox' &&
-            type !== 'radio' ||
-            element.isContentEditable;
+    return (
+        name === 'select' ||
+        name === 'textarea' ||
+        (name === 'input' && type !== 'submit' && type !== 'reset' && type !== 'checkbox' && type !== 'radio') ||
+        element.isContentEditable
+    );
 };
 
-const getCode = e => ''
-    .concat(e.ctrlKey? 'Control+' : '')
-    .concat(e.altKey? 'Alt+' : '')
-    .concat(e.metaKey ? 'Meta+' : '')
-    .concat(e.key);
+const getCode = e =>
+    ''
+        .concat(e.ctrlKey ? 'Control+' : '')
+        .concat(e.altKey ? 'Alt+' : '')
+        .concat(e.metaKey ? 'Meta+' : '')
+        .concat(e.key);
 
 const listenerRef = Symbol('keydownListener');
 const offDomEventsRef = Symbol('offDomEventsRef');
@@ -142,7 +141,7 @@ class Hotkeys {
 module.exports = function (doc) {
     doc = doc || document;
     if (!doc) {
-        throw new Error('Can\'t find the document object! Am I in a bare node.js context?!');
+        throw new Error("Can't find the document object! Am I in a bare node.js context?!");
     }
     if (hotkeyRef in doc) {
         return doc[hotkeyRef];

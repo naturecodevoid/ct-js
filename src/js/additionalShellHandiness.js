@@ -11,7 +11,7 @@
  * into a path to the selected file, or to an array of paths of files
  * (if options.multiple.)
  */
-window.showOpenDialog = function(options = {}) {
+window.showOpenDialog = function (options = {}) {
     const input = document.createElement('input');
     input.setAttribute('type', 'file');
     input.style.opacity = 0;
@@ -31,7 +31,7 @@ window.showOpenDialog = function(options = {}) {
     if (options.filter) {
         input.setAttribute('accept', options.filter);
     }
-    const promise = new Promise((resolve) => {
+    const promise = new Promise(resolve => {
         input.oncancel = () => {
             resolve(false);
             document.body.removeChild(input);

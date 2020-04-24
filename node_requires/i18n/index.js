@@ -1,6 +1,6 @@
 const i18nDir = './../../app/data/i18n';
 const path = require('path'),
-      fs = require('fs-extra');
+    fs = require('fs-extra');
 const referenceLanguage = require(path.join(i18nDir, 'English.json'));
 
 const recursiveCountRemainingFields = node => {
@@ -16,21 +16,21 @@ const recursiveCountRemainingFields = node => {
 
 // Recursively counts keys in English.json, translated keys,
 // and collects paths to untranslated and excess keys
-const recursiveCheck = function(partial, langNode, referenceNode) {
+const recursiveCheck = function (partial, langNode, referenceNode) {
     const untranslated = [],
-          excess = [];
+        excess = [];
     let counted = 0,
         needed = 0;
     for (const i in referenceNode) {
         if (typeof referenceNode[i] === 'string') {
             needed++;
             if (!(i in langNode) || langNode[i].trim() === '') {
-                untranslated.push(partial? `${partial}.${i}` : i);
+                untranslated.push(partial ? `${partial}.${i}` : i);
             } else {
                 counted++;
             }
         } else if (i in langNode) {
-            const subresults = recursiveCheck(partial? `${partial}.${i}` : i, langNode[i], referenceNode[i]);
+            const subresults = recursiveCheck(partial ? `${partial}.${i}` : i, langNode[i], referenceNode[i]);
             if (subresults.untranslated.length) {
                 untranslated.push(...subresults.untranslated);
             }
@@ -40,7 +40,7 @@ const recursiveCheck = function(partial, langNode, referenceNode) {
             counted += subresults.counted;
             needed += subresults.needed;
         } else {
-            untranslated.push(partial? `${partial}.${i}` : i);
+            untranslated.push(partial ? `${partial}.${i}` : i);
             needed += recursiveCountRemainingFields(referenceNode[i]);
         }
     }
@@ -48,7 +48,7 @@ const recursiveCheck = function(partial, langNode, referenceNode) {
     // that are not present in English.json but are in another language file
     for (const i in langNode) {
         if (!(i in referenceNode) || (typeof referenceNode[i] === 'string' && referenceNode[i].trim() === '')) {
-            excess.push(partial? `${partial}.${i}` : i);
+            excess.push(partial ? `${partial}.${i}` : i);
         }
     }
     return {
@@ -76,11 +76,12 @@ const getSuitableBreakpoint = percent => {
 };
 
 module.exports = async () => {
-    const fileNames = (await fs.readdir('./app/data/i18n')).filter(file =>
-        path.extname(file) === '.json' &&
-        file !== 'Comments.json' &&
-        file !== 'English.json' &&
-        file !== 'Debug.json'
+    const fileNames = (await fs.readdir('./app/data/i18n')).filter(
+        file =>
+            path.extname(file) === '.json' &&
+            file !== 'Comments.json' &&
+            file !== 'English.json' &&
+            file !== 'Debug.json'
     );
     const report = {
         untranslated: {},
@@ -92,22 +93,28 @@ module.exports = async () => {
         const result = recursiveCheck('', rootNode, referenceLanguage);
         report.untranslated[lang] = result.untranslated;
         report.excess[lang] = result.excess;
-        report.stats[lang] = Math.floor(result.counted / result.needed * 100);
+        report.stats[lang] = Math.floor((result.counted / result.needed) * 100);
     }
     const reportText =
-
-`\nTranslation report:
-===================\n\n` + fileNames.map(lang =>
-`Translation file ${lang}
+        `\nTranslation report:
+===================\n\n` +
+        fileNames
+            .map(
+                lang =>
+                    `Translation file ${lang}
 -----------------${'-'.repeat(lang.length)}\n` +
-// eslint-disable-next-line no-nested-ternary
-`Coverage: ${report.stats[lang]}% ${getSuitableBreakpoint(report.stats[lang])}
+                    // eslint-disable-next-line no-nested-ternary
+                    `Coverage: ${report.stats[lang]}% ${getSuitableBreakpoint(report.stats[lang])}
 Not translated: ${report.untranslated[lang].length}` +
-(report.untranslated[lang].length > 0? '\n'+report.untranslated[lang].map(key => `  ${key}`).join('\n') : '') +
-`\nExcess: ${report.excess[lang].length} ${report.excess[lang].length? '⚠️ '.repeat(Math.min(10, report.excess[lang].length)) : '✅'}\n` +
-(report.excess[lang].length > 0? report.excess[lang].map(key => `  ${key}`).join('\n') : '')
-
-).join('\n\n');
+                    (report.untranslated[lang].length > 0
+                        ? '\n' + report.untranslated[lang].map(key => `  ${key}`).join('\n')
+                        : '') +
+                    `\nExcess: ${report.excess[lang].length} ${
+                        report.excess[lang].length ? '⚠️ '.repeat(Math.min(10, report.excess[lang].length)) : '✅'
+                    }\n` +
+                    (report.excess[lang].length > 0 ? report.excess[lang].map(key => `  ${key}`).join('\n') : '')
+            )
+            .join('\n\n');
 
     for (const lang in report.excess) {
         if (report.excess[lang].length) {
