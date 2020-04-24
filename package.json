@@ -7,6 +7,7 @@
   },
   "scripts": {
     "lint": "gulp lint",
+    "style": "npx prettier --write \"**/**/*.js\"",
     "docs:dev": "vuepress dev docs",
     "docs:build": "vuepress build docs",
     "ctTypedefs": "jsdoc -t ./node_modules/tsd-jsdoc/dist -r ./app/data/ct.release -d ./src/typedefs/ct.js"
@@ -40,6 +41,7 @@
     "minimist": "^1.2.5",
     "node-notifier": "^5.4.3",
     "nw-builder": "^3.5.7",
+    "prettier": "^2.0.5",
     "pug": "^2.0.4",
     "pug-lint-config-clock": "^2.0.0",
     "riot": "^3.13.2",
