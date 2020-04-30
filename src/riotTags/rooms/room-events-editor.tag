@@ -1,39 +1,59 @@
 room-events-editor.view.panel
     .tabwrap
         ul.tabs.nav.nogrow.noshrink.nb
-            li(onclick="{switchTab('roomcreate')}" class="{active: tab === 'roomcreate'}" title="Control-Q" data-hotkey="Control+q")
+            li.tab(
+                onclick='{switchTab(\'roomcreate\')}',
+                class='{active: === \'roomcreate\'}',
+                title='Control-Q',
+                data-hotkey='Control+q'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#sun")
+                    use(xlink:href='data/icons.svg#sun')
                 span {voc.create}
-            li(onclick="{switchTab('roomstep')}" class="{active: tab === 'roomstep'}" title="Control-W" data-hotkey="Control+w")
+            li.tab(
+                onclick='{switchTab(\'roomstep\')}',
+                class='{active: === \'roomstep\'}',
+                title='Control-W',
+                data-hotkey='Control+w'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#skip-forward")
+                    use(xlink:href='data/icons.svg#skip-forward')
                 span {voc.step}
-            li(onclick="{switchTab('roomdraw')}" class="{active: tab === 'roomdraw'}" title="Control-E" data-hotkey="Control+e")
+            li.tab(
+                onclick='{switchTab(\'roomdraw\')}',
+                class='{active: === \'roomdraw\'}',
+                title='Control-E',
+                data-hotkey='Control+e'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#edit-2")
+                    use(xlink:href='data/icons.svg#edit-2')
                 span {voc.draw}
-            li(onclick="{switchTab('roomleave')}" class="{active: tab === 'roomleave'}" title="Control-R" data-hotkey="Control+r")
+            li.tab(
+                onclick='{switchTab(\'roomleave\')}',
+                class='{active: === \'roomleave\'}',
+                title='Control-R',
+                data-hotkey='Control+r'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#trash")
+                    use(xlink:href='data/icons.svg#trash')
                 span {voc.leave}
-        div(style="position: relative;")
-            .tabbed(show="{tab === 'roomcreate'}")
-                .aCodeEditor(ref="roomoncreate")
-            .tabbed(show="{tab === 'roomstep'}")
-                .aCodeEditor(ref="roomonstep")
-            .tabbed(show="{tab === 'roomdraw'}")
-                .aCodeEditor(ref="roomondraw")
-            .tabbed(show="{tab === 'roomleave'}")
-                .aCodeEditor(ref="roomonleave")
-    button.wide.nogrow.noshrink(onclick="{roomSaveEvents}")
+        div(style='position: relative;')
+            .tabbed(show='{tab === \'roomcreate\'}')
+                .aCodeEditor(ref='roomoncreate')
+            .tabbed(show='{tab === \'roomstep\'}')
+                .aCodeEditor(ref='roomonstep')
+            .tabbed(show='{tab === \'roomdraw\'}')
+                .aCodeEditor(ref='roomondraw')
+            .tabbed(show='{tab === \'roomleave\'}')
+                .aCodeEditor(ref='roomonleave')
+    button.wide.nogrow.noshrink(onclick='{roomSaveEvents}')
         svg.feather
-            use(xlink:href="data/icons.svg#check")
+            use(xlink:href='data/icons.svg#check')
         span {voc.done}
     script.
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
-
+        
         this.tab = 'roomcreate';
         const tabToEditor = tab => {
             tab = tab || this.tab;
@@ -56,7 +76,7 @@ room-events-editor.view.panel
                 editor.focus();
             }, 0);
         };
-
+        
         const updateEditorSize = () => {
             if (tabToEditor()) {
                 tabToEditor().layout();
@@ -126,7 +146,7 @@ room-events-editor.view.panel
             this.roomondraw.dispose();
             this.roomonleave.dispose();
         });
-
+        
         this.roomSaveEvents = e => {
             this.parent.editingCode = false;
             this.parent.update();

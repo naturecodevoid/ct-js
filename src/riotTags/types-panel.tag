@@ -1,19 +1,18 @@
 types-panel.panel.view
-    asset-viewer(
-        collection="{global.currentProject.types}"
-        contextmenu="{onTypeContextMenu}"
-        namespace="types"
-        click="{openType}"
-        thumbnails="{thumbnails}"
-        ref="types"
-        class="tall"
+    asset-viewer.tall(
+        collection='{global.currentProject.types}',
+        contextmenu='{onTypeContextMenu}',
+        namespace='types',
+        click='{openType}',
+        thumbnails='{thumbnails}',
+        ref='types'
     )
-        button#typecreate(onclick="{parent.typeCreate}" title="Control+N" data-hotkey="Control+n")
+        button#typecreate(onclick='{parent.typeCreate}', title='Control+N', data-hotkey='Control+n')
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href='data/icons.svg#plus')
             span {voc.create}
-    type-editor(if="{editingType}" type="{editedType}")
-    context-menu(menu="{typeMenu}" ref="typeMenu")
+    type-editor(if='{editingType}', type='{editedType}')
+    context-menu(menu='{typeMenu}', ref='typeMenu')
     script.
         this.namespace = 'types';
         this.mixin(window.riotVoc);
@@ -24,11 +23,11 @@ types-panel.panel.view
         this.editingType = false;
         this.sort = 'name';
         this.sortReverse = false;
-
+        
         this.thumbnails = type => type.texture !== -1 ?
             `${glob.texturemap[type.texture].src.split('?')[0]}_prev.png?cache=${this.getTypeTextureRevision(type)}` :
             'data/img/notexture.png';
-
+        
         this.setUpPanel = e => {
             this.fillTypeMap();
             this.refs.types.updateList();
@@ -42,9 +41,9 @@ types-panel.panel.view
         this.on('unmount', () => {
             window.signals.off('projectLoaded', this.setUpPanel);
         });
-
+        
         this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
-
+        
         this.fillTypeMap = () => {
             delete glob.typemap;
             glob.typemap = {};
@@ -73,7 +72,7 @@ types-panel.panel.view
             this.refs.types.updateList();
             this.openType(obj)(e);
             window.signals.trigger('typesChanged');
-
+        
             if (!e) {
                 this.update();
             }
@@ -82,7 +81,7 @@ types-panel.panel.view
             this.editingType = true;
             this.editedType = type;
         };
-
+        
         this.typeMenu = {
             items: [{
                 label: window.languageJSON.common.open,
@@ -147,7 +146,7 @@ types-panel.panel.view
                                     }
                                 }
                             }
-
+        
                             let ind = global.currentProject.types.indexOf(this.currentType);
                             global.currentProject.types.splice(ind, 1);
                             this.refs.types.updateList();

@@ -1,86 +1,116 @@
 main-menu.flexcol
-    nav.nogrow.flexrow(if="{global.currentProject}")
+    nav.nogrow.flexrow(if='{global.currentProject}')
         ul#fullscreen.nav
-            li.nbr(onclick="{toggleFullscreen}" title="{voc.min} (F11)")
+            li.nbr(onclick='{toggleFullscreen}', title='{voc.min} (F11)')
                 svg.feather
-                    use(xlink:href="data/icons.svg#{fullscreen? 'minimize-2' : 'maximize-2'}" data-hotkey="F11")
+                    use(xlink:href='data/icons.svg#{fullscreen? \'minimize-2\' : \'maximize-2\'}', data-hotkey='F11')
 
         ul#app.nav.tabs
-            li.it30#ctlogo(onclick="{ctClick}" title="{voc.ctIDE}")
+            li#ctlogo.it30(onclick='{ctClick}', title='{voc.ctIDE}')
                 svg.feather.nmr
-                    use(xlink:href="data/icons.svg#menu")
-                context-menu#theCatMenu(menu="{catMenu}" ref="catMenu")
-            li.it30(onclick="{changeTab('patrons')}" title="{voc.patrons}" class="{active: tab === 'patrons'}")
+                    use(xlink:href='data/icons.svg#menu')
+                context-menu#theCatMenu(menu='{catMenu}', ref='catMenu')
+            li.it30.tab(onclick='{changeTab(\'patrons\')}', title='{voc.patrons}', class='{active: === \'patrons\'}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#heart")
-            li.it30(onclick="{saveProject}" title="{voc.save} (Control+S)" data-hotkey="Control+s")
+                    use(xlink:href='data/icons.svg#heart')
+            li.it30(onclick='{saveProject}', title='{voc.save} (Control+S)', data-hotkey='Control+s')
                 svg.feather
-                    use(xlink:href="data/icons.svg#save")
-            li.nbr.it30(onclick="{runProject}" title="{voc.launch} {voc.launchHotkeys}" data-hotkey="F5")
+                    use(xlink:href='data/icons.svg#save')
+            li.nbr.it30(onclick='{runProject}', title='{voc.launch} {voc.launchHotkeys}', data-hotkey='F5')
                 svg.feather
-                    use(xlink:href="data/icons.svg#play")
+                    use(xlink:href='data/icons.svg#play')
 
         ul#mainnav.nav.tabs
-            li(onclick="{changeTab('settings')}" class="{active: tab === 'settings'}" data-hotkey="Control+1" title="Control+1")
+            li.tab(
+                onclick='{changeTab(\'settings\')}',
+                class='{active: === \'settings\'}',
+                data-hotkey='Control+1',
+                title='Control+1'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#settings")
+                    use(xlink:href='data/icons.svg#settings')
                 span {voc.settings}
-            li(onclick="{changeTab('modules')}" class="{active: tab === 'modules'}" data-hotkey="Control+2" title="Control+2")
+            li.tab(
+                onclick='{changeTab(\'modules\')}',
+                class='{active: === \'modules\'}',
+                data-hotkey='Control+2',
+                title='Control+2'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#ctmod")
+                    use(xlink:href='data/icons.svg#ctmod')
                 span {voc.modules}
-            li(onclick="{changeTab('texture')}" class="{active: tab === 'texture'}" data-hotkey="Control+3" title="Control+3")
+            li.tab(
+                onclick='{changeTab(\'texture\')}',
+                class='{active: === \'texture\'}',
+                data-hotkey='Control+3',
+                title='Control+3'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#coin")
+                    use(xlink:href='data/icons.svg#coin')
                 span {voc.texture}
-            li(onclick="{changeTab('ui')}" class="{active: tab === 'ui'}" data-hotkey="Control+4" title="Control+4")
+            li.tab(onclick='{changeTab(\'ui\')}', class='{active: === \'ui\'}', data-hotkey='Control+4', title='Control+4')
                 svg.feather
-                    use(xlink:href="data/icons.svg#droplet")
+                    use(xlink:href='data/icons.svg#droplet')
                 span {voc.ui}
-            li(onclick="{changeTab('fx')}" class="{active: tab === 'fx'}" data-hotkey="Control+5" title="Control+5")
+            li.tab(onclick='{changeTab(\'fx\')}', class='{active: === \'fx\'}', data-hotkey='Control+5', title='Control+5')
                 svg.feather
-                    use(xlink:href="data/icons.svg#sparkles")
+                    use(xlink:href='data/icons.svg#sparkles')
                 span {voc.fx}
-            li(onclick="{changeTab('sounds')}" class="{active: tab === 'sounds'}" data-hotkey="Control+6" title="Control+6")
+            li.tab(
+                onclick='{changeTab(\'sounds\')}',
+                class='{active: === \'sounds\'}',
+                data-hotkey='Control+6',
+                title='Control+6'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#headphones")
+                    use(xlink:href='data/icons.svg#headphones')
                 span {voc.sounds}
-            li(onclick="{changeTab('types')}" class="{active: tab === 'types'}" data-hotkey="Control+7" title="Control+7")
+            li.tab(
+                onclick='{changeTab(\'types\')}',
+                class='{active: === \'types\'}',
+                data-hotkey='Control+7',
+                title='Control+7'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#user")
+                    use(xlink:href='data/icons.svg#user')
                 span {voc.types}
-            li(onclick="{changeTab('rooms')}" class="{active: tab === 'rooms'}" data-hotkey="Control+8" title="Control+8")
+            li.tab(
+                onclick='{changeTab(\'rooms\')}',
+                class='{active: === \'rooms\'}',
+                data-hotkey='Control+8',
+                title='Control+8'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#room")
+                    use(xlink:href='data/icons.svg#room')
                 span {voc.rooms}
-    div.flexitem.relative(if="{global.currentProject}")
-        settings-panel(show="{tab === 'settings'}" data-hotkey-scope="settings")
-        modules-panel(show="{tab === 'modules'}" data-hotkey-scope="modules")
-        textures-panel(show="{tab === 'texture'}" data-hotkey-scope="texture")
-        ui-panel(show="{tab === 'ui'}" data-hotkey-scope="ui")
-        fx-panel(show="{tab === 'fx'}" data-hotkey-scope="fx")
-        sounds-panel(show="{tab === 'sounds'}" data-hotkey-scope="sounds")
-        types-panel(show="{tab === 'types'}" data-hotkey-scope="types")
-        rooms-panel(show="{tab === 'rooms'}" data-hotkey-scope="rooms")
-        license-panel(if="{showLicense}")
-        patreon-screen(if="{tab === 'patrons'}" data-hotkey-scope="patrons")
-        export-panel(show="{showExporter}")
-    new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
+    .flexitem.relative(if='{global.currentProject}')
+        settings-panel(show='{tab === \'settings\'}', data-hotkey-scope='settings')
+        modules-panel(show='{tab === \'modules\'}', data-hotkey-scope='modules')
+        textures-panel(show='{tab === \'texture\'}', data-hotkey-scope='texture')
+        ui-panel(show='{tab === \'ui\'}', data-hotkey-scope='ui')
+        fx-panel(show='{tab === \'fx\'}', data-hotkey-scope='fx')
+        sounds-panel(show='{tab === \'sounds\'}', data-hotkey-scope='sounds')
+        types-panel(show='{tab === \'types\'}', data-hotkey-scope='types')
+        rooms-panel(show='{tab === \'rooms\'}', data-hotkey-scope='rooms')
+        license-panel(if='{showLicense}')
+        patreon-screen(if='{tab === \'patrons\'}', data-hotkey-scope='patrons')
+        export-panel(show='{showExporter}')
+    new-project-onboarding(if='{sessionStorage.showOnboarding && localStorage.showOnboarding !== \'off\'}')
     script.
         const fs = require('fs-extra'),
               path = require('path');
         const archiver = require('archiver');
         const glob = require('./data/node_requires/glob');
-
+        
         // Mounts the hotkey plugins, enabling hotkeys on elements with data-hotkey attributes
         const hotkey = require('./data/node_requires/hotkeys')(document);
         this.on('unmount', () => {
             hotkey.unmount();
         });
-
+        
         this.namespace = 'menu';
         this.mixin(window.riotVoc);
-
+        
         this.tab = 'settings';
         this.changeTab = tab => e => {
             this.tab = tab;
@@ -89,7 +119,7 @@ main-menu.flexcol
             window.signals.trigger('globalTabChanged');
             window.signals.trigger(`${tab}Focus`);
         };
-
+        
         this.fullscreen = false;
         this.toggleFullscreen = function() {
             this.fullscreen = !this.fullscreen;
@@ -99,7 +129,7 @@ main-menu.flexcol
                 nw.Window.get().leaveFullscreen();
             }
         };
-
+        
         const languageSubmenu = {
             items: []
         };
@@ -162,7 +192,7 @@ main-menu.flexcol
             window.signals.off('saveProject', this.saveProject);
         });
         this.saveRecoveryDebounce();
-
+        
         const {getWritableDir} = require('./data/node_requires/platformUtils');
         // Run a local server for ct.js games
         let fileServer;
@@ -180,7 +210,7 @@ main-menu.flexcol
             }).resume();
         });
         server.listen(0);
-
+        
         this.runProject = e => {
             document.body.style.cursor = 'progress';
             const runCtExport = require('./data/node_requires/exporter');
@@ -209,31 +239,31 @@ main-menu.flexcol
             });
         };
         hotkey.on('Alt+F5', this.runProjectAlt);
-
+        
         this.zipProject = async e => {
             try {
                 const os = require('os');
                 const path = require('path');
-
+        
                 const writable = await getWritableDir();
                 const inDir = await fs.mkdtemp(path.join(os.tmpdir(), 'ctZipProject-')),
                       outName = path.join(writable, `/${sessionStorage.projname}.zip`);
-
+        
                 await this.saveProject();
                 await fs.remove(outName);
                 await fs.remove(inDir);
                 await fs.copy(global.projdir + '.ict', path.join(inDir, sessionStorage.projname));
                 await fs.copy(global.projdir, path.join(inDir, sessionStorage.projname.slice(0, -4)));
-
+        
                 const archive = archiver('zip'),
                     output = fs.createWriteStream(outName);
-
+        
                 output.on('close', () => {
                     nw.Shell.showItemInFolder(outName);
                     alertify.success(this.voc.successZipProject.replace('{0}', outName));
                     fs.remove(inDir);
                 });
-
+        
                 archive.pipe(output);
                 archive.directory(inDir, false);
                 archive.finalize();
@@ -251,12 +281,12 @@ main-menu.flexcol
             .then(() => {
                 let archive = archiver('zip'),
                     output = fs.createWriteStream(exportFile);
-
+        
                 output.on('close', () => {
                     nw.Shell.showItemInFolder(exportFile);
                     alertify.success(this.voc.successZipExport.replace('{0}', exportFile));
                 });
-
+        
                 archive.pipe(output);
                 archive.directory(inDir, false);
                 archive.finalize();
@@ -269,7 +299,7 @@ main-menu.flexcol
             document.getElementById('themeCSS').href = `./data/theme${theme}.css`;
             window.signals.trigger('UIThemeChanged', theme);
         };
-
+        
         const troubleshootingSubmenu = {
             items: [{
                 label: window.languageJSON.menu.toggleDevTools,
@@ -338,7 +368,7 @@ main-menu.flexcol
                 }
             }]
         };
-
+        
         this.catMenu = {
             items: [{
                 label: window.languageJSON.common.save,
@@ -382,7 +412,7 @@ main-menu.flexcol
                         zoom = 5;
                     }
                     win.zoomLevel = zoom;
-
+        
                     console.debug('Zoom in to ', zoom);
                     localStorage.editorZooming = zoom;
                 },
@@ -400,7 +430,7 @@ main-menu.flexcol
                         zoom = -3;
                     }
                     win.zoomLevel = zoom;
-
+        
                     console.debug('Zoom out to ', zoom);
                     localStorage.editorZooming = zoom;
                 },
@@ -549,7 +579,7 @@ main-menu.flexcol
             }
         };
         var switchLanguage = this.switchLanguage;
-
+        
         fs.readdir('./data/i18n/')
         .then(files => {
             files.forEach(filename => {

@@ -23,6 +23,8 @@ DragonBonesJS/**
 package-lock.json
 **/**/node_modules/
 node_modules/
+**/**/naturecodevoid-prettier-pug
+naturecodevoid-prettier-pug/
 
 # .gitignore
 # Mac

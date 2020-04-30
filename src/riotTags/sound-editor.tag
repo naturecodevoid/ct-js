@@ -2,33 +2,41 @@ sound-editor.panel.view
     .modal
         b {voc.name}
         br
-        input.wide(type="text" value="{sound.name}" onchange="{wire('this.sound.name')}")
-        .anErrorNotice(if="{nameTaken}") {vocGlob.nametaken}
+        input.wide(type='text', value='{sound.name}', onchange='{wire(\'this.sound.name\')}')
+        .anErrorNotice(if='{nameTaken}') {vocGlob.nametaken}
         br
         p
             label
                 b {voc.poolSize}
-                input(type="number" min="1" max="32" value="{sound.poolSize || 5}" onchange="{wire('this.sound.poolSize')}")
+                input(
+                    type='number',
+                    min='1',
+                    max='32',
+                    value='{sound.poolSize || 5}',
+                    onchange='{wire(\'this.sound.poolSize\')}'
+                )
         audio(
-            if="{sound && sound.origname}"
-            ref="audio" controls loop
-            src="file://{global.projdir + '/snd/' + sound.origname + '?' + sound.lastmod}"
-            onplay="{notifyPlayerPlays}"
+            if='{sound && sound.origname}',
+            ref='audio',
+            controls,
+            loop,
+            src='file://{global.projdir + \'/snd/\' + sound.origname + \'?\' + sound.lastmod}',
+            onplay='{notifyPlayerPlays}'
         )
         p
             label.checkbox
-                input(type="checkbox" checked="{sound.isMusic}" onchange="{wire('this.sound.isMusic')}")
-                span   {voc.isMusicFile}
+                input(type='checkbox', checked='{sound.isMusic}', onchange='{wire(\'this.sound.isMusic\')}')
+                span {voc.isMusicFile}
         label.file
             .button.wide.nml
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href='data/icons.svg#plus')
                 span {voc.import}
-            input(type="file" ref="inputsound" accept=".mp3,.ogg,.wav" onchange="{changeSoundFile}")
+            input(type='file', ref='inputsound', accept='.mp3,.ogg,.wav', onchange='{changeSoundFile}')
         p.nmb
-            button.wide(onclick="{soundSave}" title="Shift+Control+S" data-hotkey="Control+S")
+            button.wide(onclick='{soundSave}', title='Shift+Control+S', data-hotkey='Control+S')
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href='data/icons.svg#check')
                 span {voc.save}
     script.
         const path = require('path');

@@ -1,87 +1,104 @@
 emitter-tandem-editor.panel.view.flexrow
-    .flexfix(style="width: {panelWidth}px")
+    .flexfix(style='width: {panelWidth}px')
         .flexfix-header
             .panel.pad
                 b {vocGlob.name}
                 br
-                input.wide(type="text" value="{tandem.name}" onchange="{wire('this.tandem.name')}")
-                .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                input.wide(type='text', value='{tandem.name}', onchange='{wire(\'this.tandem.name\')}')
+                .anErrorNotice(if='{nameTaken}', ref='errorNotice') {vocGlob.nametaken}
         .flexfix-body.flexrow
             emitter-editor(
-                each="{emitter in tandem.emitters}"
-                emitter="{emitter}"
-                emittermap="{parent.uidToEmitterMap}"
+                each='{emitter in tandem.emitters}',
+                emitter='{emitter}',
+                emittermap='{parent.uidToEmitterMap}'
             )
-            button.emitter-tandem-editor-anAddEmitterButton(onclick="{addEmitter}")
+            button.emitter-tandem-editor-anAddEmitterButton(onclick='{addEmitter}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
+                    use(xlink:href='data/icons.svg#plus')
                 span {voc.addEmitter}
         .flexfix-footer
-            button.wide(onclick="{apply}")
+            button.wide(onclick='{apply}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href='data/icons.svg#check')
                 span {vocGlob.apply}
-    .aResizer.vertical(onmousedown="{gutterMouseDown}")
-    div(ref="preview")
+    .aResizer.vertical(onmousedown='{gutterMouseDown}')
+    div(ref='preview')
         canvas(
-            ref="canvas"
-            onmousewheel="{onCanvasWheel}"
-            onpointermove="{onCanvasMove}"
-            onpointerout="{resetEmitterPositioning}"
+            ref='canvas',
+            onmousewheel='{onCanvasWheel}',
+            onpointermove='{onCanvasMove}',
+            onpointerout='{resetEmitterPositioning}'
         )
         .emitter-tandem-editor-Tools.flexrow
-            button.nogrow.emitter-tandem-editor-aResetEmittersButton(onclick="{resetEmitters}")
+            button.nogrow.emitter-tandem-editor-aResetEmittersButton(onclick='{resetEmitters}')
                 span {voc.reset}
             .spacer
-            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{openPreviewTexturePicker}")
+            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick='{openPreviewTexturePicker}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#coin")
+                    use(xlink:href='data/icons.svg#coin')
                 span {voc.setPreviewTexture}
-            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick="{changeGrid}")
+            button.nogrow.emitter-tandem-editor-aChangeGridButton(onclick='{changeGrid}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#grid")
+                    use(xlink:href='data/icons.svg#grid')
                 span {voc.changeGrid}
-            button.nogrow.emitter-tandem-editor-aChangeBgButton(onclick="{changePreviewBg}")
+            button.nogrow.emitter-tandem-editor-aChangeBgButton(onclick='{changePreviewBg}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#droplet")
+                    use(xlink:href='data/icons.svg#droplet')
                 span {voc.changeBg}
         .zoom
-            b(if="{window.innerWidth - panelWidth > 500}") {vocGlob.zoom}
-            div.button-stack
-                button.inline(if="{window.innerWidth - panelWidth > 320}" onclick="{setZoom(0.125)}" class="{active: zoom === 0.125}") 12%
-                button.inline(onclick="{setZoom(0.25)}" class="{active: zoom === 0.25}") 25%
-                button.inline(if="{window.innerWidth - panelWidth > 320}" onclick="{setZoom(0.5)}" class="{active: zoom === 0.5}") 50%
-                button.inline(onclick="{setZoom(1)}" class="{active: zoom === 1}") 100%
-                button.inline(onclick="{setZoom(2)}" class="{active: zoom === 2}") 200%
-                button.inline(if="{window.innerWidth - panelWidth > 320}" onclick="{setZoom(4)}" class="{active: zoom === 4}") 400%
+            b(if='{window.innerWidth - panelWidth > 500}') {vocGlob.zoom}
+            .button-stack
+                button.inline.zoom(
+                    if='{window.innerWidth - panelWidth > 320}',
+                    onclick='{setZoom(0.125)}',
+                    class='{active: === 0.125}'
+                ) 12%
+                button.inline.zoom(onclick='{setZoom(0.25)}', class='{active: === 0.25}') 25%
+                button.inline.zoom(
+                    if='{window.innerWidth - panelWidth > 320}',
+                    onclick='{setZoom(0.5)}',
+                    class='{active: === 0.5}'
+                ) 50%
+                button.inline.zoom(onclick='{setZoom(1)}', class='{active: === 1}') 100%
+                button.inline.zoom(onclick='{setZoom(2)}', class='{active: === 2}') 200%
+                button.inline.zoom(if='{window.innerWidth - panelWidth > 320}', onclick='{setZoom(4)}', class='{active: === 4}') 400%
     color-picker(
-        ref="previewBackgroundColor" if="{changingPreviewColor}"
-        hidealpha="true"
-        color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
+        ref='previewBackgroundColor',
+        if='{changingPreviewColor}',
+        hidealpha='true',
+        color='{previewColor}',
+        onapply='{updatePreviewColor}',
+        onchanged='{updatePreviewColor}',
+        oncancel='{cancelPreviewColor}'
     )
-    texture-selector(if="{pickingPreviewTexture}" showempty="yes" onselected="{onPreviewTexturePicked}" oncancelled="{onPreviewTextureCancel}")
+    texture-selector(
+        if='{pickingPreviewTexture}',
+        showempty='yes',
+        onselected='{onPreviewTexturePicked}',
+        oncancelled='{onPreviewTextureCancel}'
+    )
     script.
         const Color = net.brehaut.Color;
-
+        
         this.tandem = this.opts.tandem;
-
+        
         this.namespace = 'particleEmitters';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-
+        
         this.previewColor = localStorage.tandemEditorPreviewBg || '#cccccc';
         this.complete = false;
-
+        
         this.gridSize = [64, 64];
         if ('tandemEditorGridSize' in localStorage) {
             this.gridSize = JSON.parse(localStorage.tandemEditorGridSize);
         }
-
+        
         /*
             Rendering and spawning emitters
         */
         this.uidToEmitterMap = {};
-
+        
         this.awaitCompletion = [];
         // Creates a new emitter
         this.spawnEmitter = async (emitterData, container) => {
@@ -152,7 +169,7 @@ emitter-tandem-editor.panel.view.flexrow
                 emitter.update(seconds);
             }
         };
-
+        
         // Fits the canvas to the available space
         this.updatePreviewLayout = () => {
             if (this.renderer && this.refs.canvas) {
@@ -183,7 +200,7 @@ emitter-tandem-editor.panel.view.flexrow
                 this.previewTexture.texture = PIXI.Texture.EMPTY;
             }
         };
-
+        
         this.generateShapeVisualizers = () => {
             for (const emitter of this.tandem.emitters) {
                 if (!emitter.showShapeVisualizer) {
@@ -237,34 +254,34 @@ emitter-tandem-editor.panel.view.flexrow
                 }
             }
         };
-
+        
         this.updateGrid = size => {
             if (!this.grid || !this.emitterContainer) {
                 return;
             }
-
+        
             const dark = Color(this.previewColor).getLuminance() > 0.5;
             this.grid.blendMode = dark? PIXI.BLEND_MODES.MULTIPLY : PIXI.BLEND_MODES.ADD;
-
+        
             this.grid.width = this.refs.canvas.width;
             this.grid.height = this.refs.canvas.height;
             this.grid.tilePosition.x = Math.round(this.emitterContainer.x);
             this.grid.tilePosition.y = Math.round(this.emitterContainer.y);
-
+        
             this.grid.texture = this.gridGen([
                 this.gridSize[0] * this.zoom,
                 this.gridSize[1] * this.zoom
             ], dark? '#ddd' : '#222');
         };
-
+        
         this.on('mount', () => {
             window.addEventListener('resize', this.updatePreviewLayout);
-
+        
             const box = this.refs.preview.getBoundingClientRect();
-
+        
             this.gridGen = require('./data/node_requires/generators/gridTexture').generatePixiTextureGrid;
             this.grid = new PIXI.TilingSprite(this.gridGen());
-
+        
             this.renderer = new PIXI.Application({
                 width: Math.round(box.width),
                 height: Math.round(box.height),
@@ -275,7 +292,7 @@ emitter-tandem-editor.panel.view.flexrow
                 PIXI.settings.ROUND_PIXELS = true;
                 PIXI.settings.SCALE_MODE = PIXI.SCALE_MODES.NEAREST;
             }
-
+        
             this.renderer.renderer.backgroundColor = Number('0x'+this.previewColor.slice(1));
             this.visualizersContainer = new PIXI.Container();
             this.previewTexture = new PIXI.Sprite(PIXI.Texture.EMPTY);
@@ -300,17 +317,17 @@ emitter-tandem-editor.panel.view.flexrow
             this.renderer.stage.addChild(this.emitterContainer);
             this.renderer.stage.addChild(this.inspector);
             this.renderer.stage.addChild(this.visualizersContainer);
-
+        
             this.resetEmitters();
             this.updatePreviewLayout();
-
+        
             window.signals.on('emitterResetRequest', this.resetEmitters);
         });
         this.on('unmount', () => {
             window.removeEventListener('resize', this.updatePreviewLayout);
             window.signals.off('emitterResetRequest', this.resetEmitters);
         });
-
+        
         this.deleteEmitter = emitter => {
             const ind = this.tandem.emitters.indexOf(emitter);
             if (ind !== -1) {
@@ -320,7 +337,7 @@ emitter-tandem-editor.panel.view.flexrow
             }
             this.resetEmitters();
         };
-
+        
         /*
             UI events
         */
@@ -362,7 +379,7 @@ emitter-tandem-editor.panel.view.flexrow
                 }
             });
         };
-
+        
         this.openPreviewTexturePicker = e => {
             this.pickingPreviewTexture = true;
         };
@@ -376,9 +393,9 @@ emitter-tandem-editor.panel.view.flexrow
             this.pickingPreviewTexture = false;
             this.update();
         };
-
+        
         /* Zoom in/out by clicking buttons and scrolling mouse wheel */
-
+        
         this.zoom = 1;
         this.setZoom = zoom => e => {
             this.zoom = zoom;
@@ -424,7 +441,7 @@ emitter-tandem-editor.panel.view.flexrow
                     this.zoom;
             this.updateGrid();
         };
-
+        
         this.onCanvasMove = e => {
             e.preventUpdate = true;
             const box = this.refs.canvas.getBoundingClientRect();
@@ -445,7 +462,7 @@ emitter-tandem-editor.panel.view.flexrow
             this.visualizersContainer.x = box.width / 2;
             this.visualizersContainer.y = box.height / 2;
         };
-
+        
         /*
             Logic of resizeable panel goes here
         */
@@ -475,7 +492,7 @@ emitter-tandem-editor.panel.view.flexrow
             document.removeEventListener('mousemove', gutterMove);
             document.removeEventListener('mouseup', gutterUp);
         });
-
+        
         this.apply = e => {
             this.parent.editingTandem = false;
             this.parent.update();

@@ -1,55 +1,64 @@
 project-selector
     #bg.stretch.middle
         #intro.panel.middleinner
-            div.flexrow
+            .flexrow
                 .c4.np
                 .c8.npt.npb
                     h2 {voc.latest}
-            div.flexrow
+            .flexrow
                 .c4.npl.npt.project-selector-aPreview.center
-                    img(src="{projectSplash}")
+                    img(src='{projectSplash}')
                 .c8.npr.npt.npl.flexfix
                     ul.menu.flexfix-body
                         li(
-                            each="{project in lastProjects}" title="{requirePath.basename(project,'.json')}"
-                            onclick="{updatePreview(project)}"
-                            ondblclick="{loadRecentProject}"
+                            each='{project in lastProjects}',
+                            title='{requirePath.basename(project,\'.json\')}',
+                            onclick='{updatePreview(project)}',
+                            ondblclick='{loadRecentProject}'
                         )
-                            .toright(onclick="{forgetProject}" title="{voc.forgetProject}")
+                            .toright(onclick='{forgetProject}', title='{voc.forgetProject}')
                                 svg.feather
-                                    use(xlink:href="data/icons.svg#x")
+                                    use(xlink:href='data/icons.svg#x')
                             span {project}
                     label.file.flexfix-footer.nmb
-                        button.wide.inline.nml.nmr(onclick="{openProjectFind}")
+                        button.wide.inline.nml.nmr(onclick='{openProjectFind}')
                             svg.feather
-                                use(xlink:href="data/icons.svg#folder")
+                                use(xlink:href='data/icons.svg#folder')
                             span {voc.browse}
             #newProject.inset.flexrow.flexmiddle
                 .c4.npl.npt.npb
                     h3.nm.right {voc.newProject.text}
                 .c5.np
-                    input(
-                        type='text'
-                        placeholder='{voc.newProject.input}'
-                        pattern='[a-zA-Z_0-9]\\{1,\\}'
-                        ref="projectname"
-                    ).wide
+                    input.wide(
+                        type='text',
+                        placeholder='{voc.newProject.input}',
+                        pattern='[a-zA-Z_0-9]\\{1,\\}',
+                        ref='projectname'
+                    )
                 .c3.npr.npt.npb
-                    button.nm.wide.inline(onclick="{openProjectFolder}") {voc.newProject.button}
+                    button.nm.wide.inline(onclick='{openProjectFolder}') {voc.newProject.button}
     .aVersionNumber
-        a(href="https://discord.gg/CggbPkb" title="{voc.discord}" onclick="{openExternal('https://discord.gg/CggbPkb')}")
+        a(
+            href='https://discord.gg/CggbPkb',
+            title='{voc.discord}',
+            onclick='{openExternal(\'https://discord.gg/CggbPkb\')}'
+        )
             svg.icon
-                use(xlink:href="data/icons.svg#discord")
-        a(href="https://twitter.com/ctjsrocks" title="{voc.twitter}" onclick="{openExternal('https://twitter.com/ctjsrocks')}")
+                use(xlink:href='data/icons.svg#discord')
+        a(
+            href='https://twitter.com/ctjsrocks',
+            title='{voc.twitter}',
+            onclick='{openExternal(\'https://twitter.com/ctjsrocks\')}'
+        )
             svg.icon
-                use(xlink:href="data/icons.svg#twitter")
+                use(xlink:href='data/icons.svg#twitter')
         .inlineblock v{ctjsVersion}.
         |
         |
         // as itch releases are always in sync with the fetched version number, let's route users to itch.io page
-        a.inlineblock(if="{newVersion}" href="https://comigo.itch.io/ct#download" onclick="{openExternal}")
+        a.inlineblock(if='{newVersion}', href='https://comigo.itch.io/ct#download', onclick='{openExternal}')
             | {newVersion}
-            img(src="data/img/partycarrot.gif" if="{newVersion}").aPartyCarrot
+            img.aPartyCarrot(src='data/img/partycarrot.gif', if='{newVersion}')
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -69,7 +78,7 @@ project-selector
         });
         this.projectSplash = 'data/img/notexture.png';
         this.newVersion = false;
-
+        
         // Loads recently opened projects
         if (('lastProjects' in localStorage) &&
             (localStorage.lastProjects !== '')) {
@@ -77,7 +86,7 @@ project-selector
         } else {
             this.lastProjects = [];
         }
-
+        
         /**
          * Update a splash image of a selected project
          */
@@ -114,7 +123,7 @@ project-selector
             }, 0);
             window.loadProject(path.join(way, codename + '.ict'));
         };
-
+        
         /**
          * Opens a recent project when an item in the Recent Project list is double-clicked
          */
@@ -131,7 +140,7 @@ project-selector
             localStorage.lastProjects = this.lastProjects.join(';');
             e.stopPropagation();
         }
-
+        
         /**
          * Handler for a manual search for a project folder, triggered by an input[type="file"]
          */
@@ -147,7 +156,7 @@ project-selector
                 this.newProject(projPath, this.refs.projectname.value);
             }
         };
-
+        
         this.openProjectFolder = e => {
             const codename = this.refs.projectname.value;
             if (codename.length === 0) {
@@ -156,7 +165,7 @@ project-selector
             }
             this.chooseProjectFolder();
         };
-
+        
         /**
          * Handler for a manual search for a project, triggered by an input[type="file"]
          */
@@ -177,7 +186,7 @@ project-selector
                 alertify.error(languageJSON.common.wrongFormat);
             }
         };
-
+        
         // Checking for updates
         setTimeout(() => {
             const {isWin, isLinux} = require('./data/node_requires/platformUtils.js');
@@ -196,7 +205,7 @@ project-selector
                 }
             });
         }, 0);
-
+        
         this.openExternal = link => e => {
             nw.Shell.openExternal(link);
             e.stopPropagation();

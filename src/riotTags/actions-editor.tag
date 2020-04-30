@@ -3,63 +3,72 @@ actions-editor.panel.view.pad
         .flexfix-header
             h1
                 | {voc.actionsEditor}
-                docs-shortcut(path="/actions.html")
-            p(if="{!global.currentProject.actions || !global.currentProject.actions.length}") {voc.noActionsYet}
-        .flexfix-body(if="{!global.currentProject.actions || !global.currentProject.actions.length}")
-            button.nml(onclick="{addNewAction}")
+                docs-shortcut(path='/actions.html')
+            p(if='{!global.currentProject.actions || !global.currentProject.actions.length}') {voc.noActionsYet}
+        .flexfix-body(if='{!global.currentProject.actions || !global.currentProject.actions.length}')
+            button.nml(onclick='{addNewAction}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
-                span   {vocGlob.add}
-        .flexfix-body.aStrippedList.nmt(if="{global.currentProject.actions && global.currentProject.actions.length}")
+                    use(xlink:href='data/icons.svg#plus')
+                span {vocGlob.add}
+        .flexfix-body.aStrippedList.nmt(if='{global.currentProject.actions && global.currentProject.actions.length}')
             li.hide800.npl.npr
                 .c4.npt.npb.npl
                     b {voc.actions}
                 .c8.npt.npb.npr
                     b {voc.methods}
                 .clear
-            li.npl.npt(each="{action, ind in global.currentProject.actions}")
+            li.npl.npt(each='{action, ind in global.currentProject.actions}')
                 .c4.npl.breakon800
                     .flexrow.middle
-                        div.relative.wide
-                            input.wide(type="text" placeholder="{voc.inputActionNamePlaceholder}" value="{action.name}" onchange="{checkActionNameAndSave}")
-                            .anErrorNotice(if="{nameTaken === action.name}" ref="errors") {vocGlob.nametaken}
-                            .anErrorNotice(if="{action.name.trim() === ''}" ref="errors") {vocGlob.cannotBeEmpty}
+                        .relative.wide
+                            input.wide(
+                                type='text',
+                                placeholder='{voc.inputActionNamePlaceholder}',
+                                value='{action.name}',
+                                onchange='{checkActionNameAndSave}'
+                            )
+                            .anErrorNotice(if='{nameTaken === action.name}', ref='errors') {vocGlob.nametaken}
+                            .anErrorNotice(if='{action.name.trim() === \'\'}', ref='errors') {vocGlob.cannotBeEmpty}
                         .spacer
-                        svg.feather.a(title="{voc.deleteAction}" onclick="{deleteAction}")
-                            use(xlink:href="data/icons.svg#x")
+                        svg.feather.a(title='{voc.deleteAction}', onclick='{deleteAction}')
+                            use(xlink:href='data/icons.svg#x')
                 .c8.npr.breakon800
                     ul.aStrippedList.nmt
-                        li.flexrow.middle.npl(each="{method, mInd in action.methods}")
+                        li.flexrow.middle.npl(each='{method, mInd in action.methods}')
                             .fifty.npt.npl.npb
                                 code.inline {method.code}
-                                svg.feather.orange(if="{!(method.code.split('.')[0] in global.currentProject.libs)}" title="{voc.methodModuleMissing}")
-                                    use(xlink:href="data/icons.svg#alert-circle")
+                                svg.feather.orange(
+                                    if='{!(method.code.split(\'.\')[0] in global.currentProject.libs)}',
+                                    title='{voc.methodModuleMissing}'
+                                )
+                                    use(xlink:href='data/icons.svg#alert-circle')
                             .fifty.npt.npr.npb
                                 b {voc.multiplier}:
                                 input.short(
-                                    type="number" step="0.1"
-                                    value="{method.multiplier === void 0? 1 : method.multiplier}"
-                                    onchange="{wire('global.currentProject.actions.'+ ind +'.methods.'+ mInd +'.multiplier')}"
+                                    type='number',
+                                    step='0.1',
+                                    value='{method.multiplier === void 0? 1 : method.multiplier}',
+                                    onchange='{wire(\'global.currentProject.actions.\'+ ind +\'.methods.\'+ mInd +\'.multiplier\')}'
                                 )
-                            svg.feather.a(title="{voc.deleteMethod}" onclick="{deleteMethod(action)}")
-                                use(xlink:href="data/icons.svg#x")
-                    button.nml(onclick="{addMethod}")
+                            svg.feather.a(title='{voc.deleteMethod}', onclick='{deleteMethod(action)}')
+                                use(xlink:href='data/icons.svg#x')
+                    button.nml(onclick='{addMethod}')
                         svg.feather
-                            use(xlink:href="data/icons.svg#plus")
-                        span   {voc.addMethod}
+                            use(xlink:href='data/icons.svg#plus')
+                        span {voc.addMethod}
                 .clear
             p
-                button.nml(onclick="{addNewAction}")
+                button.nml(onclick='{addNewAction}')
                     svg.feather
-                        use(xlink:href="data/icons.svg#plus")
-                    span   {voc.addAction}
+                        use(xlink:href='data/icons.svg#plus')
+                    span {voc.addAction}
         .flexfix-footer
-            button.wide(onclick="{saveActions}")
+            button.wide(onclick='{saveActions}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#save")
-                span   {vocGlob.save}
-    .dimmer(show="{addingMethod}")
-        method-selector(action="{editedAction}" ref="methodSelector")
+                    use(xlink:href='data/icons.svg#save')
+                span {vocGlob.save}
+    .dimmer(show='{addingMethod}')
+        method-selector(action='{editedAction}', ref='methodSelector')
     script.
         global.currentProject.actions = global.currentProject.actions || [];
         this.namespace = 'actionsEditor';
@@ -94,7 +103,7 @@ actions-editor.panel.view.pad
                 this.nameTaken = e.item.action.name;
             }
         };
-
+        
         this.saveActions = e => {
             if ((Array.isArray(this.refs.errors) && this.refs.errors.length) || this.refs.errors) {
                 let errors = this.refs.errors;

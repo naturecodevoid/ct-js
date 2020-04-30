@@ -1,7 +1,7 @@
 debugger-modal.view
     .center.aQRList
-        .aQR(each="{interfaces}")
-            div.center(ref="qr" data-address="{address}")
+        .aQR(each='{interfaces}')
+            .center(ref='qr', data-address='{address}')
             b {name}
             br
             code {address}
@@ -10,7 +10,7 @@ debugger-modal.view
         this.interfaces = [];
         var os = require('os');
         var interfaces = os.networkInterfaces();
-
+        
         // https://stackoverflow.com/a/8440736
         Object.keys(interfaces).forEach(ifname => {
             var alias = 0;
@@ -35,7 +35,7 @@ debugger-modal.view
                 ++alias;
             });
         });
-
+        
         const palette = {
             Day: ['#446adb', '#ffffff'],
             Night: ['#121822', '#44dbb5'],

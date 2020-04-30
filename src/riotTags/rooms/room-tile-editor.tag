@@ -1,33 +1,45 @@
 room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
     .flexfix-body
         canvas(
-            ref="tiledImage"
-            onmousedown="{startTileSelection}"
-            onmouseup="{stopTileSelection}"
-            onmousemove="{moveTileSelection}"
+            ref='tiledImage',
+            onmousedown='{startTileSelection}',
+            onmouseup='{stopTileSelection}',
+            onmousemove='{moveTileSelection}'
         )
     .flexfix-footer
-        button.inline.wide(onclick="{switchTiledImage}")
+        button.inline.wide(onclick='{switchTiledImage}')
             svg.feather
-                use(xlink:href="data/icons.svg#search")
+                use(xlink:href='data/icons.svg#search')
             span {voc.findTileset}
         .flexrow
-            select.wide(onchange="{changeTileLayer}" value="{parent.currentTileLayerId}")
-                option(each="{layer, ind in opts.room.tiles}" selected="{parent.currentTileLayerId === ind}" value="{ind}") {layer.hidden? '❌' : '✅'} {layer.depth}
+            select.wide(onchange='{changeTileLayer}', value='{parent.currentTileLayerId}')
+                option(
+                    each='{layer, ind in opts.room.tiles}',
+                    selected='{parent.currentTileLayerId === ind}',
+                    value='{ind}'
+                ) {layer.hidden? '❌' : '✅'} {layer.depth}
 
-            span.act(title="{vocGlob.delete}" onclick="{deleteTileLayer}")
+            span.act(title='{vocGlob.delete}', onclick='{deleteTileLayer}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#trash")
-            span.act(title="{parent.currentTileLayer.hidden? voc.show: voc.hide}" onclick="{toggleTileLayerVisibility}")
+                    use(xlink:href='data/icons.svg#trash')
+            span.act(
+                title='{parent.currentTileLayer.hidden? voc.show: voc.hide}',
+                onclick='{toggleTileLayerVisibility}'
+            )
                 svg.feather
-                    use(xlink:href="data/icons.svg#{parent.currentTileLayer.hidden? 'eye' : 'eye-off'}")
-            span.act(title="{voc.moveTileLayer}" onclick="{moveTileLayer}")
+                    use(xlink:href='data/icons.svg#{parent.currentTileLayer.hidden? \'eye\' : \'eye-off\'}')
+            span.act(title='{voc.moveTileLayer}', onclick='{moveTileLayer}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#shuffle")
-            span.act(title="{vocGlob.add}" onclick="{addTileLayer}")
+                    use(xlink:href='data/icons.svg#shuffle')
+            span.act(title='{vocGlob.add}', onclick='{addTileLayer}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#plus")
-    texture-selector(ref="tilesetPicker" if="{pickingTileset}" oncancelled="{onTilesetCancel}" onselected="{onTilesetSelected}")
+                    use(xlink:href='data/icons.svg#plus')
+    texture-selector(
+        ref='tilesetPicker',
+        if='{pickingTileset}',
+        oncancelled='{onTilesetCancel}',
+        onselected='{onTilesetSelected}'
+    )
     script.
         this.parent.tileX = 0;
         this.parent.tileY = 0;
@@ -41,11 +53,11 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
         }
         this.parent.currentTileLayer = this.opts.room.tiles[0];
         this.parent.currentTileLayerId = 0;
-
+        
         this.namespace = 'roomtiles';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-
+        
         this.deleteTileLayer = e => {
             alertify
             .okBtn(window.languageJSON.common.delete)
@@ -124,7 +136,7 @@ room-tile-editor.room-editor-Tiles.tabbed.tall.flexfix
             this.redrawTileset();
             this.update();
         };
-
+        
         this.redrawTileset = e => {
             const glob = require('./data/node_requires/glob');
             var c = this.refs.tiledImage,

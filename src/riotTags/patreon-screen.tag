@@ -1,69 +1,69 @@
 patron-line
-    img(src="{patron.avatar}")
+    img(src='{patron.avatar}')
     b {opts.patron.name}
     |
     |
-    span(if="{!opts.patron.about}") {parent.getFiller(opts.patron.name)}
-    a(href="{opts.patron.link}" if="{opts.patron.about}")
+    span(if='{!opts.patron.about}') {parent.getFiller(opts.patron.name)}
+    a(href='{opts.patron.link}', if='{opts.patron.about}')
         | {opts.patron.about}
         |
         |
-        span(if="{opts.patron['18+']}") 🔞
-    span(if="{!opts.patron['18+'] && opts.patron.about}") {parent.getEmoji(opts.patron.name)}
+        span(if='{opts.patron[\'18+\']}') 🔞
+    span(if='{!opts.patron[\'18+\'] && opts.patron.about}') {parent.getEmoji(opts.patron.name)}
     script.
 
-patreon-screen.view(style="z-index: 100;")
+patreon-screen.view(style='z-index: 100;')
     .Confetti
-        .aConfettiPiece(each="{confetti in (new Array(15))}" style="background: {getConfettiColor()}")
+        .aConfettiPiece(each='{confetti in (new Array(15))}', style='background: {getConfettiColor()}')
     h1 {voc.patronsHeader}
     p {voc.aboutPatrons}
-    div(if="{loading}")
+    div(if='{loading}')
         svg.feather
-            use(xlink:href="data/icons.svg#loader")
-        | {vocGlob.loading}
-    div(if="{!loading}")
+            use(xlink:href='data/icons.svg#loader')
+{vocGlob.loading}
+    div(if='{!loading}')
         h2 {voc.businessShuttles}
 
-        patron-line(each="{patron in patrons.shuttles}" patron="{patron}")
+        patron-line(each='{patron in patrons.shuttles}', patron='{patron}')
 
         p
-            span(if="{!patrons.shuttles.length}") {voc.noShuttlesYet}
+            span(if='{!patrons.shuttles.length}') {voc.noShuttlesYet}
             |
             |
             | {voc.shuttlesDescription}
 
         h2 {voc.spacePirates}
 
-        patron-line(each="{patron in patrons.pirates}" patron="{patron}")
+        patron-line(each='{patron in patrons.pirates}', patron='{patron}')
 
         p
-            span(if="{!patrons.pirates.length}") {noPiratesYet}
+            span(if='{!patrons.pirates.length}') {noPiratesYet}
             |
             |
             | {voc.piratesDescription}
 
         h2 {voc.spaceProgrammers}
 
-        patron-line(each="{patron in patrons.programmers}" patron="{patron}")
+        patron-line(each='{patron in patrons.programmers}', patron='{patron}')
 
         p {voc.programmersDescription}
 
         h2 {voc.aspiringAstronauts}
 
-        patron-line(each="{patron in patrons.astronauts}" patron="{patron}")
+        patron-line(each='{patron in patrons.astronauts}', patron='{patron}')
 
         p
-            span(if="{!patrons.astronauts.length}") {noAstronautsYet}
+            span(if='{!patrons.astronauts.length}') {noAstronautsYet}
             |
             |
             | {voc.astronautsDescription}
 
         p.aPatronThanks {voc.thankAllPatrons}
 
-    button(onclick="{openPatreon}").nml
+    button.nml(onclick='{openPatreon}')
         svg.feather
-            use(xlink:href="data/icons.svg#heart")
-        span  {voc.becomeAPatron}
+            use(xlink:href='data/icons.svg#heart')
+        span {voc.becomeAPatron}
     script.
         this.namespace = 'patreon';
         this.mixin(window.riotVoc);
@@ -94,7 +94,7 @@ patreon-screen.view(style="z-index: 100;")
             return this.voc.aboutFillers[getMagicNumber(str) % this.voc.aboutFillers.length];
         };
         this.getConfettiColor = () => this.confettiColors[Math.floor(Math.random() * this.confettiColors.length)];
-
+        
         this.importPatronData = text => {
             const patrons = [];
             var table = text.split('\r\n').map(row => row.split(','));
@@ -144,7 +144,7 @@ patreon-screen.view(style="z-index: 100;")
             });
         };
         this.loadPatrons();
-
+        
         this.openPatreon = e => {
             nw.Shell.openExternal('https://www.patreon.com/comigo');
         }

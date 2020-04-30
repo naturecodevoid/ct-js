@@ -1,56 +1,59 @@
 debugger-toolbar
     .debugger-toolbar-aDragger.feather
         svg.feather
-            use(xlink:href="data/icons.svg#dragger-vertical")
+            use(xlink:href='data/icons.svg#dragger-vertical')
 
-    .debugger-toolbar-aButton(onclick="{togglePause}" title="{gamePaused? voc.resume : voc.pause}")
+    .debugger-toolbar-aButton(onclick='{togglePause}', title='{gamePaused? voc.resume : voc.pause}')
         svg.feather
-            use(xlink:href="data/icons.svg#{gamePaused? 'play' : 'pause'}")
-    .debugger-toolbar-aButton(onclick="{restartGame}" title="{voc.restartGame}")
+            use(xlink:href='data/icons.svg#{gamePaused? \'play\' : \'pause\'}')
+    .debugger-toolbar-aButton(onclick='{restartGame}', title='{voc.restartGame}')
         svg.feather
-            use(xlink:href="data/icons.svg#rotate-cw")
-    .debugger-toolbar-aButton(onclick="{restartRoom}" title="{voc.restartRoom}")
+            use(xlink:href='data/icons.svg#rotate-cw')
+    .debugger-toolbar-aButton(onclick='{restartRoom}', title='{voc.restartRoom}')
         svg.feather
-            use(xlink:href="data/icons.svg#room-reload")
-    .debugger-toolbar-aButton(onclick="{displayRoomSelector}" title="{voc.switchRoom}")
+            use(xlink:href='data/icons.svg#room-reload')
+    .debugger-toolbar-aButton(onclick='{displayRoomSelector}', title='{voc.switchRoom}')
         svg.feather
-            use(xlink:href="data/icons.svg#room-switch")
-
-    .debugger-toolbar-aDivider
-
-    .debugger-toolbar-aButton(onclick="{toggleDevTools}" title="{voc.toggleDevTools}")
-        svg.feather
-            use(xlink:href="data/icons.svg#terminal")
-    .debugger-toolbar-aButton(onclick="{makeScreenshot}" title="{voc.screenshot}")
-        svg.feather
-            use(xlink:href="data/icons.svg#camera")
-    .debugger-toolbar-aButton(onclick="{toggleFullscreen}" title="{gameFullscreen? voc.exitFullscreen : voc.enterFullscreen}")
-        svg.feather
-            use(xlink:href="data/icons.svg#{gameFullscreen? 'minimize' : 'maximize'}-2")
-    .debugger-toolbar-aButton(onclick="{openQrCodes}" title="{voc.links}")
-        svg.feather
-            use(xlink:href="data/icons.svg#smartphone")
-    .debugger-toolbar-aButton(onclick="{openExternal}" title="{voc.openExternal}")
-        svg.feather
-            use(xlink:href="data/icons.svg#external-link")
+            use(xlink:href='data/icons.svg#room-switch')
 
     .debugger-toolbar-aDivider
 
-    .debugger-toolbar-aButton(onclick="{closeItself}" title="{voc.close}")
+    .debugger-toolbar-aButton(onclick='{toggleDevTools}', title='{voc.toggleDevTools}')
         svg.feather
-            use(xlink:href="data/icons.svg#x")
+            use(xlink:href='data/icons.svg#terminal')
+    .debugger-toolbar-aButton(onclick='{makeScreenshot}', title='{voc.screenshot}')
+        svg.feather
+            use(xlink:href='data/icons.svg#camera')
+    .debugger-toolbar-aButton(
+        onclick='{toggleFullscreen}',
+        title='{gameFullscreen? voc.exitFullscreen : voc.enterFullscreen}'
+    )
+        svg.feather
+            use(xlink:href='data/icons.svg#{gameFullscreen? \'minimize\' : \'maximize\'}-2')
+    .debugger-toolbar-aButton(onclick='{openQrCodes}', title='{voc.links}')
+        svg.feather
+            use(xlink:href='data/icons.svg#smartphone')
+    .debugger-toolbar-aButton(onclick='{openExternal}', title='{voc.openExternal}')
+        svg.feather
+            use(xlink:href='data/icons.svg#external-link')
+
+    .debugger-toolbar-aDivider
+
+    .debugger-toolbar-aButton(onclick='{closeItself}', title='{voc.close}')
+        svg.feather
+            use(xlink:href='data/icons.svg#x')
     script.
         this.namespace = 'debuggerToolbar';
         this.mixin(window.riotVoc);
-
+        
         var isDevToolsOpen = true;
-
+        
         setTimeout(() => {
             const win = nw.Window.get();
             // Make sure the window does not distort due to inconsistencies in title size on different OS
             win.resizeTo(Math.round(480 * (1 + win.zoomLevel * 0.2)), Math.round(40 * (1 + win.zoomLevel * 0.2)));
         }, 0);
-
+        
         const menu = new nw.Menu();
         window.gameRooms.map(room => ({
             label: room,
@@ -58,7 +61,7 @@ debugger-toolbar
                 this.switchRoom(room);
             }
         })).forEach(entry => menu.append(new nw.MenuItem(entry)));
-
+        
         // Get displays to position everything nicely
         // Firstly aim for the built-in monitor (usually a keyboard is near it), then try the second one, then try the first one
         // eslint-disable-next-line new-cap
@@ -88,14 +91,14 @@ debugger-toolbar
                 isDevToolsOpen = false;
             })
         });
-
+        
         this.switchRoom = room => {
             this.previewWindow.eval(null, `ct.rooms.switch('${room}')`);
         };
         this.displayRoomSelector = e => {
             menu.popup(e.clientX, e.clientY);
         };
-
+        
         this.togglePause = e => {
             // hidden negation is semantically hidden here
             this.gamePaused = this.previewWindow.window.PIXI.Ticker.shared.started;
@@ -188,10 +191,10 @@ debugger-toolbar
         this.openExternal = e => {
             nw.Shell.openExternal(window.gameLink);
         };
-
+        
         this.closeItself = e => {
             this.previewWindow.close(true);
             nw.Window.get().close();
         };
-
+        
         nw.Window.get().on('close', this.closeItself);

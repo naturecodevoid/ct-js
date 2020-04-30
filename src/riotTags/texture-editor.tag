@@ -5,209 +5,341 @@ texture-editor.panel.view
                 fieldset
                     b {voc.name}
                     br
-                    input.wide(type="text" value="{opts.texture.name}" onchange="{wire('this.texture.name')}")
-                    .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+                    input.wide(type='text', value='{opts.texture.name}', onchange='{wire(\'this.texture.name\')}')
+                    .anErrorNotice(if='{nameTaken}', ref='errorNotice') {vocGlob.nametaken}
                     label.checkbox
-                        input#texturetiled(type="checkbox" checked="{opts.texture.tiled}" onchange="{wire('this.texture.tiled')}")
-                        span   {voc.tiled}
+                        input#texturetiled(
+                            type='checkbox',
+                            checked='{opts.texture.tiled}',
+                            onchange='{wire(\'this.texture.tiled\')}'
+                        )
+                        span {voc.tiled}
                 fieldset
                     b {voc.center}
                     .flexrow
-                        input.short(type="number" value="{opts.texture.axis[0]}" onchange="{wire('this.texture.axis.0')}" oninput="{wire('this.texture.axis.0')}")
+                        input.short(
+                            type='number',
+                            value='{opts.texture.axis[0]}',
+                            onchange='{wire(\'this.texture.axis.0\')}',
+                            oninput='{wire(\'this.texture.axis.0\')}'
+                        )
                         span.center ×
-                        input.short(type="number" value="{opts.texture.axis[1]}" onchange="{wire('this.texture.axis.1')}" oninput="{wire('this.texture.axis.1')}")
+                        input.short(
+                            type='number',
+                            value='{opts.texture.axis[1]}',
+                            onchange='{wire(\'this.texture.axis.1\')}',
+                            oninput='{wire(\'this.texture.axis.1\')}'
+                        )
                     .flexrow
-                        button.wide.nml(onclick="{textureCenter}")
-                            span   {voc.setcenter}
+                        button.wide.nml(onclick='{textureCenter}')
+                            span {voc.setcenter}
                         .spacer
-                        button.square.nmr(onclick="{textureIsometrify}" title="{voc.isometrify}")
+                        button.square.nmr(onclick='{textureIsometrify}', title='{voc.isometrify}')
                             svg.feather
-                                use(xlink:href="data/icons.svg#map-pin")
+                                use(xlink:href='data/icons.svg#map-pin')
                 fieldset
                     b {voc.form}
                     label.checkbox
-                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'circle'}" onclick="{textureSelectCircle}")
+                        input(
+                            type='radio',
+                            name='collisionform',
+                            checked='{opts.texture.shape === \'circle\'}',
+                            onclick='{textureSelectCircle}'
+                        )
                         span {voc.round}
                     label.checkbox
-                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'rect'}" onclick="{textureSelectRect}")
+                        input(
+                            type='radio',
+                            name='collisionform',
+                            checked='{opts.texture.shape === \'rect\'}',
+                            onclick='{textureSelectRect}'
+                        )
                         span {voc.rectangle}
                     label.checkbox
-                        input(type="radio" name="collisionform" checked="{opts.texture.shape === 'strip'}" onclick="{textureSelectStrip}")
+                        input(
+                            type='radio',
+                            name='collisionform',
+                            checked='{opts.texture.shape === \'strip\'}',
+                            onclick='{textureSelectStrip}'
+                        )
                         span {voc.strip}
-                fieldset(if="{opts.texture.shape === 'circle'}")
+                fieldset(if='{opts.texture.shape === \'circle\'}')
                     b {voc.radius}
                     br
-                    input.wide(type="number" value="{opts.texture.r}" onchange="{wire('this.texture.r')}" oninput="{wire('this.texture.r')}")
-                fieldset(if="{opts.texture.shape === 'rect'}")
+                    input.wide(
+                        type='number',
+                        value='{opts.texture.r}',
+                        onchange='{wire(\'this.texture.r\')}',
+                        oninput='{wire(\'this.texture.r\')}'
+                    )
+                fieldset(if='{opts.texture.shape === \'rect\'}')
                     .center
-                        input.short(type="number" value="{opts.texture.top}" onchange="{wire('this.texture.top')}" oninput="{wire('this.texture.top')}")
+                        input.short(
+                            type='number',
+                            value='{opts.texture.top}',
+                            onchange='{wire(\'this.texture.top\')}',
+                            oninput='{wire(\'this.texture.top\')}'
+                        )
                         br
-                        input.short(type="number" value="{opts.texture.left}" onchange="{wire('this.texture.left')}" oninput="{wire('this.texture.left')}")
-                        span   ×
-                        input.short(type="number" value="{opts.texture.right}" onchange="{wire('this.texture.right')}" oninput="{wire('this.texture.right')}")
+                        input.short(
+                            type='number',
+                            value='{opts.texture.left}',
+                            onchange='{wire(\'this.texture.left\')}',
+                            oninput='{wire(\'this.texture.left\')}'
+                        )
+                        span ×
+                        input.short(
+                            type='number',
+                            value='{opts.texture.right}',
+                            onchange='{wire(\'this.texture.right\')}',
+                            oninput='{wire(\'this.texture.right\')}'
+                        )
                         br
-                        input.short(type="number" value="{opts.texture.bottom}" onchange="{wire('this.texture.bottom')}" oninput="{wire('this.texture.bottom')}")
-                    button.wide(onclick="{textureFillRect}")
+                        input.short(
+                            type='number',
+                            value='{opts.texture.bottom}',
+                            onchange='{wire(\'this.texture.bottom\')}',
+                            oninput='{wire(\'this.texture.bottom\')}'
+                        )
+                    button.wide(onclick='{textureFillRect}')
                         svg.feather
-                            use(xlink:href="data/icons.svg#maximize")
+                            use(xlink:href='data/icons.svg#maximize')
                         span {voc.fill}
-                fieldset(if="{opts.texture.shape === 'strip'}")
-                    .flexrow.aStripPointRow(each="{point, ind in getMovableStripPoints()}")
-                        input.short(type="number" value="{point.x}" oninput="{wire('this.texture.stripPoints.'+ ind + '.x')}")
-                        span   ×
-                        input.short(type="number" value="{point.y}" oninput="{wire('this.texture.stripPoints.'+ ind + '.y')}")
-                        button.square.inline(title="{voc.removePoint}" onclick="{removeStripPoint}")
+                fieldset(if='{opts.texture.shape === \'strip\'}')
+                    .flexrow.aStripPointRow(each='{point, ind in getMovableStripPoints()}')
+                        input.short(
+                            type='number',
+                            value='{point.x}',
+                            oninput='{wire(\'this.texture.stripPoints.\'+ ind + \'.x\')}'
+                        )
+                        span ×
+                        input.short(
+                            type='number',
+                            value='{point.y}',
+                            oninput='{wire(\'this.texture.stripPoints.\'+ ind + \'.y\')}'
+                        )
+                        button.square.inline(title='{voc.removePoint}', onclick='{removeStripPoint}')
                             svg.feather
-                                use(xlink:href="data/icons.svg#minus")
+                                use(xlink:href='data/icons.svg#minus')
                     label.checkbox
-                        input(type="checkbox" checked="{opts.texture.closedStrip}" onchange="{onClosedStripChange}" )
-                        span   {voc.closeShape}
+                        input(type='checkbox', checked='{opts.texture.closedStrip}', onchange='{onClosedStripChange}')
+                        span {voc.closeShape}
                     label.checkbox
-                        input(type="checkbox" checked="{opts.texture.symmetryStrip}" onchange="{onSymmetryChange}")
-                        span   {voc.symmetryTool}
-                    button.wide(onclick="{addStripPoint}")
+                        input(type='checkbox', checked='{opts.texture.symmetryStrip}', onchange='{onSymmetryChange}')
+                        span {voc.symmetryTool}
+                    button.wide(onclick='{addStripPoint}')
                         svg.feather
-                            use(xlink:href="data/icons.svg#plus")
-                        span   {voc.addPoint}
+                            use(xlink:href='data/icons.svg#plus')
+                        span {voc.addPoint}
                 fieldset
                     label.checkbox
-                        input(checked="{prevShowMask}" onchange="{wire('this.prevShowMask')}" type="checkbox")
-                        span   {voc.showmask}
+                        input(checked='{prevShowMask}', onchange='{wire(\'this.prevShowMask\')}', type='checkbox')
+                        span {voc.showmask}
             .flexfix-footer
-                button.wide(onclick="{textureSave}" title="Shift+Control+S" data-hotkey="Control+S")
+                button.wide(onclick='{textureSave}', title='Shift+Control+S', data-hotkey='Control+S')
                     svg.feather
-                        use(xlink:href="data/icons.svg#save")
+                        use(xlink:href='data/icons.svg#save')
                     span {window.languageJSON.common.save}
         .texture-editor-anAtlas.tall(
-            if="{opts.texture}"
-            style="background-color: {previewColor};"
-            onmousewheel="{onMouseWheel}"
+            if='{opts.texture}',
+            style='background-color: {previewColor};',
+            onmousewheel='{onMouseWheel}'
         )
             .texture-editor-aCanvasWrap
-                canvas.texture-editor-aCanvas(ref="textureCanvas" style="transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? 'pixelated' : '-webkit-optimize-contrast'}; transform-origin: 0% 0%;")
+                canvas.texture-editor-aCanvas(
+                    ref='textureCanvas',
+                    style='transform: scale({zoomFactor}); image-rendering: {zoomFactor > 1? \'pixelated\' : \'-webkit-optimize-contrast\'}; transform-origin: 0% 0%;'
+                )
                 // This div is needed to cause elements' reflow so the scrollbars update on canvas' size change
-                div(style="width: {zoomFactor}px; height: {zoomFactor}px;")
+                div(style='width: {zoomFactor}px; height: {zoomFactor}px;')
                 .aClicker(
-                    if="{prevShowMask && opts.texture.shape === 'strip'}"
-                    each="{seg, ind in getStripSegments()}"
-                    style="left: {seg.left}px; top: {seg.top}px; width: {seg.width}px; transform: translate(0, -50%) rotate({seg.angle}deg);"
-                    title="{voc.addPoint}"
-                    onclick="{addStripPointOnSegment}"
+                    if='{prevShowMask && opts.texture.shape === \'strip\'}',
+                    each='{seg, ind in getStripSegments()}',
+                    style='left: {seg.left}px; top: {seg.top}px; width: {seg.width}px; transform: translate(0, -50%) rotate({seg.angle}deg);',
+                    title='{voc.addPoint}',
+                    onclick='{addStripPointOnSegment}'
                 )
                 .aDragger(
-                    if="{prevShowMask}"
-                    style="left: {opts.texture.axis[0] * zoomFactor}px; top: {opts.texture.axis[1] * zoomFactor}px; border-radius: 0;"
-                    title="{voc.moveCenter}"
-                    onmousedown="{startMoving('axis')}"
+                    if='{prevShowMask}',
+                    style='left: {opts.texture.axis[0] * zoomFactor}px; top: {opts.texture.axis[1] * zoomFactor}px; border-radius: 0;',
+                    title='{voc.moveCenter}',
+                    onmousedown='{startMoving(\'axis\')}'
                 )
                 .aDragger(
-                    if="{prevShowMask && opts.texture.shape === 'strip'}"
-                    each="{point, ind in getMovableStripPoints()}"
-                    style="left: {(point.x + texture.axis[0]) * zoomFactor}px; top: {(point.y + texture.axis[1]) * zoomFactor}px;"
-                    title="{voc.movePoint}"
-                    onmousedown="{startMoving('point')}"
+                    if='{prevShowMask && opts.texture.shape === \'strip\'}',
+                    each='{point, ind in getMovableStripPoints()}',
+                    style='left: {(point.x + texture.axis[0]) * zoomFactor}px; top: {(point.y + texture.axis[1]) * zoomFactor}px;',
+                    title='{voc.movePoint}',
+                    onmousedown='{startMoving(\'point\')}'
                 )
             .textureview-tools
                 .toright
-                    label.file(title="{voc.replacetexture}")
-                        input(type="file" ref="textureReplacer" accept=".png,.jpg,.jpeg,.bmp,.gif" onchange="{textureReplace}")
+                    label.file(title='{voc.replacetexture}')
+                        input(
+                            type='file',
+                            ref='textureReplacer',
+                            accept='.png,.jpg,.jpeg,.bmp,.gif',
+                            onchange='{textureReplace}'
+                        )
                         .button.inline
                             svg.feather
-                                use(xlink:href="data/icons.svg#folder")
+                                use(xlink:href='data/icons.svg#folder')
                             span {voc.replacetexture}
-                    .button.inline(title="{voc.reimport}" if="{opts.texture.source}" onclick="{reimport}")
+                    .button.inline(title='{voc.reimport}', if='{opts.texture.source}', onclick='{reimport}')
                         svg.feather
-                            use(xlink:href="data/icons.svg#refresh-ccw")
+                            use(xlink:href='data/icons.svg#refresh-ccw')
             .textureview-zoom
-                div.button-stack.inlineblock
-                    button#texturezoom25.inline(onclick="{textureToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                    button#texturezoom50.inline(onclick="{textureToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
-                    button#texturezoom100.inline(onclick="{textureToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
-                    button#texturezoom200.inline(onclick="{textureToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                    button#texturezoom400.inline(onclick="{textureToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
-        .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show="{!opts.texture.tiled}")
+                .button-stack.inlineblock
+                    button#texturezoom25.inline.zoomFactor(onclick='{textureToggleZoom(0.25)}', class='{active: === 0.25}') 25%
+                    button#texturezoom50.inline.zoomFactor(onclick='{textureToggleZoom(0.5)}', class='{active: === 0.5}') 50%
+                    button#texturezoom100.inline.zoomFactor(onclick='{textureToggleZoom(1)}', class='{active: === 1}') 100%
+                    button#texturezoom200.inline.zoomFactor(onclick='{textureToggleZoom(2)}', class='{active: === 2}') 200%
+                    button#texturezoom400.inline.zoomFactor(onclick='{textureToggleZoom(4)}', class='{active: === 4}') 400%
+        .column.column2.borderleft.tall.flexfix.nogrow.noshrink(show='{!opts.texture.tiled}')
             .flexfix-body
                 fieldset
                     .flexrow
                         div
                             b {voc.cols}
                             br
-                            input.wide(type="number" value="{opts.texture.grid[0]}" onchange="{wire('this.texture.grid.0')}" oninput="{wire('this.texture.grid.0')}")
+                            input.wide(
+                                type='number',
+                                value='{opts.texture.grid[0]}',
+                                onchange='{wire(\'this.texture.grid.0\')}',
+                                oninput='{wire(\'this.texture.grid.0\')}'
+                            )
                         span &nbsp;
                         div
                             b {voc.rows}
                             br
-                            input.wide(type="number" value="{opts.texture.grid[1]}" onchange="{wire('this.texture.grid.1')}" oninput="{wire('this.texture.grid.1')}")
+                            input.wide(
+                                type='number',
+                                value='{opts.texture.grid[1]}',
+                                onchange='{wire(\'this.texture.grid.1\')}',
+                                oninput='{wire(\'this.texture.grid.1\')}'
+                            )
                     .flexrow
                         div
                             b {voc.width}
                             br
-                            input.wide(type="number" value="{opts.texture.width}" onchange="{wire('this.texture.width')}" oninput="{wire('this.texture.width')}")
+                            input.wide(
+                                type='number',
+                                value='{opts.texture.width}',
+                                onchange='{wire(\'this.texture.width\')}',
+                                oninput='{wire(\'this.texture.width\')}'
+                            )
                         span &nbsp;
                         div
                             b {voc.height}
                             br
-                            input.wide(type="number" value="{opts.texture.height}" onchange="{wire('this.texture.height')}" oninput="{wire('this.texture.height')}")
+                            input.wide(
+                                type='number',
+                                value='{opts.texture.height}',
+                                onchange='{wire(\'this.texture.height\')}',
+                                oninput='{wire(\'this.texture.height\')}'
+                            )
                     .flexrow
                         div
                             b {voc.marginx}
                             br
-                            input.wide(type="number" value="{opts.texture.marginx}" onchange="{wire('this.texture.marginx')}" oninput="{wire('this.texture.marginx')}")
+                            input.wide(
+                                type='number',
+                                value='{opts.texture.marginx}',
+                                onchange='{wire(\'this.texture.marginx\')}',
+                                oninput='{wire(\'this.texture.marginx\')}'
+                            )
                         span &nbsp;
                         div
                             b {voc.marginy}
                             br
-                            input.wide(type="number" value="{opts.texture.marginy}" onchange="{wire('this.texture.marginy')}" oninput="{wire('this.texture.marginy')}")
+                            input.wide(
+                                type='number',
+                                value='{opts.texture.marginy}',
+                                onchange='{wire(\'this.texture.marginy\')}',
+                                oninput='{wire(\'this.texture.marginy\')}'
+                            )
                     .flexrow
                         div
                             b {voc.offx}
                             br
-                            input.wide(type="number" value="{opts.texture.offx}" onchange="{wire('this.texture.offx')}" oninput="{wire('this.texture.offx')}")
+                            input.wide(
+                                type='number',
+                                value='{opts.texture.offx}',
+                                onchange='{wire(\'this.texture.offx\')}',
+                                oninput='{wire(\'this.texture.offx\')}'
+                            )
                         span &nbsp;
                         div
                             b {voc.offy}
                             br
-                            input.wide(type="number" value="{opts.texture.offy}" onchange="{wire('this.texture.offy')}" oninput="{wire('this.texture.offy')}")
+                            input.wide(
+                                type='number',
+                                value='{opts.texture.offy}',
+                                onchange='{wire(\'this.texture.offy\')}',
+                                oninput='{wire(\'this.texture.offy\')}'
+                            )
                 fieldset
                     b {voc.frames}
                     br
-                    input#textureframes.wide(type="number" value="{opts.texture.untill}" onchange="{wire('this.texture.untill')}" oninput="{wire('this.texture.untill')}")
+                    input#textureframes.wide(
+                        type='number',
+                        value='{opts.texture.untill}',
+                        onchange='{wire(\'this.texture.untill\')}',
+                        oninput='{wire(\'this.texture.untill\')}'
+                    )
                 fieldset
                     b
                         span {voc.padding}
-                        hover-hint(text="{voc.paddingNotice}")
+                        hover-hint(text='{voc.paddingNotice}')
                     br
-                    input.wide(type="number" min="0" max="128" step="1" value="{opts.texture.padding}" onchange="{wire('this.texture.padding')}")
+                    input.wide(
+                        type='number',
+                        min='0',
+                        max='128',
+                        step='1',
+                        value='{opts.texture.padding}',
+                        onchange='{wire(\'this.texture.padding\')}'
+                    )
             .preview.bordertop.flexfix-footer
-                #preview(ref="preview" style="background-color: {previewColor};")
-                    canvas(ref="grprCanvas")
+                #preview(ref='preview', style='background-color: {previewColor};')
+                    canvas(ref='grprCanvas')
                 .flexrow
-                    button#textureplay.square.inline(onclick="{currentTexturePreviewPlay}")
+                    button#textureplay.square.inline(onclick='{currentTexturePreviewPlay}')
                         svg.feather
-                            use(xlink:href="data/icons.svg#{prevPlaying? 'pause' : 'play'}")
-                    span(ref="textureviewframe") 0 / 1
+                            use(xlink:href='data/icons.svg#{prevPlaying? \'pause\' : \'play\'}')
+                    span(ref='textureviewframe') 0 / 1
                     .filler
-                    button#textureviewback.square.inline(onclick="{currentTexturePreviewBack}")
+                    button#textureviewback.square.inline(onclick='{currentTexturePreviewBack}')
                         svg.feather
-                            use(xlink:href="data/icons.svg#skip-back")
-                    button#textureviewnext.square.inline.nmr(onclick="{currentTexturePreviewNext}")
+                            use(xlink:href='data/icons.svg#skip-back')
+                    button#textureviewnext.square.inline.nmr(onclick='{currentTexturePreviewNext}')
                         svg.feather
-                            use(xlink:href="data/icons.svg#skip-forward")
+                            use(xlink:href='data/icons.svg#skip-forward')
                 .flexrow
                     b {voc.speed}
                     .filler
-                    input#grahpspeed.short(type="number" min="1" value="{prevSpeed}" onchange="{wire('this.prevSpeed')}" oninput="{wire('this.prevSpeed')}")
+                    input#grahpspeed.short(
+                        type='number',
+                        min='1',
+                        value='{prevSpeed}',
+                        onchange='{wire(\'this.prevSpeed\')}',
+                        oninput='{wire(\'this.prevSpeed\')}'
+                    )
                 .relative
-                    button#texturecolor.inline.wide(onclick="{changeTexturePreviewColor}")
+                    button#texturecolor.inline.wide(onclick='{changeTexturePreviewColor}')
                         svg.feather
-                            use(xlink:href="data/icons.svg#droplet")
+                            use(xlink:href='data/icons.svg#droplet')
                         span {voc.bgcolor}
-                input.color.rgb#previewbgcolor
+                input#previewbgcolor.color.rgb
 
     color-picker(
-        ref="previewBackgroundColor" if="{changingTexturePreviewColor}"
-        hidealpha="true"
-        color="{previewColor}" onapply="{updatePreviewColor}" onchanged="{updatePreviewColor}" oncancel="{cancelPreviewColor}"
+        ref='previewBackgroundColor',
+        if='{changingTexturePreviewColor}',
+        hidealpha='true',
+        color='{previewColor}',
+        onapply='{updatePreviewColor}',
+        onchanged='{updatePreviewColor}',
+        oncancel='{cancelPreviewColor}'
     )
     script.
         const path = require('path'),
@@ -216,7 +348,7 @@ texture-editor.panel.view
         this.namespace = 'textureview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-
+        
         this.nameTaken = false;
         this.prevPlaying = true;
         this.prevPos = 0;
@@ -224,9 +356,9 @@ texture-editor.panel.view
         this.prevShowMask = true;
         this.previewColor = localStorage.UItheme === 'Day'? '#ffffff' : '#08080D';
         this.zoomFactor = 1;
-
+        
         var textureCanvas, grprCanvas;
-
+        
         this.on('mount', () => {
             textureCanvas = this.refs.textureCanvas;
             grprCanvas = this.refs.grprCanvas;
@@ -266,7 +398,7 @@ texture-editor.panel.view
                 this.stopTexturePreview();
             }
         });
-
+        
         this.textureReplace = e => {
             const val = this.refs.textureReplacer.files[0].path;
             if (/\.(jpg|gif|png|jpeg)/gi.test(val)) {
@@ -289,7 +421,7 @@ texture-editor.panel.view
                 global.projdir + '/img/i' + this.texture.uid + path.extname(this.texture.source)
             );
         }
-
+        
         /**
          * Загружает изображение в редактор и генерирует квадратную превьюху из исходного изображения
          * @param {Number} uid Идентификатор изображения
@@ -315,7 +447,7 @@ texture-editor.panel.view
                     this.texture.origname = path.basename(dest);
                     textureCanvas.img = image;
                     this.texture.lastmod = +(new Date());
-
+        
                     const {imgGenPreview} = require('./data/node_requires/resources/textures');
                     imgGenPreview(dest, dest + '_prev.png', 64, () => {
                         this.update();
@@ -333,7 +465,7 @@ texture-editor.panel.view
                 image.src = 'file://' + dest + '?' + Math.random();
             });
         };
-
+        
         this.textureToggleZoom = zoom => e => {
             this.zoomFactor = zoom;
         };
@@ -365,7 +497,7 @@ texture-editor.panel.view
             e.preventDefault();
             this.update();
         };
-
+        
         /**
          * Установить ось вращения на центр изображения
          */
@@ -434,7 +566,7 @@ texture-editor.panel.view
                 h = this.texture.height;
             grprCanvas.width = w;
             grprCanvas.height = h;
-
+        
             grprCanvas.x.clearRect(0, 0, grprCanvas.width, grprCanvas.height);
             grprCanvas.x.drawImage(
                 textureCanvas.img,
@@ -511,7 +643,7 @@ texture-editor.panel.view
                 this.stepTexturePreview();
             }, ~~(1000 / this.prevSpeed));
         };
-
+        
         /**
          * Переключает тип маски на круг и выставляет начальные параметры
          */
@@ -577,14 +709,14 @@ texture-editor.panel.view
             const dly = linePoint2.y - linePoint1.y;
             const lineLength = Math.sqrt(dlx*dlx + dly*dly);
             const lineAngle = Math.atan2(dly, dlx);
-
+        
             const dpx = point.x - linePoint1.x;
             const dpy = point.y - linePoint1.y;
             const toPointLength = Math.sqrt(dpx*dpx + dpy*dpy);
             const toPointAngle = Math.atan2(dpy, dpx);
-
+        
             const distance = toPointLength * Math.cos(toPointAngle - lineAngle);
-
+        
             return {
                 x: linePoint1.x + distance * dlx / lineLength,
                 y: linePoint1.y + distance * dly / lineLength
@@ -606,7 +738,7 @@ texture-editor.panel.view
                 }
                 this.texture.closedStrip = true; // Force closedStrip to true
             }
-
+        
             this.texture.symmetryStrip = !this.texture.symmetryStrip;
             this.update();
         }
@@ -698,12 +830,12 @@ texture-editor.panel.view
                         textureCanvas.x.closePath();
                     }
                     textureCanvas.x.stroke();
-
+        
                     if(this.texture.symmetryStrip) {
                         const movablePoints = this.getMovableStripPoints();
                         const axisPoint1 = movablePoints[0];
                         const axisPoint2 = movablePoints[movablePoints.length - 1];
-
+        
                         // Draw symmetry axis
                         textureCanvas.x.strokeStyle = '#f00';
                         textureCanvas.x.lineWidth = 3;
@@ -715,7 +847,7 @@ texture-editor.panel.view
                 }
             }
         };
-
+        
         /**
          * Событие сохранения графики
          */
@@ -736,7 +868,7 @@ texture-editor.panel.view
                 this.parent.update();
             });
         };
-
+        
         /**
          * Генерирует превьюху первого кадра графики
          * @returns {Promise} Промис
@@ -774,7 +906,7 @@ texture-editor.panel.view
                 });
             });
         };
-
+        
         this.changeTexturePreviewColor = e => {
             this.changingTexturePreviewColor = !this.changingTexturePreviewColor;
             if (this.changingTexturePreviewColor) {
@@ -808,24 +940,24 @@ texture-editor.panel.view
             if (this.texture.shape !== 'strip') {
                 return;
             }
-
+        
             const points = this.getMovableStripPoints();
             const segs = [];
-
+        
             for(let i = 0; i < points.length; i++) {
                 const point1 = points[i];
                 const point2 = points[(i + 1) % points.length];
-
+        
                 const x1 = (point1.x + this.texture.axis[0]) * this.zoomFactor;
                 const y1 = (point1.y + this.texture.axis[1]) * this.zoomFactor;
                 const x2 = (point2.x + this.texture.axis[0]) * this.zoomFactor;
                 const y2 = (point2.y + this.texture.axis[1]) * this.zoomFactor;
                 const dx = x2 - x1;
                 const dy = y2 - y1;
-
+        
                 const length = Math.sqrt(dx*dx + dy*dy);
                 const cssAngle = Math.atan2(dy, dx) * 180 / Math.PI;
-
+        
                 segs.push({
                     left: x1,
                     top: y1,
@@ -833,7 +965,7 @@ texture-editor.panel.view
                     angle: cssAngle
                 });
             }
-
+        
             return segs;
         };
         this.updateSymmetricalPoints = () => {
@@ -852,4 +984,3 @@ texture-editor.panel.view
                 }
             }
         };
-

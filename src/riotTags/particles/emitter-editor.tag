@@ -1,172 +1,196 @@
 emitter-editor.panel.pad
     .emitter-editor-aHeader
-        img.emitter-editor-aTexture(src="{getPreview()}")
+        img.emitter-editor-aTexture(src='{getPreview()}')
         h3 {voc.emitterHeading} {opts.emitter.uid.split('-').pop()}
-        svg.feather.act(title="{vocGlob.delete}" onclick="{deleteEmitter}")
-            use(xlink:href="data/icons.svg#trash")
+        svg.feather.act(title='{vocGlob.delete}', onclick='{deleteEmitter}')
+            use(xlink:href='data/icons.svg#trash')
 
     collapsible-section(
-        heading="{voc.textureHeading}"
-        ontoggle="{saveSectionState}"
-        key="texture"
-        defaultstate="{opts.emitter.openedTabs.includes('texture')? 'opened' : 'closed'}"
+        heading='{voc.textureHeading}',
+        ontoggle='{saveSectionState}',
+        key='texture',
+        defaultstate='{opts.emitter.openedTabs.includes(\'texture\')? \'opened\' : \'closed\'}'
     )
-        button.wide(onclick="{parent.showTexturesSelector}")
+        button.wide(onclick='{parent.showTexturesSelector}')
             svg.feather
-                use(xlink:href="data/icons.svg#coin")
+                use(xlink:href='data/icons.svg#coin')
             span {parent.voc.selectTexture}
-        button.wide(onclick="{parent.showTextureImport}")
+        button.wide(onclick='{parent.showTextureImport}')
             svg.feather
-                use(xlink:href="data/icons.svg#download")
+                use(xlink:href='data/icons.svg#download')
             span {parent.voc.importBuiltin}
 
     collapsible-section(
-        heading="{voc.colorAndOpacityHeading}"
-        ontoggle="{saveSectionState}"
-        key="colors"
-        defaultstate="{opts.emitter.openedTabs.includes('colors')? 'opened' : 'closed'}"
+        heading='{voc.colorAndOpacityHeading}',
+        ontoggle='{saveSectionState}',
+        key='colors',
+        defaultstate='{opts.emitter.openedTabs.includes(\'colors\')? \'opened\' : \'closed\'}'
     )
         fieldset
             label
                 b {parent.voc.colorAndOpacity}
-                curve-editor(
-                    easing="{parent.opts.emitter.settings.alpha.isStepped? 'none' : 'linear'}"
-                    coloreasing="{parent.opts.emitter.settings.color.isStepped? 'none' : 'linear'}"
-                    curve="{parent.opts.emitter.settings.alpha.list}"
-                    colorcurve="{parent.opts.emitter.settings.color.list}"
-                    lockstarttime="true" lockendtime="true"
-                    onchange="{parent.updateColorCurve}"
-                    type="color"
-                ).safecolors
+                curve-editor.safecolors(
+                    easing='{parent.opts.emitter.settings.alpha.isStepped? \'none\' : \'linear\'}',
+                    coloreasing='{parent.opts.emitter.settings.color.isStepped? \'none\' : \'linear\'}',
+                    curve='{parent.opts.emitter.settings.alpha.list}',
+                    colorcurve='{parent.opts.emitter.settings.color.list}',
+                    lockstarttime='true',
+                    lockendtime='true',
+                    onchange='{parent.updateColorCurve}',
+                    type='color'
+                )
         fieldset
             label.checkbox
                 input(
-                    type="checkbox" checked="{parent.opts.emitter.settings.color.isStepped}"
-                    onchange="{parent.wireAndReset('this.opts.emitter.settings.color.isStepped')}"
+                    type='checkbox',
+                    checked='{parent.opts.emitter.settings.color.isStepped}',
+                    onchange='{parent.wireAndReset(\'this.opts.emitter.settings.color.isStepped\')}'
                 )
                 b {parent.voc.steppedColor}
             label.checkbox
                 input(
-                    type="checkbox" checked="{parent.opts.emitter.settings.alpha.isStepped}"
-                    onchange="{parent.wireAndReset('this.opts.emitter.settings.alpha.isStepped')}"
+                    type='checkbox',
+                    checked='{parent.opts.emitter.settings.alpha.isStepped}',
+                    onchange='{parent.wireAndReset(\'this.opts.emitter.settings.alpha.isStepped\')}'
                 )
                 b {parent.voc.steppedAlpha}
         fieldset
             label
                 b {parent.voc.blendMode}
-                select.wide(onchange="{parent.wireAndReset('this.opts.emitter.settings.blendMode')}")
-                    option(value="normal" selected="{parent.opts.emitter.settings.blendMode === 'normal'}") {parent.voc.regular}
-                    option(value="multiply" selected="{parent.opts.emitter.settings.blendMode === 'multiply'}") {parent.voc.darken}
-                    option(value="screen" selected="{parent.opts.emitter.settings.blendMode === 'screen'}") {parent.voc.lighten}
-                    option(value="add" selected="{parent.opts.emitter.settings.blendMode === 'add'}") {parent.voc.burn}
+                select.wide(onchange='{parent.wireAndReset(\'this.opts.emitter.settings.blendMode\')}')
+                    option(value='normal', selected='{parent.opts.emitter.settings.blendMode === \'normal\'}') {parent.voc.regular}
+                    option(value='multiply', selected='{parent.opts.emitter.settings.blendMode === \'multiply\'}') {parent.voc.darken}
+                    option(value='screen', selected='{parent.opts.emitter.settings.blendMode === \'screen\'}') {parent.voc.lighten}
+                    option(value='add', selected='{parent.opts.emitter.settings.blendMode === \'add\'}') {parent.voc.burn}
 
     collapsible-section(
-        heading="{voc.scalingHeading}"
-        ontoggle="{saveSectionState}"
-        key="scaling"
-        defaultstate="{opts.emitter.openedTabs.includes('scaling')? 'opened' : 'closed'}"
+        heading='{voc.scalingHeading}',
+        ontoggle='{saveSectionState}',
+        key='scaling',
+        defaultstate='{opts.emitter.openedTabs.includes(\'scaling\')? \'opened\' : \'closed\'}'
     )
         fieldset
             label
                 b {parent.voc.scale}
                 curve-editor(
-                    min="0" max="2"
-                    valuestep="0.1"
-                    easing="{parent.opts.emitter.settings.scale.isStepped? 'none' : 'linear'}"
-                    curve="{parent.opts.emitter.settings.scale.list}"
-                    lockstarttime="true" lockendtime="true"
-                    onchange="{updateScaleCurve}"
+                    min='0',
+                    max='2',
+                    valuestep='0.1',
+                    easing='{parent.opts.emitter.settings.scale.isStepped? \'none\' : \'linear\'}',
+                    curve='{parent.opts.emitter.settings.scale.list}',
+                    lockstarttime='true',
+                    lockendtime='true',
+                    onchange='{updateScaleCurve}'
                 )
         fieldset
             label.checkbox
                 input(
-                    type="checkbox" checked="{parent.opts.emitter.settings.scale.isStepped}"
-                    onchange="{parent.wireAndReset('this.opts.emitter.settings.scale.isStepped')}"
+                    type='checkbox',
+                    checked='{parent.opts.emitter.settings.scale.isStepped}',
+                    onchange='{parent.wireAndReset(\'this.opts.emitter.settings.scale.isStepped\')}'
                 )
                 b {parent.voc.stepped}
         fieldset
             label
                 b
                     span {parent.voc.minimumSize}
-                    hover-hint(text="{parent.voc.minimumSizeHint}")
+                    hover-hint(text='{parent.voc.minimumSizeHint}')
                 input(
-                    type="range" min="0.01" max="1" step="0.01"
-                    data-wired-force-minmax="yes"
-                    value="{parent.opts.emitter.settings.minimumScaleMultiplier}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.minimumScaleMultiplier', 'minimumScaleMultiplier', true)}"
+                    type='range',
+                    min='0.01',
+                    max='1',
+                    step='0.01',
+                    data-wired-force-minmax='yes',
+                    value='{parent.opts.emitter.settings.minimumScaleMultiplier}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.minimumScaleMultiplier\', \'minimumScaleMultiplier\', true)}'
                 )
 
     collapsible-section(
-        heading="{voc.velocityHeading}"
-        ontoggle="{saveSectionState}"
-        key="velocity"
-        defaultstate="{opts.emitter.openedTabs.includes('velocity')? 'opened' : 'closed'}"
+        heading='{voc.velocityHeading}',
+        ontoggle='{saveSectionState}',
+        key='velocity',
+        defaultstate='{opts.emitter.openedTabs.includes(\'velocity\')? \'opened\' : \'closed\'}'
     )
         fieldset
             label
                 b {parent.voc.velocity}
                 curve-editor(
-                    min="0" max="2500"
-                    valuestep="10"
-                    easing="{parent.opts.emitter.settings.speed.isStepped? 'none' : 'linear'}"
-                    curve="{parent.opts.emitter.settings.speed.list}"
-                    lockstarttime="true" lockendtime="true"
-                    onchange="{parent.updateSpeedCurve}"
+                    min='0',
+                    max='2500',
+                    valuestep='10',
+                    easing='{parent.opts.emitter.settings.speed.isStepped? \'none\' : \'linear\'}',
+                    curve='{parent.opts.emitter.settings.speed.list}',
+                    lockstarttime='true',
+                    lockendtime='true',
+                    onchange='{parent.updateSpeedCurve}'
                 )
         fieldset
             label.checkbox
                 input(
-                    type="checkbox" checked="{parent.opts.emitter.settings.speed.isStepped}"
-                    onchange="{parent.wireAndReset('this.opts.emitter.settings.speed.isStepped')}"
+                    type='checkbox',
+                    checked='{parent.opts.emitter.settings.speed.isStepped}',
+                    onchange='{parent.wireAndReset(\'this.opts.emitter.settings.speed.isStepped\')}'
                 )
                 b {parent.voc.stepped}
         fieldset
             label
                 b
                     span {parent.voc.minimumSpeed}
-                    hover-hint(text="{parent.voc.minimumSpeedHint}")
+                    hover-hint(text='{parent.voc.minimumSpeedHint}')
                 input(
-                    type="range" min="0.01" max="1" step="0.01"
-                    data-wired-force-minmax="yes"
-                    value="{parent.opts.emitter.settings.minimumSpeedMultiplier}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.minimumSpeedMultiplier', 'minimumSpeedMultiplier', true)}"
+                    type='range',
+                    min='0.01',
+                    max='1',
+                    step='0.01',
+                    data-wired-force-minmax='yes',
+                    value='{parent.opts.emitter.settings.minimumSpeedMultiplier}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.minimumSpeedMultiplier\', \'minimumSpeedMultiplier\', true)}'
                 )
             label
                 b {parent.voc.maxSpeed}
                 input.wide(
-                    type="number" min="0" max="1000" step="8"
-                    value="{parent.opts.emitter.settings.maxSpeed}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.maxSpeed', 'maxSpeed', true)}"
+                    type='number',
+                    min='0',
+                    max='1000',
+                    step='8',
+                    value='{parent.opts.emitter.settings.maxSpeed}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.maxSpeed\', \'maxSpeed\', true)}'
                 )
 
     collapsible-section(
-        heading="{voc.gravityHeading}"
-        ontoggle="{saveSectionState}"
-        key="gravity"
-        defaultstate="{opts.emitter.openedTabs.includes('gravity')? 'opened' : 'closed'}"
+        heading='{voc.gravityHeading}',
+        ontoggle='{saveSectionState}',
+        key='gravity',
+        defaultstate='{opts.emitter.openedTabs.includes(\'gravity\')? \'opened\' : \'closed\'}'
     )
         label.fifty.npt.npl.nmt
             span X:
             input.wide(
-                type="number" step="32" min="-4096" max="4096"
-                value="{parent.opts.emitter.settings.acceleration.x}"
-                oninput="{parent.wireAndReset('this.opts.emitter.settings.acceleration.x')}"
+                type='number',
+                step='32',
+                min='-4096',
+                max='4096',
+                value='{parent.opts.emitter.settings.acceleration.x}',
+                oninput='{parent.wireAndReset(\'this.opts.emitter.settings.acceleration.x\')}'
             )
         label.fifty.npt.npr.nmt
             span Y:
             input.wide(
-                type="number" step="32" min="-4096" max="4096"
-                value="{parent.opts.emitter.settings.acceleration.y}"
-                oninput="{parent.wireAndReset('this.opts.emitter.settings.acceleration.y')}"
+                type='number',
+                step='32',
+                min='-4096',
+                max='4096',
+                value='{parent.opts.emitter.settings.acceleration.y}',
+                oninput='{parent.wireAndReset(\'this.opts.emitter.settings.acceleration.y\')}'
             )
         .clear
         p.aNotice {parent.voc.gravityNotice}
 
     collapsible-section(
-        heading="{voc.directionHeading}"
-        ontoggle="{saveSectionState}"
-        key="direction"
-        defaultstate="{opts.emitter.openedTabs.includes('direction')? 'opened' : 'closed'}"
+        heading='{voc.directionHeading}',
+        ontoggle='{saveSectionState}',
+        key='direction',
+        defaultstate='{opts.emitter.openedTabs.includes(\'direction\')? \'opened\' : \'closed\'}'
     )
         fieldset
             b {parent.voc.startingDirection}
@@ -174,32 +198,39 @@ emitter-editor.panel.pad
             label.fifty.npt.npl.nmt
                 span {parent.voc.from}
                 input.wide(
-                    type="number" step="1" min="-360" max="360"
-                    data-wired-force-minmax="yes"
-                    value="{parent.opts.emitter.settings.startRotation.min}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.startRotation.min', 'minStartRotation', true)}"
+                    type='number',
+                    step='1',
+                    min='-360',
+                    max='360',
+                    data-wired-force-minmax='yes',
+                    value='{parent.opts.emitter.settings.startRotation.min}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.startRotation.min\', \'minStartRotation\', true)}'
                 )
             label.fifty.npt.npr.nmt
                 span {parent.voc.to}
                 input.wide(
-                    type="number" step="1" min="-360" max="360"
-                    data-wired-force-minmax="yes"
-                    value="{parent.opts.emitter.settings.startRotation.max}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.startRotation.max', 'maxStartRotation', true)}"
+                    type='number',
+                    step='1',
+                    min='-360',
+                    max='360',
+                    data-wired-force-minmax='yes',
+                    value='{parent.opts.emitter.settings.startRotation.max}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.startRotation.max\', \'maxStartRotation\', true)}'
                 )
             .clear
             label.checkbox
                 input(
-                    type="checkbox" checked="{parent.opts.emitter.settings.noRotation}"
-                    onchange="{parent.wireAndReset('this.opts.emitter.settings.noRotation')}"
+                    type='checkbox',
+                    checked='{parent.opts.emitter.settings.noRotation}',
+                    onchange='{parent.wireAndReset(\'this.opts.emitter.settings.noRotation\')}'
                 )
                 b {parent.voc.preserveTextureDirection}
 
     collapsible-section(
-        heading="{voc.rotationHeading}"
-        ontoggle="{saveSectionState}"
-        key="rotation"
-        defaultstate="{opts.emitter.openedTabs.includes('rotation')? 'opened' : 'closed'}"
+        heading='{voc.rotationHeading}',
+        ontoggle='{saveSectionState}',
+        key='rotation',
+        defaultstate='{opts.emitter.openedTabs.includes(\'rotation\')? \'opened\' : \'closed\'}'
     )
         fieldset
             b {parent.voc.rotationSpeed}
@@ -207,64 +238,85 @@ emitter-editor.panel.pad
             label.fifty.npt.npl.npb.nmt
                 span {parent.voc.from}
                 input.wide(
-                    type="number" step="15" min="-720" max="720"
-                    value="{parent.opts.emitter.settings.rotationSpeed.min}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.rotationSpeed.min', 'minRotationSpeed', true)}"
+                    type='number',
+                    step='15',
+                    min='-720',
+                    max='720',
+                    value='{parent.opts.emitter.settings.rotationSpeed.min}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.rotationSpeed.min\', \'minRotationSpeed\', true)}'
                 )
             label.fifty.npt.npr.npb.nmt
                 span {parent.voc.to}
                 input.wide(
-                    type="number" step="15" min="-720" max="720"
-                    value="{parent.opts.emitter.settings.rotationSpeed.max}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.rotationSpeed.max', 'maxRotationSpeed', true)}"
+                    type='number',
+                    step='15',
+                    min='-720',
+                    max='720',
+                    value='{parent.opts.emitter.settings.rotationSpeed.max}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.rotationSpeed.max\', \'maxRotationSpeed\', true)}'
                 )
             .clear
         fieldset
             label
                 b {parent.voc.rotationAcceleration}
                 input.wide(
-                    type="number" step="30" min="-3000" max="3000"
-                    value="{parent.opts.emitter.settings.rotationAcceleration}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.rotationAcceleration', 'rotationAcceleration', true)}"
+                    type='number',
+                    step='30',
+                    min='-3000',
+                    max='3000',
+                    value='{parent.opts.emitter.settings.rotationAcceleration}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.rotationAcceleration\', \'rotationAcceleration\', true)}'
                 )
 
     collapsible-section(
-        heading="{voc.spawningHeading}"
-        ontoggle="{saveSectionState}"
-        key="spawning"
-        defaultstate="{opts.emitter.openedTabs.includes('spawningHeading')? 'opened' : 'closed'}"
+        heading='{voc.spawningHeading}',
+        ontoggle='{saveSectionState}',
+        key='spawning',
+        defaultstate='{opts.emitter.openedTabs.includes(\'spawningHeading\')? \'opened\' : \'closed\'}'
     )
         fieldset
-            label(if="{parent.opts.emitter.settings.spawnType !== 'burst'}")
+            label(if='{parent.opts.emitter.settings.spawnType !== \'burst\'}')
                 b {parent.voc.spawnAtOnce}
                 input.wide(
-                    type="number" min="1" max="512" step="1"
-                    data-wired-force-minmax="yes"
-                    value="{parent.opts.emitter.settings.particlesPerWave}"
-                    oninput="{parent.setParticleSpacing}"
+                    type='number',
+                    min='1',
+                    max='512',
+                    step='1',
+                    data-wired-force-minmax='yes',
+                    value='{parent.opts.emitter.settings.particlesPerWave}',
+                    oninput='{parent.setParticleSpacing}'
                 )
             label
                 b {parent.voc.timeBetweenBursts}
                 input.wide(
-                    type="number" step="0.001" min="0.001" max="10"
-                    data-wired-force-minmax="yes"
-                    value="{parent.opts.emitter.settings.frequency}"
-                    oninput="{parent.wireAndUpdate('this.opts.emitter.settings.frequency', '_frequency', true)}"
+                    type='number',
+                    step='0.001',
+                    min='0.001',
+                    max='10',
+                    data-wired-force-minmax='yes',
+                    value='{parent.opts.emitter.settings.frequency}',
+                    oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.frequency\', \'_frequency\', true)}'
                 )
             label
                 b {parent.voc.maxParticles}
                 input.wide(
-                    type="number" step="100" min="1" max="10000"
-                    value="{parent.opts.emitter.settings.maxParticles}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.maxParticles', 'maxParticles')}"
+                    type='number',
+                    step='100',
+                    min='1',
+                    max='10000',
+                    value='{parent.opts.emitter.settings.maxParticles}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.maxParticles\', \'maxParticles\')}'
                 )
             label
                 b {parent.voc.chanceToSpawn}
                 input(
-                    type="range" min="0.01" max="1" step="0.01"
-                    data-wired-force-minmax="yes"
-                    value="{parent.opts.emitter.settings.spawnChance}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.spawnChance', 'spawnChance')}"
+                    type='range',
+                    min='0.01',
+                    max='1',
+                    step='0.01',
+                    data-wired-force-minmax='yes',
+                    value='{parent.opts.emitter.settings.spawnChance}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.spawnChance\', \'spawnChance\')}'
                 )
         fieldset
             b {parent.voc.lifetime}
@@ -272,16 +324,22 @@ emitter-editor.panel.pad
             label.fifty.npt.npl.npb.nmt
                 span {parent.voc.from}
                 input.wide(
-                    type="number" step="0.01" min="0.01" max="600"
-                    value="{parent.opts.emitter.settings.lifetime.min}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.lifetime.min')}"
+                    type='number',
+                    step='0.01',
+                    min='0.01',
+                    max='600',
+                    value='{parent.opts.emitter.settings.lifetime.min}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.lifetime.min\')}'
                 )
             label.fifty.npt.npr.npb.nmt
                 span {parent.voc.to}
                 input.wide(
-                    type="number" step="0.01" min="0.01" max="600"
-                    value="{parent.opts.emitter.settings.lifetime.max}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.lifetime.max')}"
+                    type='number',
+                    step='0.01',
+                    min='0.01',
+                    max='600',
+                    value='{parent.opts.emitter.settings.lifetime.max}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.lifetime.max\')}'
                 )
             .clear
 
@@ -289,115 +347,144 @@ emitter-editor.panel.pad
             label
                 b {parent.voc.emitterLifetime}
                 input.wide(
-                    type="number" min="-1" step="0.1"
-                    value="{parent.opts.emitter.settings.emitterLifetime}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.emitterLifetime')}"
+                    type='number',
+                    min='-1',
+                    step='0.1',
+                    value='{parent.opts.emitter.settings.emitterLifetime}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.emitterLifetime\')}'
                 )
             label
                 b
                     span {parent.voc.prewarmDelay}
-                    hover-hint(text="{parent.voc.prewarmDelayNotice}")
+                    hover-hint(text='{parent.voc.prewarmDelayNotice}')
                 input.wide(
-                    type="number" min="-100" max="100"
-                    value="{parent.opts.emitter.settings.delay}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.delay')}"
+                    type='number',
+                    min='-100',
+                    max='100',
+                    value='{parent.opts.emitter.settings.delay}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.delay\')}'
                 )
             .spacer
 
     collapsible-section(
-        heading="{voc.shapeAndPositioningHeading}"
-        ontoggle="{saveSectionState}"
-        key="shape"
-        defaultstate="{opts.emitter.openedTabs.includes('shape')? 'opened' : 'closed'}"
+        heading='{voc.shapeAndPositioningHeading}',
+        ontoggle='{saveSectionState}',
+        key='shape',
+        defaultstate='{opts.emitter.openedTabs.includes(\'shape\')? \'opened\' : \'closed\'}'
     )
         fieldset
             label
                 b {parent.voc.spawnType}
-                select.wide(onchange="{parent.changeSpawnType}")
-                    option(selected="{parent.opts.emitter.settings.spawnType === 'point'}" value="point") {parent.voc.spawnShapes.point}
-                    option(selected="{parent.opts.emitter.settings.spawnType === 'rect'}" value="rect") {parent.voc.spawnShapes.rectangle}
-                    option(selected="{parent.opts.emitter.settings.spawnType === 'circle'}" value="circle") {parent.voc.spawnShapes.circle}
-                    option(selected="{parent.opts.emitter.settings.spawnType === 'ring'}" value="ring") {parent.voc.spawnShapes.ring}
-                    option(selected="{parent.opts.emitter.settings.spawnType === 'burst'}" value="burst") {parent.voc.spawnShapes.star}
+                select.wide(onchange='{parent.changeSpawnType}')
+                    option(selected='{parent.opts.emitter.settings.spawnType === \'point\'}', value='point') {parent.voc.spawnShapes.point}
+                    option(selected='{parent.opts.emitter.settings.spawnType === \'rect\'}', value='rect') {parent.voc.spawnShapes.rectangle}
+                    option(selected='{parent.opts.emitter.settings.spawnType === \'circle\'}', value='circle') {parent.voc.spawnShapes.circle}
+                    option(selected='{parent.opts.emitter.settings.spawnType === \'ring\'}', value='ring') {parent.voc.spawnShapes.ring}
+                    option(selected='{parent.opts.emitter.settings.spawnType === \'burst\'}', value='burst') {parent.voc.spawnShapes.star}
 
         // emitter.settings.spawnType === 'point' does not have additional settings
 
-        fieldset(if="{parent.opts.emitter.settings.spawnType === 'rect'}")
+        fieldset(if='{parent.opts.emitter.settings.spawnType === \'rect\'}')
             label.fifty.npt.npl.npb.nmt
                 b {parent.voc.width}
                 input.wide(
-                    type="number" step="8" min="-4096" max="4096"
-                    value="{parent.opts.emitter.settings.spawnRect.w}"
-                    oninput="{parent.setRectWidth}"
+                    type='number',
+                    step='8',
+                    min='-4096',
+                    max='4096',
+                    value='{parent.opts.emitter.settings.spawnRect.w}',
+                    oninput='{parent.setRectWidth}'
                 )
             label.fifty.npt.npr.npb.nmt
                 b {parent.voc.height}
                 input.wide(
-                    type="number" step="8" min="-4096" max="4096"
-                    value="{parent.opts.emitter.settings.spawnRect.h}"
-                    oninput="{parent.setRectHeight}"
+                    type='number',
+                    step='8',
+                    min='-4096',
+                    max='4096',
+                    value='{parent.opts.emitter.settings.spawnRect.h}',
+                    oninput='{parent.setRectHeight}'
                 )
             .clear
-        fieldset(if="{parent.opts.emitter.settings.spawnType === 'circle'}")
+        fieldset(if='{parent.opts.emitter.settings.spawnType === \'circle\'}')
             label
                 b {parent.voc.radius}
                 input.wide(
-                    type="number" step="8" min="1" max="4096"
-                    value="{parent.opts.emitter.settings.spawnCircle.r}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.spawnCircle.r')}"
+                    type='number',
+                    step='8',
+                    min='1',
+                    max='4096',
+                    value='{parent.opts.emitter.settings.spawnCircle.r}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.spawnCircle.r\')}'
                 )
 
-        fieldset(if="{parent.opts.emitter.settings.spawnType === 'ring'}")
+        fieldset(if='{parent.opts.emitter.settings.spawnType === \'ring\'}')
             b {parent.voc.radius}
             .clear
             label.fifty.npt.npl.npb.nmt
                 span {parent.voc.from}
                 input.wide(
-                    type="number" step="8" min="1" max="4096"
-                    value="{parent.opts.emitter.settings.spawnCircle.minR}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.spawnCircle.minR')}"
+                    type='number',
+                    step='8',
+                    min='1',
+                    max='4096',
+                    value='{parent.opts.emitter.settings.spawnCircle.minR}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.spawnCircle.minR\')}'
                 )
             label.fifty.npt.npr.npb.nmt
                 span {parent.voc.to}
                 input.wide(
-                    type="number" step="8" min="1" max="4096"
-                    value="{parent.opts.emitter.settings.spawnCircle.r}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.spawnCircle.r')}"
+                    type='number',
+                    step='8',
+                    min='1',
+                    max='4096',
+                    value='{parent.opts.emitter.settings.spawnCircle.r}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.spawnCircle.r\')}'
                 )
             .clear
 
         fieldset
             label.checkbox
                 input(
-                    type="checkbox" checked="{parent.opts.emitter.showShapeVisualizer}"
-                    onchange="{parent.wireAndReset('this.opts.emitter.showShapeVisualizer')}"
+                    type='checkbox',
+                    checked='{parent.opts.emitter.showShapeVisualizer}',
+                    onchange='{parent.wireAndReset(\'this.opts.emitter.showShapeVisualizer\')}'
                 )
                 b {parent.voc.showShapeVisualizer}
 
-        fieldset(if="{parent.opts.emitter.settings.spawnType === 'burst'}")
+        fieldset(if='{parent.opts.emitter.settings.spawnType === \'burst\'}')
             label
                 b {parent.voc.starPoints}
                 input.wide(
-                    type="number" min="1" max="128" step="1"
-                    data-wired-force-minmax="yes"
-                    value="{parent.opts.emitter.settings.particlesPerWave}"
-                    oninput="{parent.setParticleSpacing}"
+                    type='number',
+                    min='1',
+                    max='128',
+                    step='1',
+                    data-wired-force-minmax='yes',
+                    value='{parent.opts.emitter.settings.particlesPerWave}',
+                    oninput='{parent.setParticleSpacing}'
                 )
             label
                 b {parent.voc.startAngle}
                 .flexrow
                     input(
-                        type="number" min="0" max="360" step="1"
-                        data-wired-force-minmax="yes"
-                        value="{parent.opts.emitter.settings.angleStart}"
-                        oninput="{parent.wireAndUpdate('this.opts.emitter.settings.angleStart', 'angleStart', true)}"
+                        type='number',
+                        min='0',
+                        max='360',
+                        step='1',
+                        data-wired-force-minmax='yes',
+                        value='{parent.opts.emitter.settings.angleStart}',
+                        oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.angleStart\', \'angleStart\', true)}'
                     )
                     .spacer
                     input.wide(
-                        type="range" min="0" max="360" step="1"
-                        data-wired-force-minmax="yes"
-                        value="{parent.opts.emitter.settings.angleStart}"
-                        oninput="{parent.wireAndUpdate('this.opts.emitter.settings.angleStart', 'angleStart', true)}"
+                        type='range',
+                        min='0',
+                        max='360',
+                        step='1',
+                        data-wired-force-minmax='yes',
+                        value='{parent.opts.emitter.settings.angleStart}',
+                        oninput='{parent.wireAndUpdate(\'this.opts.emitter.settings.angleStart\', \'angleStart\', true)}'
                     )
 
         fieldset
@@ -405,31 +492,37 @@ emitter-editor.panel.pad
             label.fifty.npt.npl.npb.nmt
                 span X:
                 input.wide(
-                    type="number" step="8" min="-1024" max="1024"
-                    value="{parent.opts.emitter.settings.pos.x}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.pos.x')}"
+                    type='number',
+                    step='8',
+                    min='-1024',
+                    max='1024',
+                    value='{parent.opts.emitter.settings.pos.x}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.pos.x\')}'
                 )
             label.fifty.npt.npr.npb.nmt
                 span Y:
                 input.wide(
-                    type="number" step="8" min="-1024" max="1024"
-                    value="{parent.opts.emitter.settings.pos.y}"
-                    oninput="{parent.wireAndReset('this.opts.emitter.settings.pos.y')}"
+                    type='number',
+                    step='8',
+                    min='-1024',
+                    max='1024',
+                    value='{parent.opts.emitter.settings.pos.y}',
+                    oninput='{parent.wireAndReset(\'this.opts.emitter.settings.pos.y\')}'
                 )
             .clear
 
-    texture-selector(if="{pickingTexture}" onselected="{onTexturePicked}" oncancelled="{onTextureCancel}")
-    particle-importer(if="{importingTexture}" onselected="{onTextureImport}" oncancelled="{onTextureImportCancel}")
+    texture-selector(if='{pickingTexture}', onselected='{onTexturePicked}', oncancelled='{onTextureCancel}')
+    particle-importer(if='{importingTexture}', onselected='{onTextureImport}', oncancelled='{onTextureImportCancel}')
     script.
         this.namespace = 'particleEmitters';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-
+        
         const {getTexturePreview, getTextureFromName, importImageToTexture} = require('./data/node_requires/resources/textures');
         this.getPreview = () => {
             return getTexturePreview(this.opts.emitter.texture);
         };
-
+        
         this.wireAndReset = path => e => {
             this.wire(path)(e);
             window.signals.trigger('emitterResetRequest');
@@ -451,16 +544,16 @@ emitter-editor.panel.pad
                 window.signals.trigger('emitterResetRequest');
             }
         };
-
+        
         this.pickingTexture = false;
-
+        
         this.setParticleSpacing = e => {
             const emt = this.opts.emitter.settings;
             emt.particleSpacing = 360 / Math.min(128, Math.max(1, Number(e.target.value)));
             emt.particlesPerWave = Number(e.target.value);
             window.signals.trigger('emitterResetRequest');
         };
-
+        
         this.setRectWidth = e => {
             const emt = this.opts.emitter.settings;
             emt.spawnRect.w = Number(e.target.value);
@@ -473,7 +566,7 @@ emitter-editor.panel.pad
             emt.spawnRect.y = -emt.spawnRect.h / 2;
             window.signals.trigger('emitterResetRequest');
         };
-
+        
         this.updateScaleCurve = curve => {
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
@@ -496,7 +589,7 @@ emitter-editor.panel.pad
             if (this.opts.emittermap && (this.opts.emitter.uid in this.opts.emittermap)) {
                 const emtInst = this.opts.emittermap[this.opts.emitter.uid];
                 const {PropertyNode} = PIXI.particles;
-
+        
                 emtInst.startColor = PropertyNode.createList(this.opts.emitter.settings.color);
                 emtInst.startAlpha = PropertyNode.createList(this.opts.emitter.settings.alpha);
             } else {
@@ -519,7 +612,7 @@ emitter-editor.panel.pad
             }
             return combinedList;
         };
-
+        
         this.changeSpawnType = e => {
             const emt = this.opts.emitter.settings;
             const oldType = emt.spawnType;
@@ -548,7 +641,7 @@ emitter-editor.panel.pad
             }
             window.signals.trigger('emitterResetRequest');
         };
-
+        
         this.saveSectionState = (opened, tag) => {
             if (opened) {
                 if (!this.opts.emitter.openedTabs.includes(tag.opts.key)) {
@@ -561,7 +654,7 @@ emitter-editor.panel.pad
                 }
             }
         };
-
+        
         this.showTexturesSelector = e => {
             this.pickingTexture = true;
             this.update();
@@ -577,7 +670,7 @@ emitter-editor.panel.pad
             this.pickingTexture = false;
             this.update();
         };
-
+        
         this.showTextureImport = e => {
             this.importingTexture = true;
             this.update();
@@ -603,8 +696,8 @@ emitter-editor.panel.pad
             this.importingTexture = false;
             this.update();
         };
-
-
+        
+        
         this.deleteEmitter = e => {
             this.parent.deleteEmitter(this.opts.emitter);
         };

@@ -1,80 +1,92 @@
 room-editor.panel.view
-    .toolbar.tall(style="width: {sidebarWidth}px")
+    .toolbar.tall(style='width: {sidebarWidth}px')
         .settings.nogrow.noshrink
             b {voc.name}
             br
-            input.wide(type="text" value="{room.name}" onchange="{wire('this.room.name')}")
-            .anErrorNotice(if="{nameTaken}" ref="errorNotice") {vocGlob.nametaken}
+            input.wide(type='text', value='{room.name}', onchange='{wire(\'this.room.name\')}')
+            .anErrorNotice(if='{nameTaken}', ref='errorNotice') {vocGlob.nametaken}
             .fifty.npt.npb.npl
                 b {voc.width}
                 br
-                input.wide(type="number" value="{room.width}" onchange="{wire('this.room.width')}")
+                input.wide(type='number', value='{room.width}', onchange='{wire(\'this.room.width\')}')
             .fifty.npt.npb.npr
                 b {voc.height}
                 br
-                input.wide(type="number" value="{room.height}" onchange="{wire('this.room.height')}")
+                input.wide(type='number', value='{room.height}', onchange='{wire(\'this.room.height\')}')
             br
-            button.wide(onclick="{openRoomEvents}")
-                svg.feather(if="{room.oncreate || room.onstep || room.ondestroy || room.ondraw}")
-                    use(xlink:href="data/icons.svg#check")
+            button.wide(onclick='{openRoomEvents}')
+                svg.feather(if='{room.oncreate || room.onstep || room.ondestroy || room.ondraw}')
+                    use(xlink:href='data/icons.svg#check')
                 span {voc.events}
         .palette
             .tabwrap
                 ul.tabs.nav.noshrink.nogrow
-                    li(onclick="{changeTab('roomcopies')}" class="{active: tab === 'roomcopies'}") {voc.copies}
-                    li(onclick="{changeTab('roombackgrounds')}" class="{active: tab === 'roombackgrounds'}") {voc.backgrounds}
-                    li(onclick="{changeTab('roomtiles')}" class="{active: tab === 'roomtiles'}") {voc.tiles}
+                    li.tab(onclick='{changeTab(\'roomcopies\')}', class='{active: === \'roomcopies\'}') {voc.copies}
+                    li.tab(onclick='{changeTab(\'roombackgrounds\')}', class='{active: === \'roombackgrounds\'}') {voc.backgrounds}
+                    li.tab(onclick='{changeTab(\'roomtiles\')}', class='{active: === \'roomtiles\'}') {voc.tiles}
                 .relative
-                    room-type-picker(show="{tab === 'roomcopies'}" current="{currentType}")
-                    room-backgrounds-editor(show="{tab === 'roombackgrounds'}" room="{room}")
-                    room-tile-editor(show="{tab === 'roomtiles'}" room="{room}")
+                    room-type-picker(show='{tab === \'roomcopies\'}', current='{currentType}')
+                    room-backgrounds-editor(show='{tab === \'roombackgrounds\'}', room='{room}')
+                    room-tile-editor(show='{tab === \'roomtiles\'}', room='{room}')
         .done.nogrow
-            button.wide#roomviewdone(onclick="{roomSave}")
+            button#roomviewdone.wide(onclick='{roomSave}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#check")
+                    use(xlink:href='data/icons.svg#check')
                 span {voc.done}
-    .aResizer.vertical(ref="gutter" onmousedown="{gutterMouseDown}")
-    .editor(ref="canvaswrap")
+    .aResizer.vertical(ref='gutter', onmousedown='{gutterMouseDown}')
+    .editor(ref='canvaswrap')
         canvas(
-            ref="canvas"
-            onclick="{onCanvasClick}"
-            onmousedown="{onCanvasPress}"
-            onmousemove="{onCanvasMove}"
-            onmouseup="{onCanvasMouseUp}"
-            onmouseout="{refreshRoomCanvas}"
-            onmousewheel="{onCanvasWheel}"
-            oncontextmenu="{onCanvasContextMenu}"
+            ref='canvas',
+            onclick='{onCanvasClick}',
+            onmousedown='{onCanvasPress}',
+            onmousemove='{onCanvasMove}',
+            onmouseup='{onCanvasMouseUp}',
+            onmouseout='{refreshRoomCanvas}',
+            onmousewheel='{onCanvasWheel}',
+            oncontextmenu='{onCanvasContextMenu}'
         )
         .shift
-            button.inline.square(title="{voc.shift}" onclick="{roomShift}")
+            button.inline.square(title='{voc.shift}', onclick='{roomShift}')
                 svg.feather
-                    use(xlink:href="data/icons.svg#move")
-            span(if="{window.innerWidth - sidebarWidth > 840}") {voc.hotkeysNotice}
+                    use(xlink:href='data/icons.svg#move')
+            span(if='{window.innerWidth - sidebarWidth > 840}') {voc.hotkeysNotice}
         .zoom
-            b(if="{window.innerWidth - sidebarWidth > 840}") {vocGlob.zoom}
-            div.button-stack
-                button#roomzoom12.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.125)}" class="{active: zoomFactor === 0.125}") 12%
-                button#roomzoom25.inline(onclick="{roomToggleZoom(0.25)}" class="{active: zoomFactor === 0.25}") 25%
-                button#roomzoom50.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(0.5)}" class="{active: zoomFactor === 0.5}") 50%
-                button#roomzoom100.inline(onclick="{roomToggleZoom(1)}" class="{active: zoomFactor === 1}") 100%
-                button#roomzoom200.inline(onclick="{roomToggleZoom(2)}" class="{active: zoomFactor === 2}") 200%
-                button#roomzoom400.inline(if="{window.innerWidth - sidebarWidth > 470}" onclick="{roomToggleZoom(4)}" class="{active: zoomFactor === 4}") 400%
+            b(if='{window.innerWidth - sidebarWidth > 840}') {vocGlob.zoom}
+            .button-stack
+                button#roomzoom12.inline.zoomFactor(
+                    if='{window.innerWidth - sidebarWidth > 470}',
+                    onclick='{roomToggleZoom(0.125)}',
+                    class='{active: === 0.125}'
+                ) 12%
+                button#roomzoom25.inline.zoomFactor(onclick='{roomToggleZoom(0.25)}', class='{active: === 0.25}') 25%
+                button#roomzoom50.inline.zoomFactor(
+                    if='{window.innerWidth - sidebarWidth > 470}',
+                    onclick='{roomToggleZoom(0.5)}',
+                    class='{active: === 0.5}'
+                ) 50%
+                button#roomzoom100.inline.zoomFactor(onclick='{roomToggleZoom(1)}', class='{active: === 1}') 100%
+                button#roomzoom200.inline.zoomFactor(onclick='{roomToggleZoom(2)}', class='{active: === 2}') 200%
+                button#roomzoom400.inline.zoomFactor(
+                    if='{window.innerWidth - sidebarWidth > 470}',
+                    onclick='{roomToggleZoom(4)}',
+                    class='{active: === 4}'
+                ) 400%
         .grid
-            button#roomgrid(onclick="{roomToggleGrid}" class="{active: room.gridX > 0}")
+            button#roomgrid(onclick='{roomToggleGrid}', class='{active: room.gridX > 0}')
                 span {voc[room.gridX > 0? 'gridoff' : 'grid']}
         .center
-            button#roomcenter(onclick="{roomToCenter}") {voc.tocenter}
-            span.aMouseCoord(if="{window.innerWidth - sidebarWidth > 470}" ref="mousecoords") ({mouseX}:{mouseY})
-    room-events-editor(if="{editingCode}" room="{room}")
-    context-menu(menu="{roomCanvasCopiesMenu}" ref="roomCanvasCopiesMenu")
-    context-menu(menu="{roomCanvasMenu}" ref="roomCanvasMenu")
-    context-menu(menu="{roomCanvasTileMenu}" ref="roomCanvasTileMenu")
-    context-menu(menu="{roomCanvasTilesMenu}" ref="roomCanvasTilesMenu")
+            button#roomcenter(onclick='{roomToCenter}') {voc.tocenter}
+            span.aMouseCoord(if='{window.innerWidth - sidebarWidth > 470}', ref='mousecoords') ({mouseX}:{mouseY})
+    room-events-editor(if='{editingCode}', room='{room}')
+    context-menu(menu='{roomCanvasCopiesMenu}', ref='roomCanvasCopiesMenu')
+    context-menu(menu='{roomCanvasMenu}', ref='roomCanvasMenu')
+    context-menu(menu='{roomCanvasTileMenu}', ref='roomCanvasTileMenu')
+    context-menu(menu='{roomCanvasTilesMenu}', ref='roomCanvasTilesMenu')
     script.
         const minSizeW = 250;
         const getMaxSizeW = () => window.innerWidth - 300;
         this.sidebarWidth = Math.max(minSizeW, Math.min(getMaxSizeW(), localStorage.roomSidebarWidth || 300));
-
+        
          this.gutterMouseDown = e => {
             this.draggingGutter = true;
         };
@@ -106,7 +118,7 @@ room-editor.panel.view
             document.removeEventListener('mousemove', gutterMove);
             document.removeEventListener('mouseup', gutterUp);
         });
-
+        
         this.editingCode = false;
         this.forbidDrawing = false;
         const fs = require('fs-extra');
@@ -116,9 +128,9 @@ room-editor.panel.view
         this.mixin(window.riotWired);
         this.mixin(window.roomCopyTools);
         this.mixin(window.roomTileTools);
-
+        
         this.room = this.opts.room;
-
+        
         this.mouseX = this.mouseY = 0;
         this.roomx = this.room.width / 2;
         this.roomy = this.room.height / 2;
@@ -127,7 +139,7 @@ room-editor.panel.view
         this.room.gridY = this.room.gridY || this.room.grid || 64;
         this.dragging = false;
         this.tab = 'roomcopies';
-
+        
         var updateCanvasSize = e => {
             // Firstly, check that we don't need to reflow the layout due to window shrinking
             const oldSidebarWidth = this.sidebarWidth;
@@ -164,11 +176,11 @@ room-editor.panel.view
         this.on('unmount', () => {
             window.removeEventListener('resize', updateCanvasSize);
         });
-
+        
         this.openRoomEvents = e => {
             this.editingCode = true;
         };
-
+        
         // Навигация по комнате, настройки вида
         this.roomToggleZoom = zoomFactor => e => {
             this.zoomFactor = zoomFactor;
@@ -208,7 +220,7 @@ room-editor.panel.view
                 this.room.gridY = 0;
             }
         };
-
+        
         // Работа с копиями
         this.tab = 'roomcopies';
         this.changeTab = tab => e => {
@@ -220,7 +232,7 @@ room-editor.panel.view
         this.roomUnpickType = e => {
             this.currentType = -1;
         };
-
+        
         /** Преобразовать x на канвасе в x на комнате */
         this.xToRoom = x => (x - ~~(this.refs.canvas.width / 2)) / this.zoomFactor + this.roomx;
         /** Преобразовать y на канвасе в y на комнате */
@@ -229,7 +241,7 @@ room-editor.panel.view
         this.xToCanvas = x => (x - this.roomx) * this.zoomFactor + ~~(this.refs.canvas.width / 2);
         /** Преобразовать y в комнате в y на канвасе */
         this.yToCanvas = y => (y - this.roomy) * this.zoomFactor + ~~(this.refs.canvas.height / 2);
-
+        
         this.onCanvasClick = e => {
             if (this.tab === 'roomcopies') {
                 this.onCanvasClickCopies(e);
@@ -242,7 +254,7 @@ room-editor.panel.view
             this.mouseDown = true;
             this.startx = e.offsetX;
             this.starty = e.offsetY;
-
+        
             if (this.tab === 'roomcopies' && this.onCanvasPressCopies(e)) {
                 return;
             }
@@ -284,7 +296,7 @@ room-editor.panel.view
             x.fill();
             x.stroke();
         };
-
+        
         /**
          * Updating mouse coordinates display at the bottom-left corner
          */
@@ -300,7 +312,7 @@ room-editor.panel.view
             }
             this.refs.mousecoords.innerHTML = `(${this.mouseX}:${this.mouseY})`;
         };
-
+        
         /** Начинаем перемещение, или же показываем предварительное расположение новой копии */
         this.onCanvasMove = e => {
             e.preventUpdate = true;
@@ -324,7 +336,7 @@ room-editor.panel.view
             }
             this.updateMouseCoords(e);
         };
-
+        
         /** При прокрутке колёсиком меняем фактор зума */
         this.onCanvasWheel = e => {
             if (e.wheelDelta > 0) {
@@ -378,7 +390,7 @@ room-editor.panel.view
             e.preventDefault();
             return true;
         };
-
+        
         // Shifts all the copies in a room at once.
         this.roomShift = e => {
             window.alertify.confirm(`
@@ -408,7 +420,7 @@ room-editor.panel.view
                 }
             });
         };
-
+        
         /** Saves a room (in fact, just marks a project as an unsaved, and closes the room editor) */
         this.roomSave = e => {
             if (this.nameTaken) {
@@ -431,7 +443,7 @@ room-editor.panel.view
                 this.parent.update();
             });
         };
-
+        
         this.resortRoom = () => {
             // Make an array of all the backgrounds, tile layers and copies, and then sort it.
             this.stack = this.room.copies.concat(this.room.backgrounds).concat(this.room.tiles);
@@ -460,19 +472,19 @@ room-editor.panel.view
                 canvas.width = sizes.width;
                 canvas.height = sizes.height;
             }
-
+        
             // Сбросим базовые настройки рисования
             canvas.x.setTransform(1,0,0,1,0,0);
             canvas.x.globalAlpha = 1;
             // Очистим холст
             canvas.x.clearRect(0,0,canvas.width,canvas.height);
-
+        
             // Выполним перемещение с учётом зума
             canvas.x.translate(~~(canvas.width / 2), ~~(canvas.height / 2));
             canvas.x.scale(this.zoomFactor,this.zoomFactor);
             canvas.x.translate(-this.roomx, -this.roomy);
             canvas.x.imageSmoothingEnabled = !global.currentProject.settings.pixelatedrender;
-
+        
             if (this.stack.length > 0) { // есть слои вообще?
                 // копии
                 for (let i = 0, li = this.stack.length; i < li; i++) {
@@ -554,7 +566,7 @@ room-editor.panel.view
                     }
                 }
             }
-
+        
             // Это рисовка сетки
             if (this.room.gridX > 1) {
                 canvas.x.globalCompositeOperation = 'exclusion';
@@ -564,7 +576,7 @@ room-editor.panel.view
                     canvas.width / this.zoomFactor, canvas.height / this.zoomFactor);
                 canvas.x.globalCompositeOperation = 'source-over';
             }
-
+        
             // Обводка выделенных тайлов
             if (this.tab === 'roomtiles' && this.selectedTiles && this.selectedTiles.length) {
                 for (const tile of this.selectedTiles) {
@@ -578,7 +590,7 @@ room-editor.panel.view
                     this.drawSelection(copy);
                 }
             }
-
+        
             // Обводка границ комнаты
             this.drawSelection(-1.5, -1.5, this.room.width+1.5, this.room.height+1.5);
         };
@@ -612,7 +624,7 @@ room-editor.panel.view
             this.refs.canvas.x.lineWidth = 1;
             this.refs.canvas.x.strokeRect(x1, y1, x2-x1, y2-y1);
         };
-
+        
         /**
          * Генерирует миниатюру комнаты
          */

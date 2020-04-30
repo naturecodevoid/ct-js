@@ -1,7 +1,7 @@
 root-tag
-    main-menu(if="{!selectorVisible}")
-    notepad-panel(if="{!selectorVisible}")
-    project-selector(if="{selectorVisible}")
+    main-menu(if='{!selectorVisible}')
+    notepad-panel(if='{!selectorVisible}')
+    project-selector(if='{selectorVisible}')
     script.
         this.selectorVisible = true;
         window.signals.on('resetAll', () => {
@@ -9,7 +9,7 @@ root-tag
             this.selectorVisible = true;
             riot.update();
         });
-
+        
         const stylesheet = document.createElement('style');
         document.head.appendChild(stylesheet);
         const updateStylesheet = () => {

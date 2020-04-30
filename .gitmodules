@@ -7,3 +7,6 @@
 [submodule "docs"]
 	path = docs
 	url = https://github.com/ct-js/docs.ctjs.rocks.git
+[submodule "naturecodevoid-prettier-pug"]
+	path = naturecodevoid-prettier-pug
+	url = https://github.com/naturecodevoid/plugin-pug.git

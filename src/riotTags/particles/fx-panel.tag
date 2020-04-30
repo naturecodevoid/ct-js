@@ -1,26 +1,26 @@
 fx-panel.panel.view
     asset-viewer.tall(
-        collection="{global.currentProject.emitterTandems}"
-        contextmenu="{showTandemPopup}"
-        vocspace="particleEmitters"
-        namespace="emitterTandems"
-        click="{openTandem}"
-        thumbnails="{thumbnails}"
-        ref="emitterTandems"
+        collection='{global.currentProject.emitterTandems}',
+        contextmenu='{showTandemPopup}',
+        vocspace='particleEmitters',
+        namespace='emitterTandems',
+        click='{openTandem}',
+        thumbnails='{thumbnails}',
+        ref='emitterTandems'
     )
         h1.nmt {voc.emittersHeading}
-        button(onclick="{parent.emitterTandemCreate}" title="Control+N" data-hotkey="Control+n")
+        button(onclick='{parent.emitterTandemCreate}', title='Control+N', data-hotkey='Control+n')
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href='data/icons.svg#plus')
             span {vocGlob.add}
-    emitter-tandem-editor(if="{editingTandem}" tandem="{editedTandem}")
-    context-menu(menu="{tandemMenu}" ref="tandemMenu")
+    emitter-tandem-editor(if='{editingTandem}', tandem='{editedTandem}')
+    context-menu(menu='{tandemMenu}', ref='tandemMenu')
     script.
         this.namespace = 'particleEmitters';
         this.mixin(window.riotVoc);
-
+        
         this.thumbnails = tandem => `data/img/particles.png`;
-
+        
         // Technically we edit a number of emitters at once — a "tandem",
         // but to not overcomplicate it all, let's call them "emitters" in UI anyways.
         this.openTandem = tandem => e => {
@@ -28,31 +28,31 @@ fx-panel.panel.view
             this.editedTandem = tandem;
             this.update();
         };
-
+        
         this.showTandemPopup = tandem => e => {
             this.editedTandem = tandem;
             this.refs.tandemMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
-
+        
         this.emitterTandemCreate = e => {
             const defaultEmitter = require('./data/node_requires/resources/particles/defaultEmitter').get();
             const generateGUID = require('./data/node_requires/generateGUID');
             let id = generateGUID(),
                 slice = id.split('-').pop();
-
+        
             const tandem = {
                 name: 'Tandem_' + slice,
                 origname: 'pt' + slice,
-
+        
                 emitters: [defaultEmitter]
             };
-
+        
             global.currentProject.emitterTandems.push(tandem);
             this.editingTandem = true;
             this.editedTandem = tandem;
         };
-
+        
         this.setUpPanel = e => {
             this.refs.emitterTandems.updateList();
             this.editingTandem = false;
@@ -72,8 +72,8 @@ fx-panel.panel.view
             window.signals.off('projectLoaded', this.setUpPanel);
             window.signals.off('tandemUpdated', this.updatePanel);
         });
-
-
+        
+        
         this.tandemMenu = {
             items: [{
                 label: window.languageJSON.common.open,

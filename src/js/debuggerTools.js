@@ -18,24 +18,29 @@
             {y} = Math.round(targetScreen.work_area);
 
         // Create a toolbar that provides additional game-related tools
-        nw.Window.open('debuggerToolbar.html', {
-            width: 480, // these are the starting values; the window adjusts itself in src/riotTags/debugger/debugger-toolbar.tag
-            height: 40,
-            x,
-            y,
-            frame: false,
-            transparent: true,
-            resizable: false,
-            title: 'ct.js toolbar',
-            icon: 'ct_ide.png',
-            // eslint-disable-next-line camelcase
-            always_on_top: true,
-            // eslint-disable-next-line camelcase
-            show_in_taskbar: false,
-            id: 'ctjsToolbar'
-        }, newWindow => {
-            toolbarWindow = newWindow;
-            newWindow.eval(null, `
+        nw.Window.open(
+            'debuggerToolbar.html',
+            {
+                width: 480, // these are the starting values; the window adjusts itself in src/riotTags/debugger/debugger-toolbar.tag
+                height: 40,
+                x,
+                y,
+                frame: false,
+                transparent: true,
+                resizable: false,
+                title: 'ct.js toolbar',
+                icon: 'ct_ide.png',
+                // eslint-disable-next-line camelcase
+                always_on_top: true,
+                // eslint-disable-next-line camelcase
+                show_in_taskbar: false,
+                id: 'ctjsToolbar'
+            },
+            newWindow => {
+                toolbarWindow = newWindow;
+                newWindow.eval(
+                    null,
+                    `
                 window.gameLink = "${link}";
                 window.gameRooms = (${JSON.stringify(global.currentProject.rooms.map(room => room.name))});
                 window.gameName = (${JSON.stringify(global.currentProject.settings.title || 'ct.js game')});

@@ -2,53 +2,52 @@ textures-panel.panel.view
     .flexfix.tall
         div
             asset-viewer(
-                collection="{global.currentProject.textures}"
-                contextmenu="{showTexturePopup}"
-                vocspace="texture"
-                namespace="textures"
-                click="{openTexture}"
-                thumbnails="{thumbnails}"
-                ref="textures"
+                collection='{global.currentProject.textures}',
+                contextmenu='{showTexturePopup}',
+                vocspace='texture',
+                namespace='textures',
+                click='{openTexture}',
+                thumbnails='{thumbnails}',
+                ref='textures'
             )
                 label.file.flexfix-header
-                    input(type="file" multiple
-                        accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
-                        onchange="{parent.textureImport}")
+                    input(
+                        type='file',
+                        multiple,
+                        accept='.png,.jpg,.jpeg,.bmp,.gif,.json',
+                        onchange='{parent.textureImport}'
+                    )
                     .button
                         svg.feather
-                            use(xlink:href="data/icons.svg#download")
+                            use(xlink:href='data/icons.svg#download')
                         span {voc.import}
             asset-viewer(
-                collection="{global.currentProject.skeletons}"
-                contextmenu="{showSkeletonPopup}"
-                vocspace="texture"
-                namespace="skeletons"
-                thumbnails="{thumbnails}"
-                ref="skeletons"
+                collection='{global.currentProject.skeletons}',
+                contextmenu='{showSkeletonPopup}',
+                vocspace='texture',
+                namespace='skeletons',
+                thumbnails='{thumbnails}',
+                ref='skeletons'
             )
                 h2
                     span {voc.skeletons}
-                    docs-shortcut(path="/skeletal-animation.html")
+                    docs-shortcut(path='/skeletal-animation.html')
                 label.file.flexfix-header
-                    input(type="file" multiple
-                        accept=".json"
-                        onchange="{parent.textureImport}")
+                    input(type='file', multiple, accept='.json', onchange='{parent.textureImport}')
                     .button
                         svg.feather
-                            use(xlink:href="data/icons.svg#download")
+                            use(xlink:href='data/icons.svg#download')
                         span {voc.import}
 
-    .aDropzone(if="{dropping}")
+    .aDropzone(if='{dropping}')
         .middleinner
             svg.feather
-                use(xlink:href="data/icons.svg#download")
+                use(xlink:href='data/icons.svg#download')
             h2 {languageJSON.common.fastimport}
-            input(type="file" multiple
-                accept=".png,.jpg,.jpeg,.bmp,.gif,.json"
-                onchange="{textureImport}")
+            input(type='file', multiple, accept='.png,.jpg,.jpeg,.bmp,.gif,.json', onchange='{textureImport}')
 
-    texture-editor(if="{editing}" texture="{currentTexture}")
-    context-menu(menu="{textureMenu}" ref="textureMenu")
+    texture-editor(if='{editing}', texture='{currentTexture}')
+    context-menu(menu='{textureMenu}', ref='textureMenu')
     script.
         const fs = require('fs-extra'),
               path = require('path');
@@ -58,11 +57,11 @@ textures-panel.panel.view
         this.mixin(window.riotVoc);
         this.editing = false;
         this.dropping = false;
-
+        
         const {getTexturePreview} = require('./data/node_requires/resources/textures');
         // this.thumbnails = texture => `file://${global.projdir}/img/${texture.origname}_prev.png?cache=${texture.lastmod}`;
         this.thumbnails = getTexturePreview;
-
+        
         this.fillTextureMap = () => {
             glob.texturemap = {};
             global.currentProject.textures.forEach(texture => {
@@ -88,7 +87,7 @@ textures-panel.panel.view
             }
             img.src = 'data/img/unknown.png';
         };
-
+        
         this.setUpPanel = e => {
             this.fillTextureMap();
             this.refs.textures.updateList();
@@ -105,7 +104,7 @@ textures-panel.panel.view
             this.update();
             this.fillTextureMap();
         };
-
+        
         window.signals.on('projectLoaded', this.setUpPanel);
         window.signals.on('textureImported', this.updateTextureData);
         this.on('mount', this.setUpPanel);
@@ -113,7 +112,7 @@ textures-panel.panel.view
             window.signals.off('projectLoaded', this.setUpPanel);
             window.signals.off('textureImported', this.updateTextureData);
         });
-
+        
         /**
          * An event fired when user attempts to add files from a file manager (by clicking an "Import" button)
          */
@@ -137,7 +136,7 @@ textures-panel.panel.view
             this.dropping = false;
             e.preventDefault();
         };
-
+        
         this.loadSkeleton = (uid, filename, dest) => {
             fs.copy(filename, dest)
             .then(() => fs.copy(filename.replace('_ske.json', '_tex.json'), dest.replace('_ske.json', '_tex.json')))
@@ -156,7 +155,7 @@ textures-panel.panel.view
                 });
             });
         };
-
+        
         /**
          *  Generates a square preview for a given skeleton
          * @param {String} source Path to the source _ske.json file
@@ -202,7 +201,7 @@ textures-panel.panel.view
                 });
             });
         };
-
+        
         // Creates a context menu that will appear on RMB click on texture cards
         this.textureMenu = {
             opened: false,
@@ -317,7 +316,7 @@ textures-panel.panel.view
         this.showSkeletonPopup = skel => e => {
             this.showTexturePopup(skel, true)(e);
         };
-
+        
         /**
          * Opens an editor for the given texture
          */
@@ -327,9 +326,9 @@ textures-panel.panel.view
             this.editing = true;
         };
         this.openSkeleton = skel => e => {
-
+        
         };
-
+        
         /*
          * drag-n-drop handling
          */

@@ -1,29 +1,33 @@
 scripts-panel
     h1.flexfix-header {voc.header}
     ul.menu.flexfix-body
-        li(each="{script, index in global.currentProject.scripts}" onclick="{selectScript}")
+        li(each='{script, index in global.currentProject.scripts}', onclick='{selectScript}')
             code {script.name}
-            div.toright.scripts-panel-aDeleteButton(onclick="{deleteScript}" title="{voc.deleteScript}")
+            .toright.scripts-panel-aDeleteButton(onclick='{deleteScript}', title='{voc.deleteScript}')
                 svg.feather.dim
-                    use(xlink:href="data/icons.svg#delete")
+                    use(xlink:href='data/icons.svg#delete')
             // Use opacity to keep nice layout
-            div.toright(onclick="{moveDown}"  style="opacity: {index === global.currentProject.scripts.length - 1? 0 : 1};" title="{voc.moveDown}")
+            .toright(
+                onclick='{moveDown}',
+                style='opacity: {index === global.currentProject.scripts.length - 1? 0 : 1};',
+                title='{voc.moveDown}'
+            )
                 svg.feather.dim
-                    use(xlink:href="data/icons.svg#arrow-down")
-            div.toright(onclick="{moveUp}" title="{voc.moveUp}" style="opacity: {index === 0? 0 : 1};")
+                    use(xlink:href='data/icons.svg#arrow-down')
+            .toright(onclick='{moveUp}', title='{voc.moveUp}', style='opacity: {index === 0? 0 : 1};')
                 svg.feather.dim
-                    use(xlink:href="data/icons.svg#arrow-up")
-    button.flexfix-footer(onclick="{addNewScript}")
+                    use(xlink:href='data/icons.svg#arrow-up')
+    button.flexfix-footer(onclick='{addNewScript}')
         svg.feather
-            use(xlink:href="data/icons.svg#plus")
+            use(xlink:href='data/icons.svg#plus')
         span {voc.addNew}
-    script-editor(if="{currentScript}" script="{currentScript}")
+    script-editor(if='{currentScript}', script='{currentScript}')
     script.
         this.namespace = 'settings.scripts';
         this.mixin(window.riotVoc);
         this.currentProject = global.currentProject;
         this.currentProject.scripts = this.currentProject.scripts || [];
-
+        
         this.addNewScript = e => {
             var script = {
                 name: 'New Script',
@@ -45,7 +49,7 @@ scripts-panel
             delete glob.scriptTypings[script.name];
             e.stopPropagation();
         };
-
+        
         this.moveUp = e => {
             e.stopPropagation();
             let script = e.item.script;
@@ -66,7 +70,7 @@ scripts-panel
             console.debug(out);
             this.currentProject.scripts = out;
         };
-
+        
         this.moveDown = e => {
             e.stopPropagation();
             let script = e.item.script;
@@ -87,7 +91,7 @@ scripts-panel
             console.debug(out);
             this.currentProject.scripts = out;
         };
-
+        
         const glob = require('./data/node_requires/glob');
         glob.scriptTypings = glob.scriptTypings || {};
         for (const script of global.currentProject.scripts) {

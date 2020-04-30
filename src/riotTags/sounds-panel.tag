@@ -1,28 +1,27 @@
 sounds-panel.panel.view
-    asset-viewer(
-        collection="{global.currentProject.sounds}"
-        contextmenu="{popupMenu}"
-        namespace="sounds"
-        click="{openSound}"
-        thumbnails="{thumbnails}"
-        ref="sounds"
-        class="tall"
+    asset-viewer.tall(
+        collection='{global.currentProject.sounds}',
+        contextmenu='{popupMenu}',
+        namespace='sounds',
+        click='{openSound}',
+        thumbnails='{thumbnails}',
+        ref='sounds'
     )
-        button#soundcreate(onclick="{parent.soundNew}" title="Control+N" data-hotkey="Control+n")
+        button#soundcreate(onclick='{parent.soundNew}', title='Control+N', data-hotkey='Control+n')
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href='data/icons.svg#plus')
             span {voc.create}
-    sound-editor(if="{editing}" sound="{editedSound}")
-    context-menu(menu="{soundMenu}" ref="soundMenu")
+    sound-editor(if='{editing}', sound='{editedSound}')
+    context-menu(menu='{soundMenu}', ref='soundMenu')
     script.
         this.namespace = 'sounds';
         this.mixin(window.riotVoc);
         this.mixin(window.riotNiceTime);
         this.sort = 'name';
         this.sortReverse = false;
-
+        
         this.thumbnails = sound => `data/img/${sound.isMusic? 'music' : 'wave'}.png`;
-
+        
         this.setUpPanel = e => {
             this.searchResults = null;
             this.editing = false;
@@ -35,7 +34,7 @@ sounds-panel.panel.view
         this.on('unmount', () => {
             window.signals.off('projectLoaded', this.setUpPanel);
         });
-
+        
         this.soundNew = e => {
             if (this.editing) {
                 return false;
@@ -56,7 +55,7 @@ sounds-panel.panel.view
             this.editing = true;
             this.update();
         };
-
+        
         // A context menu called by clicking on a sound card with RMB
         this.soundMenu = {
             items: [{
@@ -105,7 +104,7 @@ sounds-panel.panel.view
                 }
             }]
         };
-
+        
         this.popupMenu = sound => e => {
             this.editedSound = sound;
             this.refs.soundMenu.popup(e.clientX, e.clientY);

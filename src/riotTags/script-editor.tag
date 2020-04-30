@@ -1,13 +1,13 @@
 script-editor.view.panel
     .flexfix.tall
-        div.flexfix-header
+        .flexfix-header
             b {voc.name}
-            input(type="text" value="{script.name}" onchange="{updateScriptName}")
+            input(type='text', value='{script.name}', onchange='{updateScriptName}')
         .flexfix-body
-            .aCodeEditor(ref="editor")
-        button.nm.flexfix-footer(onclick="{saveScript}" title="Shift+Control+S" data-hotkey="Control+S")
+            .aCodeEditor(ref='editor')
+        button.nm.flexfix-footer(onclick='{saveScript}', title='Shift+Control+S', data-hotkey='Control+S')
             svg.feather
-                use(xlink:href="data/icons.svg#check")
+                use(xlink:href='data/icons.svg#check')
             span {voc.done}
     script.
         this.namespace = 'common';
@@ -42,7 +42,7 @@ script-editor.view.panel
             // Manually destroy the editor to free up the memory
             this.editor.dispose();
         });
-
+        
         this.saveScript = e => {
             const glob = require('./data/node_requires/glob');
             if (glob.scriptTypings[this.oldName]) {
@@ -58,5 +58,5 @@ script-editor.view.panel
             this.parent.currentScript = null;
             this.parent.update();
         };
-
+        
         this.updateScriptName = e => this.script.name = e.target.value.trim();

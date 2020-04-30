@@ -3,39 +3,39 @@ method-selector
         .flexfix-header
             .aSearchWrap.wide
                 input.wide(
-                    type="text" 
-                    ref="searchField"
-                    value="{searchString}"
-                    onkeyup="{wire('this.searchString')}"
+                    type='text',
+                    ref='searchField',
+                    value='{searchString}',
+                    onkeyup='{wire(\'this.searchString\')}'
                 )
         .flexfix-body
-            virtual(each="{module in inputProviders}")
+            virtual(each='{module in inputProviders}')
                 h2 {module.name}
-                .anActionMethod(
-                    onclick="{selectMethod(module.code+'.'+code)}"
-                    each="{name, code in module.methods}"
-                    class="{active: selectedMethod === module.code+'.'+code}"
-                    if="{!searchString || code.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1}"
-                ).npl
+                .anActionMethod.selectedMethod.npl(
+                    onclick='{selectMethod(module.code+\'.\'+code)}',
+                    each='{name, code in module.methods}',
+                    class='{active: === module.code+\'.\'+code}',
+                    if='{!searchString || code.toLowerCase().indexOf(searchString.toLowerCase()) !== -1 || name.toLowerCase().indexOf(searchString.toLowerCase()) !== -1}'
+                )
                     code.inline.toright {module.code}.{code}
-                    span   {name}
+                    span {name}
                     .clear
 
         .flexfix-footer
             .flexrow
-                button.nml.secondary(onclick="{cancel}")
+                button.nml.secondary(onclick='{cancel}')
                     span {vocGlob.cancel}
-                button.nml.secondary(onclick="{apply}" disabled="{!selectedMethod}")
+                button.nml.secondary(onclick='{apply}', disabled='{!selectedMethod}')
                     span {voc.select}
     script.
         this.namespace = 'inputMethodSelector';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-
+        
         const fs = require('fs-extra'),
               path = require('path');
         const libsDir = './data/ct.libs';
-
+        
         this.refreshModules = e => {
             this.inputProviders = [];
             const promises = [];
@@ -64,7 +64,7 @@ method-selector
         this.on('unmount', () => {
             window.signals.off('modulesChanged', this.refreshModules);
         });
-
+        
         this.selectMethod = code => e => {
             this.selectedMethod = code;
         };

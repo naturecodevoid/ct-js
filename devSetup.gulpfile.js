@@ -37,11 +37,22 @@ const bakeDocs = async () => {
     await fs.copy('./docs/docs/.vuepress/dist', './app/data/docs/');
 };
 
+const buildPrettierPlugin = () =>
+    spawnise.spawn(/^win/.test(process.platform) ? 'npm.cmd' : 'npm', ['run', 'build'], {
+        cwd: './naturecodevoid-prettier-pug'
+    });
+
 const updateGitSubmodules = () => spawnise.spawn('git', ['submodule', 'update', '--init', '--recursive']);
 
 const defaultTask = gulp.series([
     updateGitSubmodules,
-    gulp.parallel([npmInstall('./'), npmInstall('./app'), npmInstall('./docs')]),
+    gulp.parallel([
+        npmInstall('./'),
+        npmInstall('./app'),
+        npmInstall('./docs'),
+        npmInstall('./naturecodevoid-prettier-pug')
+    ]),
+    buildPrettierPlugin,
     cleanup,
     bakeDocs
 ]);

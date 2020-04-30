@@ -1,30 +1,29 @@
 styles-panel.tall.fifty
-    asset-viewer(
-        collection="{global.currentProject.styles}"
-        contextmenu="{onStyleContextMenu}"
-        namespace="styles"
-        click="{openStyle}"
-        thumbnails="{thumbnails}"
-        ref="styles"
-        class="tall"
+    asset-viewer.tall(
+        collection='{global.currentProject.styles}',
+        contextmenu='{onStyleContextMenu}',
+        namespace='styles',
+        click='{openStyle}',
+        thumbnails='{thumbnails}',
+        ref='styles'
     )
         h1.nmt {voc.styles}
-        button#stylecreate(onclick="{parent.styleCreate}" title="Control+N" data-hotkey="Control+n")
+        button#stylecreate(onclick='{parent.styleCreate}', title='Control+N', data-hotkey='Control+n')
             svg.feather
-                use(xlink:href="data/icons.svg#plus")
+                use(xlink:href='data/icons.svg#plus')
             span {voc.create}
-    style-editor(if="{editingStyle}" styleobj="{editedStyle}")
-    context-menu(menu="{styleMenu}" ref="styleMenu")
+    style-editor(if='{editingStyle}', styleobj='{editedStyle}')
+    context-menu(menu='{styleMenu}', ref='styleMenu')
     script.
         const generateGUID = require('./data/node_requires/generateGUID');
-
+        
         this.editingStyle = false;
-
+        
         this.namespace = 'styles';
         this.mixin(window.riotVoc);
-
+        
         this.thumbnails = style => `file://${window.global.projdir}/img/${style.origname}_prev.png?${style.lastmod}`;
-
+        
         this.styleCreate = e => {
             if (this.editingStyle) {
                 return;
@@ -41,7 +40,7 @@ styles-panel.tall.fifty
             this.editedStyle = obj;
             this.editingStyle = true;
             this.refs.styles.updateList();
-
+        
             if (!e) {
                 this.update();
             }
@@ -61,13 +60,13 @@ styles-panel.tall.fifty
         this.on('unmount', () => {
             window.signals.off('projectLoaded', this.setUpPanel);
         });
-
+        
         this.onStyleContextMenu = style => e => {
             this.editedStyle = style;
             this.refs.styleMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
-
+        
         this.styleMenu = {
             items: [{
                 label: window.languageJSON.common.open,

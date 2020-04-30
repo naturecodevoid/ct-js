@@ -1,26 +1,22 @@
 room-type-picker.room-editor-TypeSwatches.tabbed.tall
     .aSearchWrap
-        input.inline(type="text" onkeyup="{fuseSearch}" ref="fusesearch")
+        input.inline(type='text', onkeyup='{fuseSearch}', ref='fusesearch')
         svg.feather
-            use(xlink:href="data/icons.svg#search")
-    .room-editor-aTypeSwatch(
-        if="{!searchResults}"
-        onclick="{parent.roomUnpickType}"
-        class="{active: opts.current === -1}"
-    )
+            use(xlink:href='data/icons.svg#search')
+    .room-editor-aTypeSwatch(if='{!searchResults}', onclick='{parent.roomUnpickType}', class='{active: opts.current === -1}')
         span {voc.selectAndMove}
         svg.feather
-            use(xlink:href="data/icons.svg#move")
+            use(xlink:href='data/icons.svg#move')
     .room-editor-aTypeSwatch(
-        each="{type in (searchResults? searchResults : types)}"
-        title="{type.name}"
-        onclick="{selectType(type)}"
-        class="{active: parent.opts.current === type}"
+        each='{type in (searchResults? searchResults : types)}',
+        title='{type.name}',
+        onclick='{selectType(type)}',
+        class='{active: parent.opts.current === type}'
     )
         span {type.name}
         img(
-            src="{type.texture === -1? 'data/img/notexture.png' : (glob.texturemap[type.texture].src.split('?')[0] + '_prev.png?' + getTypeTextureRevision(type))}"
-            draggable="false"
+            src='{type.texture === -1? \'data/img/notexture.png\' : (glob.texturemap[type.texture].src.split(\'?\')[0] + \'_prev.png?\' + getTypeTextureRevision(type))}',
+            draggable='false'
         )
     .room-editor-aTypeSwatch.filler
     .room-editor-aTypeSwatch.filler
@@ -36,9 +32,9 @@ room-type-picker.room-editor-TypeSwatches.tabbed.tall
         this.namespace = 'roomview';
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
-
+        
         this.getTypeTextureRevision = type => glob.texturemap[type.texture].g.lastmod;
-
+        
         this.updateTypeList = () => {
             this.types = [...global.currentProject.types];
             this.types.sort((a, b) => a.name.localeCompare(b.name));

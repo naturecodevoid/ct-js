@@ -2,21 +2,17 @@ particle-importer.panel.view
     .flexfix.tall
         .flexfix-body
             ul.cards
-                li(
-                    each="{texture in textures}"
-                    onclick="{onselected(texture)}"
-                    no-reorder
-                )
+                li(each='{texture in textures}', onclick='{onselected(texture)}', no-reorder)
                     span {texture.name}
-                    img(src="{texture.path}")
-        .flexfix-footer(if="{oncancelled}")
-            button(onclick="{oncancelled}") {voc.cancel}
+                    img(src='{texture.path}')
+        .flexfix-footer(if='{oncancelled}')
+            button(onclick='{oncancelled}') {voc.cancel}
     script.
         this.onselected = this.opts.onselected;
         this.oncancelled = this.opts.oncancelled;
         this.namespace = 'common';
         this.mixin(window.riotVoc);
-
+        
         this.updateList = () => {
             this.textures = [];
             const fs = require('fs-extra');

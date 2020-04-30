@@ -1,6 +1,6 @@
 //
     Displays an editable curve with a grid, point editor and scales.
-
+    
     @attribute curve (riot Array<ValueStep<number>>)
         @see https://pixijs.io/pixi-particles/docs/interfaces/valuestep.html
     @attribute colorcurve (riot Array<ValueStep<string>>)
@@ -9,7 +9,7 @@
     @attribute onchange (riot function)
         Called when a user drags a curve's point.
         Passes the whole curve and an edited point as its arguments.
-
+    
     @attribute lockstarttime (atomic)
         Locks the time of the firts point in the curve.
         Also, it forbids the deletion of this point.
@@ -22,12 +22,12 @@
     @attribute lockendvalue (atomic)
         Locks the value of the last point in the curve.
         Also, it forbids the deletion of this point.
-
+    
     @attribute timestep (number)
         A step size for a manual point editor. Defaults to 0.01.
     @attribute valuestep (number)
         A step size for a manual point editor. Defaults to 0.01.
-
+    
     @attribute type (string, 'float'|'color')
         Defaults to 'float'; if set to 'color', requires
         an attribute `colorcurve` to be set and allows for color editing.
@@ -35,103 +35,124 @@
         Defaults to 'linear'.
     @attribute coloreasing (string, 'linear'|'none')
         Defaults to 'linear'.
-
-curve-editor(ref="root")
-    span(if="{!curve || min === void 0 || max === void 0}") Error :c
-    span(if="{curve && min !== void 0 && max !== void 0 && width !== void 0 && height !== void 0}")
+    
+curve-editor(ref='root')
+    span(if='{!curve || min === void 0 || max === void 0}') Error :c
+    span(if='{curve && min !== void 0 && max !== void 0 && width !== void 0 && height !== void 0}')
         .curve-editor-aGraphWrap
             .curve-editor-aRuler.flexrow
-                span(each="{pos in [0, 0.2, 0.4, 0.6, 0.8, 1]}") {niceNumber(minTime + (pos * (maxTime - minTime)))}
+                span(each='{pos in [0, 0.2, 0.4, 0.6, 0.8, 1]}') {niceNumber(minTime + (pos * (maxTime - minTime)))}
             .curve-editor-aRuler.flexcol
-                span(each="{pos in [1, 0.8, 0.6, 0.4, 0.2, 0]}") {niceNumber(min + (pos * (max - min)))}
-            svg(xmlns="http://www.w3.org/2000/svg" riot-viewbox="0 0 {width} {height}" ref="graph" onmousemove="{onGraphMouseMove}")
+                span(each='{pos in [1, 0.8, 0.6, 0.4, 0.2, 0]}') {niceNumber(min + (pos * (max - min)))}
+            svg(
+                xmlns='http://www.w3.org/2000/svg',
+                riot-viewbox='0 0 {width} {height}',
+                ref='graph',
+                onmousemove='{onGraphMouseMove}'
+            )
                 defs
                     filter#greyOutlineEffect
-                        feMorphology(in="SourceAlpha" result="MORPH" operator="dilate" radius="2")
-                        feColorMatrix(in="MORPH" result="WHITENED" type="matrix" values="-1 0 0 0.8 0, 0 -1 0 0.8 0, 0 0 -1 0.8 0, 0 0 0 1 0")
+                        feMorphology(in='SourceAlpha', result='MORPH', operator='dilate', radius='2')
+                        feColorMatrix(
+                            in='MORPH',
+                            result='WHITENED',
+                            type='matrix',
+                            values='-1 0 0 0.8 0, 0 -1 0 0.8 0, 0 0 -1 0.8 0, 0 0 0 1 0'
+                        )
                         feMerge
-                            feMergeNode(in="WHITENED")
-                            feMergeNode(in="SourceGraphic")
+                            feMergeNode(in='WHITENED')
+                            feMergeNode(in='SourceGraphic')
                     linearGradient(
-                        each="{point, ind in opts.colorcurve}"
-                        if="{opts.type === 'color' && (ind < opts.curve.length - 1)}"
-                        riot-id="{uid}grad{ind}to{ind+1}"
-                        x1="0%" y1="0%" x2="100%" y2="0%"
+                        each='{point, ind in opts.colorcurve}',
+                        if='{opts.type === \'color\' && (ind < opts.curve.length - 1)}',
+                        riot-id='{uid}grad{ind}to{ind+1}',
+                        x1='0%',
+                        y1='0%',
+                        x2='100%',
+                        y2='0%'
                     )
-                        stop(offset="0%" style="\
+                        stop(
+                            offset='0%',
+                            style="\
                             stop-color:#{point.value};\
                             stop-opacity:{parent.opts.curve[ind].value}\
-                        ")
-                        stop(offset="100%" style="\
+                        "
+                        )
+                        stop(
+                            offset='100%',
+                            style="\
                             stop-color:#{parent.opts.colorcurve[parent.opts.coloreasing === 'none'? ind : ind+1].value};\
                             stop-opacity:{parent.opts.curve[parent.opts.easing === 'none'? ind : ind+1].value}\
-                        ")
+                        "
+                        )
                 g.curve-editor-aGrid
-                    polyline(
-                        each="{pos in [0, 0.2, 0.4, 0.5, 0.6, 0.8, 1]}"
-                        riot-points="0,{pos * height} {width},{pos * height}"
-                        class="{aMiddleLine: pos === 0.5}"
+                    polyline.pos(
+                        each='{pos in [0, 0.2, 0.4, 0.5, 0.6, 0.8, 1]}',
+                        riot-points='0,{pos * height} {width},{pos * height}',
+                        class='{aMiddleLine: === 0.5}'
                     )
-                    polyline(
-                        each="{pos in [0, 0.2, 0.4, 0.5, 0.6, 0.8, 1]}"
-                        riot-points="{pos * width},0 {pos * width},{height}"
-                        class="{aMiddleLine: pos === 0.5}"
+                    polyline.pos(
+                        each='{pos in [0, 0.2, 0.4, 0.5, 0.6, 0.8, 1]}',
+                        riot-points='{pos * width},0 {pos * width},{height}',
+                        class='{aMiddleLine: === 0.5}'
                     )
                 // About + 0.00001: for some reason, 0 height hides curve segments with gradients completely
                 g.curve-editor-aCurve
                     polyline(
-                        each="{point, ind in curve}"
+                        each='{point, ind in curve}',
                         riot-points="\
                             {getPointLeft(point)},{getPointTop(point)}\
                             {getPointLeft(curve[ind+1])},{getPointTop(parent.opts.easing === 'none'? point : curve[ind+1]) + 0.00001}\
-                        "
-                        stroke="{parent.opts.type === 'color' && 'url(#'+uid+'grad'+ind+'to'+(ind+1)+')'}"
-                        filter="{parent.opts.type === 'color'? 'url(#greyOutlineEffect)' : ''}"
-                        if="{ind !== curve.length - 1}"
-                        onmousedown="{addPointOnSegment}"
-                        title="{voc.curveLineHint}"
+                        ",
+                        stroke='{parent.opts.type === \'color\' && \'url(#\'+uid+\'grad\'+ind+\'to\'+(ind+1)+\')\'}',
+                        filter='{parent.opts.type === \'color\'? \'url(#greyOutlineEffect)\' : \'\'}',
+                        if='{ind !== curve.length - 1}',
+                        onmousedown='{addPointOnSegment}',
+                        title='{voc.curveLineHint}'
                     )
-            .aDragger(
-                each="{point, ind in curve}"
+            .aDragger.selectedPoint(
+                each='{point, ind in curve}',
                 style="\
                     left: {getPointLeft(point)}px;\
                     top: {getPointTop(point)}px;\
                     {movedPoint? 'pointer-events: none;' : ''}\
                     {parent.opts.type === 'color'? 'background-color: #'+parent.opts.colorcurve[ind].value : ''}\
-                "
-                class="{selected: selectedPoint === point}"
-                onmousedown="{startMoving(point)}"
-                oncontextmenu="{deletePoint}"
-                title="{voc.dragPointHint}"
+                ",
+                class='{selected: === point}',
+                onmousedown='{startMoving(point)}',
+                oncontextmenu='{deletePoint}',
+                title='{voc.dragPointHint}'
             )
         div
             label.fifty.npl.npb.nmt
                 span {voc.pointTime}
                 input.wide(
-                    type="number"
-                    min="{minTime}" max="{maxTime}"
-                    step="{opts.timestep || 0.01}"
-                    value="{selectedPoint.time}"
-                    oninput="{updateTime}"
-                    disabled="{(opts.lockstarttime && selectedPoint === opts.curve[0]) || (opts.lockendtime && selectedPoint === opts.curve[opts.curve.length - 1])}"
+                    type='number',
+                    min='{minTime}',
+                    max='{maxTime}',
+                    step='{opts.timestep || 0.01}',
+                    value='{selectedPoint.time}',
+                    oninput='{updateTime}',
+                    disabled='{(opts.lockstarttime && selectedPoint === opts.curve[0]) || (opts.lockendtime && selectedPoint === opts.curve[opts.curve.length - 1])}'
                 )
-            label.fifty.npr.npb.nmt(if="{opts.type !== 'color'}")
+            label.fifty.npr.npb.nmt(if='{opts.type !== \'color\'}')
                 span {voc.pointValue}
                 input.wide(
-                    type="number"
-                    min="{min}" max="{max}"
-                    step="{opts.valuestep || 0.01}"
-                    value="{selectedPoint.value}"
-                    oninput="{wireAndChange('this.selectedPoint.value')}"
-                    disabled="{(opts.lockstartvalue && selectedPoint === opts.curve[0]) || (opts.lockendvalue && selectedPoint === opts.curve[opts.curve.length - 1])}"
+                    type='number',
+                    min='{min}',
+                    max='{max}',
+                    step='{opts.valuestep || 0.01}',
+                    value='{selectedPoint.value}',
+                    oninput='{wireAndChange(\'this.selectedPoint.value\')}',
+                    disabled='{(opts.lockstartvalue && selectedPoint === opts.curve[0]) || (opts.lockendvalue && selectedPoint === opts.curve[opts.curve.length - 1])}'
                 )
-            div.fifty.npr.npb.nmt(if="{opts.type === 'color'}")
+            .fifty.npr.npb.nmt(if='{opts.type === \'color\'}')
                 span {voc.pointValue}
                 color-input.wide(
-                    color="#{selectedColorPoint.value}"
-                    onchange="{updateColor}"
-                    onapply="{updateColor}"
-                    hidealpha="true"
+                    color='#{selectedColorPoint.value}',
+                    onchange='{updateColor}',
+                    onapply='{updateColor}',
+                    hidealpha='true'
                 )
             .clear
     script.
@@ -139,9 +160,9 @@ curve-editor(ref="root")
         this.mixin(window.riotVoc);
         this.mixin(window.riotWired);
         const Color = net.brehaut.Color;
-
+        
         this.uid = require('./data/node_requires/generateGUID')();
-
+        
         this.wireAndChange = path => e => {
             this.wire(path)(e);
             if (this.opts.onchange) {
@@ -161,9 +182,9 @@ curve-editor(ref="root")
             }
             this.update();
         };
-
+        
         this.selectedPoint = this.opts.curve[0];
-
+        
         this.niceNumber = number => {
             if (number < 10 && number > -10) {
                 return number.toPrecision(2);
@@ -192,7 +213,7 @@ curve-editor(ref="root")
             this.update();
         };
         setTimeout(this.updateLayout, 0);
-
+        
         const pointToLocation = point => ({
             x: point.time * this.width,
             y: (1 - (point.value - this.min) / this.max) * height
@@ -246,7 +267,7 @@ curve-editor(ref="root")
                 this.opts.onchange(this.curve, this.movedPoint);
             }
         };
-
+        
         this.addPointOnSegment = e => {
             const gx = e.layerX,
                   gy = e.layerY;
@@ -308,7 +329,7 @@ curve-editor(ref="root")
                 }
             }
         };
-
+        
         const onMouseUp = e => {
             this.movedPoint = false;
         };
@@ -318,7 +339,7 @@ curve-editor(ref="root")
         this.on('unmount', () => {
             document.removeEventListener('mouseup', onMouseUp);
         });
-
+        
         this.getPointTop = point => {
             return (1 - (point.value - this.min) / (this.max-this.min)) * this.height;
         };

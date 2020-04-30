@@ -1,61 +1,109 @@
 room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
     ul
-        li.bg(each="{background, ind in opts.room.backgrounds}" oncontextmenu="{onContextMenu}")
-            img(src="{background.texture === -1? 'data/img/notexture.png' : (glob.texturemap[background.texture].src.split('?')[0] + '_prev.png?' + glob.texturemap[background.texture].g.lastmod)}" onclick="{onChangeBgTexture}")
+        li.bg(each='{background, ind in opts.room.backgrounds}', oncontextmenu='{onContextMenu}')
+            img(
+                src='{background.texture === -1? \'data/img/notexture.png\' : (glob.texturemap[background.texture].src.split(\'?\')[0] + \'_prev.png?\' + glob.texturemap[background.texture].g.lastmod)}',
+                onclick='{onChangeBgTexture}'
+            )
             span
-                span(class="{active: detailedBackground === background}" onclick="{editBackground}")
+                span.detailedBackground(class='{active: === background}', onclick='{editBackground}')
                     svg.feather
-                        use(xlink:href="data/icons.svg#settings")
-                | {glob.texturemap[background.texture].g.name} ({background.depth})
+                        use(xlink:href='data/icons.svg#settings')
+{glob.texturemap[background.texture].g.name} ({background.depth})
             .clear
-            div(if="{detailedBackground === background}")
+            div(if='{detailedBackground === background}')
                 .clear
                 label
                     b {voc.depth}
-                    input.wide(type="number" value="{background.depth || 0}" step="0" oninput="{onChangeBgDepth}")
+                    input.wide(type='number', value='{background.depth || 0}', step='0', oninput='{onChangeBgDepth}')
 
                 b {voc.shift}
                 .clear
                 label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.shiftX || 0}" step="8" oninput="{wire('this.detailedBackground.extends.shiftX')}")
+                    input.wide(
+                        type='number',
+                        value='{background.extends.shiftX || 0}',
+                        step='8',
+                        oninput='{wire(\'this.detailedBackground.extends.shiftX\')}'
+                    )
                 label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.shiftY || 0}" step="8" oninput="{wire('this.detailedBackground.extends.shiftY')}")
+                    input.wide(
+                        type='number',
+                        value='{background.extends.shiftY || 0}',
+                        step='8',
+                        oninput='{wire(\'this.detailedBackground.extends.shiftY\')}'
+                    )
 
                 b {voc.scale}
                 .clear
                 label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.scaleX || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.scaleX')}")
+                    input.wide(
+                        type='number',
+                        value='{background.extends.scaleX || 1}',
+                        step='0.01',
+                        oninput='{wire(\'this.detailedBackground.extends.scaleX\')}'
+                    )
                 label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.scaleY || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.scaleY')}")
+                    input.wide(
+                        type='number',
+                        value='{background.extends.scaleY || 1}',
+                        step='0.01',
+                        oninput='{wire(\'this.detailedBackground.extends.scaleY\')}'
+                    )
 
                 b {voc.movement}
                 .clear
                 label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.movementX || 0}" step="0.1" oninput="{wire('this.detailedBackground.extends.movementX')}")
+                    input.wide(
+                        type='number',
+                        value='{background.extends.movementX || 0}',
+                        step='0.1',
+                        oninput='{wire(\'this.detailedBackground.extends.movementX\')}'
+                    )
                 label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.movementY || 0}" step="0.1" oninput="{wire('this.detailedBackground.extends.movementY')}")
+                    input.wide(
+                        type='number',
+                        value='{background.extends.movementY || 0}',
+                        step='0.1',
+                        oninput='{wire(\'this.detailedBackground.extends.movementY\')}'
+                    )
 
                 b {voc.parallax}
                 .clear
                 label.fifty.npl.npt
-                    input.wide(type="number" value="{background.extends.parallaxX || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxX')}")
+                    input.wide(
+                        type='number',
+                        value='{background.extends.parallaxX || 1}',
+                        step='0.01',
+                        oninput='{wire(\'this.detailedBackground.extends.parallaxX\')}'
+                    )
                 label.fifty.npr.npt
-                    input.wide(type="number" value="{background.extends.parallaxY || 1}" step="0.01" oninput="{wire('this.detailedBackground.extends.parallaxY')}")
+                    input.wide(
+                        type='number',
+                        value='{background.extends.parallaxY || 1}',
+                        step='0.01',
+                        oninput='{wire(\'this.detailedBackground.extends.parallaxY\')}'
+                    )
                 .clear
 
                 b {voc.repeat}
-                select(onchange="{wire('this.detailedBackground.extends.repeat')}")
-                    option(value="repeat" selected="{detailedBackground.extends.repeat === 'repeat'}") repeat
-                    option(value="repeat-x" selected="{detailedBackground.extends.repeat === 'repeat-x'}") repeat-x
-                    option(value="repeat-y" selected="{detailedBackground.extends.repeat === 'repeat-y'}") repeat-y
-                    option(value="no-repeat" selected="{detailedBackground.extends.repeat === 'no-repeat'}") no-repeat
+                select(onchange='{wire(\'this.detailedBackground.extends.repeat\')}')
+                    option(value='repeat', selected='{detailedBackground.extends.repeat === \'repeat\'}') repeat
+                    option(value='repeat-x', selected='{detailedBackground.extends.repeat === \'repeat-x\'}') repeat-x
+                    option(value='repeat-y', selected='{detailedBackground.extends.repeat === \'repeat-y\'}') repeat-y
+                    option(value='no-repeat', selected='{detailedBackground.extends.repeat === \'no-repeat\'}') no-repeat
 
-    button.inline.wide(onclick="{addBg}")
+    button.inline.wide(onclick='{addBg}')
         svg.feather
-            use(xlink:href="data/icons.svg#plus")
+            use(xlink:href='data/icons.svg#plus')
         span {voc.add}
-    texture-selector(ref="texturePicker" if="{pickingBackground}" oncancelled="{onTextureCancel}" onselected="{onTextureSelected}")
-    context-menu(menu="{roomBgMenu}" ref="roomBgMenu")
+    texture-selector(
+        ref='texturePicker',
+        if='{pickingBackground}',
+        oncancelled='{onTextureCancel}',
+        onselected='{onTextureSelected}'
+    )
+    context-menu(menu='{roomBgMenu}', ref='roomBgMenu')
     script.
         const glob = require('./data/node_requires/glob');
         this.glob = glob;
@@ -128,7 +176,7 @@ room-backgrounds-editor.room-editor-Backgrounds.tabbed.tall
             });
             this.parent.resortRoom();
         };
-
+        
         this.editBackground = e => {
             if (this.detailedBackground === e.item.background) {
                 this.detailedBackground = void 0;

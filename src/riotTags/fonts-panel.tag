@@ -1,35 +1,30 @@
 fonts-panel.flexfix.tall.fifty
-    asset-viewer(
-        collection="{global.currentProject.fonts}"
-        contextmenu="{onFontContextMenu}"
-        vocspace="fonts"
-        namespace="fonts"
-        click="{openFont}"
-        thumbnails="{thumbnails}"
-        names="{names}"
-        ref="fonts"
-        class="tall"
+    asset-viewer.tall(
+        collection='{global.currentProject.fonts}',
+        contextmenu='{onFontContextMenu}',
+        vocspace='fonts',
+        namespace='fonts',
+        click='{openFont}',
+        thumbnails='{thumbnails}',
+        names='{names}',
+        ref='fonts'
     )
         h1 {voc.fonts}
         .toleft
             label.file.flexfix-header
-                input(type="file" multiple
-                    accept=".ttf"
-                    onchange="{parent.fontImport}")
+                input(type='file', multiple, accept='.ttf', onchange='{parent.fontImport}')
                 .button
                     svg.feather
-                        use(xlink:href="data/icons.svg#download")
+                        use(xlink:href='data/icons.svg#download')
                     span {voc.import}
-    .aDropzone(if="{dropping}")
+    .aDropzone(if='{dropping}')
         .middleinner
             svg.feather
-                use(xlink:href="data/icons.svg#download")
+                use(xlink:href='data/icons.svg#download')
             h2 {languageJSON.common.fastimport}
-            input(type="file" multiple
-                accept=".ttf"
-                onchange="{fontImport}")
-    context-menu(menu="{fontMenu}" ref="fontMenu")
-    font-editor(if="{editingFont}" fontobj="{editedFont}")
+            input(type='file', multiple, accept='.ttf', onchange='{fontImport}')
+    context-menu(menu='{fontMenu}', ref='fontMenu')
+    font-editor(if='{editingFont}', fontobj='{editedFont}')
     script.
         this.editingFont = false;
         global.currentProject.fonts = global.currentProject.fonts || [];
@@ -38,10 +33,10 @@ fonts-panel.flexfix.tall.fifty
         this.mixin(window.riotVoc);
         const fs = require('fs-extra'),
               path = require('path');
-
+        
         this.thumbnails = font => `file://${window.global.projdir}/fonts/${font.origname}_prev.png?cache=${font.lastmod}`;
         this.names = font => `${font.typefaceName} ${font.weight} ${font.italic? this.voc.italic : ''}`;
-
+        
         this.setUpPanel = e => {
             global.currentProject.fonts = global.currentProject.fonts || [];
             this.fonts = global.currentProject.fonts;
@@ -55,12 +50,12 @@ fonts-panel.flexfix.tall.fifty
         this.on('unmount', () => {
             window.signals.off('projectLoaded', this.setUpPanel);
         });
-
+        
         this.openFont = font => e => {
             this.editingFont = true;
             this.editedFont = font;
         };
-
+        
         // Context menu for manipulating fonts with RMB
         this.fontMenu = {
             items: [{
@@ -116,7 +111,7 @@ fonts-panel.flexfix.tall.fifty
             this.refs.fontMenu.popup(e.clientX, e.clientY);
             e.preventDefault();
         };
-
+        
         /**
          * The event of importing a font through a file manager
          */
@@ -239,7 +234,7 @@ fonts-panel.flexfix.tall.fifty
             document.removeEventListener('dragleave', this.onDragLeave);
             document.removeEventListener('drop', this.onDrop);
         });
-
+        
         this.loadFonts = () => {
             var fonts = global.currentProject.fonts;
             for (const font of document.fonts) {
