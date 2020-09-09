@@ -1,0 +1,66 @@
+@charset "utf-8"
+
+foreground = #fff
+text = #C8CECD
+background = #0c0d17
+backgroundDeeper = #07060E
+shadows = #000
+
+borderPale = #142035
+borderBright = #213548
+
+
+/* Frequently used properties */
+trans =
+    transition 0.35s ease all
+transshort =
+    transition 0.15s ease all
+shad =
+    box-shadow 0 0.1rem 0.2rem rgba(shadows, 0.5)
+shadamb =
+    box-shadow 0 0 0.35rem rgba(shadows, 0.5)
+
+/* Base fonts for UI */
+fonts = font = 'Open Sans', sans-serif, serif
+font-mono = mono = Iosevka, monospace
+
+br = 0.2rem
+iconsize = 1.5rem
+
+/* Colors used by this theme */
+act = #2f9bf9
+acttext = #5c86ff
+accent1 = #6d88fe
+accent2 = #44dbb5
+error = #d44f57
+red = error
+success = #4ab660
+green = success
+warning = #ff9748
+orange = warning
+
+theme = 'Dark'
+themeDark = true
+
+@require 'hvost.styl'
+
+@require '3rdParty/*.styl'
+@require './../../app/node_modules/highlight.js/styles/atom-one-dark.css'
+
+@require 'common.styl'
+@require 'inputs.styl'
+@require 'typography.styl'
+@require 'confetti.styl'
+@require 'buildingBlocks.styl'
+@require 'tabs.styl'
+
+@require 'tags/**/*.styl'
+
+grad1 = #0390e2
+grad2 = #0374b5
+grad3 = #045a8c
+grad4 = #012940
+grad5 = #0C0D18
+
+#bg
+    background radial-gradient(ellipse at bottom, grad1 0, grad2 9%, grad3 22%, grad4 43%, grad5 74%)

@@ -358,6 +358,12 @@ main-menu.flexcol
                             this.switchTheme('Night');
                         }
                     }, {
+                        label: window.languageJSON.menu.themeDark || 'Dark',
+                        icon: () => localStorage.UItheme === 'Dark' && 'check',
+                        click: () => {
+                            this.switchTheme('Dark');
+                        }
+                    }, {
                         label: window.languageJSON.menu.themeHorizon || 'Horizon',
                         icon: () => localStorage.UItheme === 'Horizon' && 'check',
                         click: () => {

@@ -225,6 +225,7 @@
     const themeMappings = {
         Day: 'tomorrow',
         Night: 'ambiance',
+        Dark: 'dark',
         Horizon: 'horizon',
         SpringStream: 'spring',
         LucasDracula: 'lucasdracula',
