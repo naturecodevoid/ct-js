@@ -102,22 +102,6 @@ const ct = {
             ct.fittoscreen();
         }
         return value;
-    },
-    /**
-     * The width of the current view, in UI units
-     * @type {number}
-     * @deprecated Since v1.3.0. See `ct.camera.width`.
-     */
-    get viewWidth() {
-        return ct.camera.width;
-    },
-    /**
-     * The height of the current view, in UI units
-     * @type {number}
-     * @deprecated Since v1.3.0. See `ct.camera.height`.
-     */
-    get viewHeight() {
-        return ct.camera.height;
     }
 };
 
@@ -177,7 +161,7 @@ ct.u = {
      * @returns {number} The length of the projection
      */
     ldx(l, d) {
-        return l * Math.cos(d * Math.PI / -180);
+        return l * Math.cos(d * Math.PI / 180);
     },
     /**
      * Returns the length of a vector projection onto an Y axis.
@@ -186,7 +170,7 @@ ct.u = {
      * @returns {number} The length of the projection
      */
     ldy(l, d) {
-        return l * Math.sin(d * Math.PI / -180);
+        return l * Math.sin(d * Math.PI / 180);
     },
     /**
      * Returns the direction of a vector that points from the first point to the second one.
@@ -197,7 +181,7 @@ ct.u = {
      * @returns {number} The angle of the resulting vector, in degrees
      */
     pdn(x1, y1, x2, y2) {
-        return (Math.atan2(y2 - y1, x2 - x1) * -180 / Math.PI + 360) % 360;
+        return (Math.atan2(y2 - y1, x2 - x1) * 180 / Math.PI + 360) % 360;
     },
     // Point-point DistanCe
     /**
@@ -217,7 +201,7 @@ ct.u = {
      * @returns {number} The resulting radian value
      */
     degToRad(deg) {
-        return deg * Math.PI / -180;
+        return deg * Math.PI / 180;
     },
     /**
      * Convers radians to degrees
@@ -225,14 +209,14 @@ ct.u = {
      * @returns {number} The resulting degree
      */
     radToDeg(rad) {
-        return rad / Math.PI * -180;
+        return rad / Math.PI * 180;
     },
     /**
      * Rotates a vector (x; y) by `deg` around (0; 0)
      * @param {number} x The x component
      * @param {number} y The y component
      * @param {number} deg The degree to rotate by
-     * @returns {Array<number>} A pair of new `x` and `y` parameters.
+     * @returns {PIXI.Point} A pair of new `x` and `y` parameters.
      */
     rotate(x, y, deg) {
         return ct.u.rotateRad(x, y, ct.u.degToRad(deg));
@@ -242,15 +226,15 @@ ct.u = {
      * @param {number} x The x component
      * @param {number} y The y component
      * @param {number} rad The radian value to rotate around
-     * @returns {Array<number>} A pair of new `x` and `y` parameters.
+     * @returns {PIXI.Point} A pair of new `x` and `y` parameters.
      */
     rotateRad(x, y, rad) {
         const sin = Math.sin(rad),
               cos = Math.cos(rad);
-        return [
+        return new PIXI.Point(
             cos * x - sin * y,
             cos * y + sin * x
-        ];
+        );
     },
     /**
      * Gets the most narrow angle between two vectors of given directions
@@ -308,7 +292,7 @@ ct.u = {
      * Translates a point from UI space to game space.
      * @param {number} x The x coordinate in UI space.
      * @param {number} y The y coordinate in UI space.
-     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
     uiToGameCoord(x, y) {
         return ct.camera.uiToGameCoord(x, y);
@@ -317,7 +301,7 @@ ct.u = {
      * Translates a point from fame space to UI space.
      * @param {number} x The x coordinate in game space.
      * @param {number} y The y coordinate in game space.
-     * @returns {Array<number>} A pair of new `x` and `y` coordinates.
+     * @returns {PIXI.Point} A pair of new `x` and `y` coordinates.
      */
     gameToUiCoord(x, y) {
         return ct.camera.gameToUiCoord(x, y);

@@ -221,7 +221,6 @@ const exportCtProject = async (project, projdir) => {
         .replace('/*@sndtotal@*/', project.sounds.length)
         .replace('/*@res@*/', textures.res + '\n' + skeletons.loaderScript + '\n' + bitmapFonts.loaderScript)
         .replace('/*@textureregistry@*/', textures.registry)
-        .replace('/*@textureatlases@*/', JSON.stringify(textures.atlases))
         .replace('/*@skeletonregistry@*/', skeletons.registry)
         .replace('/*%resload%*/', injects.resload + '\n' + skeletons.startScript)
         .replace('/*%res%*/', injects.res);
@@ -270,10 +269,6 @@ const exportCtProject = async (project, projdir) => {
     const {substituteCssVars} = require('./css');
     const html = substituteHtmlVars(await sources['index.html'], project, injects);
     let css = substituteCssVars(await sources['ct.css'], project, injects);
-
-    if (settings.rendering.pixelatedrender) {
-        css += '#ct canvas{image-rendering: pixelated;}';
-    }
 
     css += fonts.css;
 
