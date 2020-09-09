@@ -61,7 +61,7 @@
         },
         /**
          * Returns the collision shape of the given texture.
-         * @param {string|-1} name The name of the ct.js texture, or -1 for an empty collision shape
+         * @param {string|number} name The name of the ct.js texture, or -1 for an empty collision shape
          * @returns {object}
          */
         getTextureShape(name) {
