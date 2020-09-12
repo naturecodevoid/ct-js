@@ -60,6 +60,7 @@ main-menu.flexcol
         rooms-panel(show="{tab === 'rooms'}" data-hotkey-scope="rooms")
         license-panel(if="{showLicense}")
         patreon-screen(if="{tab === 'patrons'}" data-hotkey-scope="patrons")
+        theme-maker(if="{tab === 'thememaker'}" data-hotkey-scope="thememaker")
         export-panel(show="{showExporter}")
     new-project-onboarding(if="{sessionStorage.showOnboarding && localStorage.showOnboarding !== 'off'}")
     script.
@@ -368,6 +369,16 @@ main-menu.flexcol
                         icon: () => localStorage.UItheme === 'LucasDracula' && 'check',
                         click: () => {
                             this.switchTheme('LucasDracula');
+                        }
+                    }, {
+                        type: 'separator'
+                    }, {
+                        label: window.languageJSON.menu.themeCustom || 'Custom',
+                        icon: () => localStorage.UItheme === 'Custom' && 'check',
+                        click: () => {
+                            this.switchTheme('Custom');
+                            this.changeTab('thememaker')();
+                            this.update();
                         }
                     }]
                 }
